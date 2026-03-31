@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Primary */
+  --color-primary: #7458FD;
+  --color-dark-blue: #011638;
+  --color-pearl-white: #F5F1ED;
+
+  /* Monochrome */
+  --color-black: #000000;
+  --color-off-black: #595959;
+  --color-white: #FFFFFF;
+  --color-grey-a: #AAACB0;
+  --color-grey-b: #BABCBF;
+  --color-grey-c: #CDCED0;
+  --color-grey-d: #DDDDDF;
+  --color-grey-e: #EFF0F0;
+  --color-grey-f: #F7F7F8;
+
+  /* Actions */
+  --color-blue: #045DEC;
+  --color-green: #16C172;
+  --color-red: #F03A47;
+  --color-yellow: #E9D502;
+
+  /* Semantic aliases */
+  --color-success: #16C172;
+  --color-success-light: #d0fae8;
+  --color-warning: #E9D502;
+  --color-warning-light: #fefbe6;
+  --color-error: #F03A47;
+  --color-error-light: #fde3e5;
+  --color-info: #045DEC;
+  --color-info-light: #dbeafe;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --spacing-xxxl: 48px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+.font-poppins {
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
+}

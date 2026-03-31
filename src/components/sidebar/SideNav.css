@@ -1,0 +1,288 @@
+/* ─────────────────────────────────────────────────────────────
+   SideNav — ported from purple-storybook SideNavigation
+   Light mode, hard-coded values
+   ───────────────────────────────────────────────────────────── */
+
+.side-nav {
+  width: 220px;
+  height: 100vh;
+  flex-shrink: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+}
+
+.side-nav--collapsed {
+  width: 68px;
+}
+
+.side-nav__panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ── Toggle button ─────────────────────────────────────────── */
+
+.side-nav__toggle {
+  position: absolute;
+  right: -12px;
+  top: 28px;
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #f0f2f5;
+  border: 1px solid rgba(0, 0, 0, 0.10);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(1, 22, 56, 0.4);
+  padding: 0;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.side-nav__toggle:hover {
+  background-color: #7458fd;
+  color: #ffffff;
+  border-color: #7458fd;
+  box-shadow: 0 2px 12px rgba(116, 88, 253, 0.35);
+}
+
+.side-nav__toggle-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.side-nav--collapsed .side-nav__toggle-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Main area ─────────────────────────────────────────────── */
+
+.side-nav__main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  overflow-y: auto;
+  flex: 1;
+  padding-bottom: 16px;
+  /* hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.side-nav__main::-webkit-scrollbar {
+  display: none;
+}
+
+.side-nav__header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ── Logo ──────────────────────────────────────────────────── */
+
+.side-nav__logo {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 64px; /* 20px top pad + 28px content + 16px bottom pad */
+  box-sizing: border-box;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* Both mark and title sit at the same position — crossfade only, nothing moves */
+.side-nav__logo-mark,
+.side-nav__logo-title {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+}
+
+.side-nav__logo-mark {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.side-nav--collapsed .side-nav__logo-mark {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.side-nav__logo-title {
+  gap: 6px;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.side-nav--collapsed .side-nav__logo-title {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.side-nav__ui-text {
+  font-family: Poppins, sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px #011638;
+  white-space: nowrap;
+  flex-shrink: 0;
+  /* Compensate for Poppins cap-height offset so caps align with icon center */
+  display: inline-block;
+  transform: translateY(0.1em);
+}
+
+/* ── Nav links ─────────────────────────────────────────────── */
+
+.side-nav__links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 12px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.side-nav--collapsed .side-nav__links {
+  padding: 0 10px;
+}
+
+/* ── Section label ─────────────────────────────────────────── */
+
+.side-nav__section-block {
+  padding-bottom: 4px;
+}
+
+.side-nav__section-label {
+  font-family: Poppins, sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: normal;
+  letter-spacing: 1.2px;
+  color: rgba(1, 22, 56, 0.35);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 12px;
+  margin: 0 0 4px 0;
+  overflow: hidden;
+  opacity: 1;
+  max-height: 20px;
+  transition:
+    opacity 0.2s ease,
+    max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    margin 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.side-nav--collapsed .side-nav__section-label {
+  opacity: 0;
+  max-height: 0;
+  margin-bottom: 0;
+}
+
+/* ── Nav link items ────────────────────────────────────────── */
+
+.side-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 36px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease,
+    padding 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    justify-content 0s;
+}
+
+.side-nav--collapsed .side-nav__link {
+  padding: 9px;
+  justify-content: center;
+}
+
+.side-nav__link:hover:not(.side-nav__link--active) {
+  background-color: rgba(116, 88, 253, 0.07);
+}
+
+.side-nav__link--active {
+  background-color: #7458fd;
+  box-shadow: 0px 2px 12px rgba(116, 88, 253, 0.30);
+}
+
+.side-nav__link-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: gap 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.side-nav--collapsed .side-nav__link-name {
+  gap: 0;
+}
+
+.side-nav__link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: rgba(1, 22, 56, 0.4);
+}
+
+.side-nav__link--active .side-nav__link-icon {
+  color: #ffffff;
+}
+
+.side-nav__link-label {
+  font-family: Poppins, sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: rgba(1, 22, 56, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 140px;
+  opacity: 1;
+  transition:
+    max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.15s ease;
+}
+
+.side-nav--collapsed .side-nav__link-label {
+  max-width: 0;
+  opacity: 0;
+}
+
+.side-nav__link--active .side-nav__link-label {
+  color: #ffffff;
+}
