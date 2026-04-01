@@ -39,12 +39,12 @@ const StoreIcon = ({ size = 11 }: { size?: number }) => (
   </svg>
 );
 
-// Location blob category — viewBox 0 0 16 13.3333
+// Location pin — clear and visible at small sizes
 const LocationIcon = ({ size = 11 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 16 13.3333" fill="none" aria-hidden="true">
+  <svg width={size} height={size} viewBox="0 0 12 15" fill="none" aria-hidden="true">
     <path
-      d="M8.05859 3.93457C9.62498 3.94866 10.8911 5.23726 10.877 6.80957C10.8628 8.38184 9.5739 9.64744 8.00781 9.63379C6.5405 9.62088 5.33566 8.48719 5.20215 7.0498L5.19043 6.75879C5.20454 5.18673 6.4928 3.92127 8.05859 3.93457Z"
-      fill="#AAACB0" stroke="#AAACB0" strokeWidth="1.75205"
+      d="M6 0C3.24 0 1 2.24 1 5C1 8.75 6 15 6 15C6 15 11 8.75 11 5C11 2.24 8.76 0 6 0ZM6 6.5C5.17 6.5 4.5 5.83 4.5 5C4.5 4.17 5.17 3.5 6 3.5C6.83 3.5 7.5 4.17 7.5 5C7.5 5.83 6.83 6.5 6 6.5Z"
+      fill="#AAACB0"
     />
   </svg>
 );
@@ -185,8 +185,8 @@ function PhoneTrayDemo({ dark }: { dark: boolean }) {
         {/* Venue list */}
         {venues.slice(0, 6).map((venue, i) => {
           // Alternating backgrounds: first 4 white, last rows grey (matches Figma)
-          const rowBg = dark ? 'transparent' : (i < 4 ? '#ffffff' : '#F7F7F8');
-          const pillBg = dark ? 'rgba(255,255,255,0.08)' : (i < 4 ? '#F7F7F8' : '#ffffff');
+          const rowBg = dark ? 'transparent' : '#ffffff';
+          const pillBg = dark ? 'rgba(255,255,255,0.08)' : '#F7F7F8';
           const isLast = i === venues.slice(0, 6).length - 1;
 
           return (
