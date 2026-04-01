@@ -178,7 +178,7 @@ function PhoneTrayDemo({ dark }: { dark: boolean }) {
             background: dark ? 'transparent' : '#ffffff',
             display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0,
           }}>
-            <TrayFilterIcon color="#7458FD" width={13} />
+            <TrayFilterIcon color={dark ? '#ffffff' : '#7458FD'} width={13} />
           </button>
         </div>
 
@@ -269,7 +269,7 @@ function StaticTrayPreview({ dark }: { dark: boolean }) {
           background: dark ? 'transparent' : '#ffffff',
           display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
         }}>
-          <TrayFilterIcon color="#7458FD" />
+          <TrayFilterIcon color={dark ? '#ffffff' : '#7458FD'} />
         </button>
       </div>
 
