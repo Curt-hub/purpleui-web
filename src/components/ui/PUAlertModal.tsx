@@ -15,21 +15,20 @@ interface PUAlertModalProps {
   dark?: boolean;
 }
 
-// Confirm button colours (light + dark use same flat colour)
 const confirmBg: Record<PUAlertModalVariant, string> = {
-  info: '#7458FD',
-  warning: '#E9D502',
+  info:        '#7458FD',
+  warning:     '#E9D502',
   destructive: '#F03A47',
 };
 const confirmColor: Record<PUAlertModalVariant, string> = {
-  info: '#ffffff',
-  warning: '#000000',
+  info:        '#ffffff',
+  warning:     '#000000',
   destructive: '#ffffff',
 };
 
 export function PUAlertModal({
   isOpen, onClose, onConfirm, title, message,
-  confirmLabel = 'Confirm', cancelLabel = 'Cancel', variant = 'info', dark
+  confirmLabel = 'Confirm', cancelLabel = 'Cancel', variant = 'info', dark = false,
 }: PUAlertModalProps) {
   return (
     <AnimatePresence>
@@ -41,63 +40,94 @@ export function PUAlertModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40"
-            style={{ background: dark ? 'rgba(0,0,0,0.6)' : 'rgba(0,0,0,0.4)' }}
+            style={{
+              background: dark ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.2)',
+              backdropFilter: 'blur(5px)',
+              WebkitBackdropFilter: 'blur(5px)',
+            }}
             onClick={onClose}
           />
 
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-[30px]">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 12 }}
+              initial={{ opacity: 0, scale: 0.92, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 12 }}
+              exit={{ opacity: 0, scale: 0.92, y: 12 }}
               transition={{ type: 'spring', stiffness: 420, damping: 26 }}
-              className="w-full max-w-sm"
-              style={dark ? {
-                background: '#0a2048',
-                borderRadius: 20,
-                padding: 24,
-                border: '1px solid rgba(255,255,255,0.1)',
-                boxShadow: '0 24px 60px rgba(0,0,0,0.6)',
-              } : {
-                background: '#ffffff',
-                borderRadius: 20,
-                padding: 24,
-                boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
+              style={{
+                width: '100%',
+                maxWidth: 393,
+                background: dark ? '#0a2048' : '#ffffff',
+                borderRadius: 12,
+                border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #EFF0F0',
+                boxShadow: '0px 10px 20px 0px rgba(0,0,0,0.1)',
+                padding: '50px 30px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 40,
               }}
             >
-              <h2
-                className="text-base font-bold mb-2"
-                style={{ color: dark ? '#ffffff' : 'rgb(17,24,39)' }}
-              >{title}</h2>
-              <p
-                className="text-sm mb-6"
-                style={{ color: dark ? 'rgba(255,255,255,0.6)' : 'rgb(75,85,99)' }}
-              >{message}</p>
-              <div className="flex gap-3">
-                <button
-                  onClick={onClose}
-                  className="flex-1 py-2.5 rounded-[10px] text-sm font-medium transition-colors"
-                  style={dark ? {
-                    background: 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    color: 'rgba(255,255,255,0.7)',
-                  } : {
-                    border: '1px solid rgb(229,231,235)',
-                    color: 'rgb(55,65,81)',
-                  }}
-                >
-                  {cancelLabel}
-                </button>
+              {/* Content */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <p style={{
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 700,
+                  fontSize: 18,
+                  color: dark ? '#ffffff' : '#000000',
+                  margin: 0,
+                  lineHeight: 1.3,
+                }}>
+                  {title}
+                </p>
+                <p style={{
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 400,
+                  fontSize: 14,
+                  color: dark ? 'rgba(255,255,255,0.7)' : '#000000',
+                  margin: 0,
+                  lineHeight: 1.5,
+                }}>
+                  {message}
+                </p>
+              </div>
+
+              {/* Buttons — stacked vertically */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {/* Confirm */}
                 <button
                   onClick={onConfirm}
-                  className="flex-1 py-2.5 rounded-[10px] text-sm font-medium transition-colors"
                   style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 50,
+                    border: 'none',
                     background: confirmBg[variant],
                     color: confirmColor[variant],
-                    border: 'none',
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: 'pointer',
                   }}
                 >
                   {confirmLabel}
+                </button>
+                {/* Cancel */}
+                <button
+                  onClick={onClose}
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 50,
+                    border: dark ? '1px solid rgba(255,255,255,0.2)' : '1.5px solid #000000',
+                    background: 'transparent',
+                    color: dark ? 'rgba(255,255,255,0.8)' : '#000000',
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 700,
+                    fontSize: 14,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {cancelLabel}
                 </button>
               </div>
             </motion.div>

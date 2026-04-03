@@ -1,9 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion, useMotionValue, animate } from 'framer-motion';
-import { PUSearchBar } from '@/components/ui/PUSearchBar';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
-import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PropsTable } from '@/components/docs/PropsTable';
 import { CodeBlock } from '@/components/docs/CodeBlock';
 
@@ -275,8 +273,8 @@ function StaticTrayPreview({ dark }: { dark: boolean }) {
 
       {/* Venue rows */}
       {venues.slice(0, 5).map((venue, i) => {
-        const rowBg = dark ? 'transparent' : (i < 4 ? '#ffffff' : '#F7F7F8');
-        const pillBg = dark ? 'rgba(255,255,255,0.08)' : (i < 4 ? '#F7F7F8' : '#ffffff');
+        const rowBg = dark ? 'transparent' : '#ffffff';
+        const pillBg = dark ? 'rgba(255,255,255,0.08)' : '#F7F7F8';
         const isLast = i === 4;
 
         return (
@@ -343,14 +341,6 @@ const trayProps = [
   { name: 'defaultExpanded', type: 'boolean',   default: 'false', description: 'Start in expanded state' },
 ];
 
-const searchBarProps = [
-  { name: 'value',         type: 'string',              required: true,              description: 'Controlled input value' },
-  { name: 'onChange',      type: '(v: string) => void', required: true,              description: 'Value change handler' },
-  { name: 'placeholder',   type: 'string',              default: 'Search',           description: 'Input placeholder' },
-  { name: 'onFilterPress', type: '() => void',          default: '—',                description: 'Filter button tap handler' },
-  { name: 'dark',          type: 'boolean',             default: 'false',            description: 'Dark surface' },
-];
-
 const traySwiftCode = `struct ExploreView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -368,30 +358,10 @@ const traySwiftCode = `struct ExploreView: View {
     }
 }`;
 
-const searchBarSwiftCode = `struct MapOverlayView: View {
-    @State private var query = ""
-    @State private var showFilters = false
-
-    var body: some View {
-        VStack {
-            PUSearchBar(
-                text: $query,
-                placeholder: "Search",
-                onFilterTap: { showFilters = true }
-            )
-            .padding(.horizontal, 16)
-            .padding(.top, 12)
-            Spacer()
-        }
-    }
-}`;
-
 // ── Page ─────────────────────────────────────────────────────
 
 export default function BottomTrayPage() {
   const [isDark, setIsDark] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [filterHit, setFilterHit] = useState(false);
 
   return (
     <div className="max-w-3xl">
@@ -435,32 +405,6 @@ export default function BottomTrayPage() {
 
       <h2 className="text-base font-semibold text-gray-800 mt-10 mb-2">Swift Usage</h2>
       <CodeBlock code={traySwiftCode} title="PUBottomTray.swift" />
-
-      {/* ── Search Bar ── */}
-      <h2 className="text-3xl font-bold text-gray-900 mt-16 mb-2">Search Bar</h2>
-      <p className="text-gray-500 mb-8">
-        Pill-shaped input with a search icon and a purple filter button. Floats above the map or tray.
-      </p>
-
-      <h2 className="text-lg font-bold text-primary mb-5">Variants</h2>
-      <ComponentPreview label="Light">
-        <div className="w-[320px]">
-          <PUSearchBar value={searchValue} onChange={setSearchValue} onFilterPress={() => { setFilterHit(true); setTimeout(() => setFilterHit(false), 1200); }} />
-          {filterHit && <p className="text-xs text-[#7458FD] text-center mt-2 font-medium">Filter tapped ✓</p>}
-        </div>
-      </ComponentPreview>
-
-      <ComponentPreview label="Dark" bg="dark">
-        <div className="w-[320px]">
-          <PUSearchBar value={searchValue} onChange={setSearchValue} onFilterPress={() => {}} dark />
-        </div>
-      </ComponentPreview>
-
-      <h2 className="text-base font-semibold text-gray-800 mt-8 mb-2">Search Bar Props</h2>
-      <PropsTable props={searchBarProps} />
-
-      <h2 className="text-base font-semibold text-gray-800 mt-10 mb-2">Swift Usage</h2>
-      <CodeBlock code={searchBarSwiftCode} title="PUSearchBar.swift" />
     </div>
   );
 }

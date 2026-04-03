@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export type PUButtonVariant = 'primary' | 'secondary' | 'secondary-dark' | 'destructive';
-export type PUButtonSize = 'sm' | 'md' | 'lg';
+export type PUButtonSize = 'sm' | 'md' | 'lg' | 'compact';
 export type PUButtonIconPosition = 'before' | 'after';
 
 interface PUButtonProps {
@@ -31,9 +31,10 @@ const variantStyles: Record<PUButtonVariant, string> = {
 
 // Figma: h-[48px] px-[16px] py-[10px], pill shape — sm uses 40px height
 const sizeStyles: Record<PUButtonSize, string> = {
-  sm: 'h-10 px-4 text-sm',
-  md: 'h-12 px-4 text-sm',
-  lg: 'h-14 px-6 text-base',
+  compact: 'h-10 px-5 text-sm',
+  sm:      'h-10 px-4 text-sm',
+  md:      'h-12 px-4 text-sm',
+  lg:      'h-14 px-6 text-base',
 };
 
 export function PUButton({
@@ -58,7 +59,7 @@ export function PUButton({
         'relative inline-flex items-center justify-center gap-1.5 rounded-full font-bold font-poppins transition-colors',
         variantStyles[variant],
         sizeStyles[size],
-        fullWidth ? 'w-full' : 'w-[323px]',
+        fullWidth ? 'w-full' : size === 'compact' ? 'w-auto' : 'w-[323px]',
         disabled || loading ? 'opacity-50 cursor-not-allowed' : '',
       ].join(' ')}
       disabled={disabled || loading}

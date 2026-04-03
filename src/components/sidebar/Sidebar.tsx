@@ -31,6 +31,13 @@ const NavigationIcon = () => (
 );
 
 
+const MapIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M1 3.5l4-1.5 6 1.5 4-1.5v11l-4 1.5-6-1.5-4 1.5V3.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+    <path d="M5 2v11M11 3.5v11" stroke="currentColor" strokeWidth="1.5"/>
+  </svg>
+);
+
 const OverlaysIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
     <rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
@@ -110,7 +117,8 @@ const nav = [
     sectionIcon: <ButtonsIcon />,
     items: [
       { label: 'Button',      href: '/buttons/button',      icon: <ButtonsIcon /> },
-      { label: 'Icon Button', href: '/buttons/icon-button', icon: <ButtonsIcon /> },
+      { label: 'Icon Button',      href: '/buttons/icon-button',      icon: <ButtonsIcon /> },
+      { label: 'Floating Button', href: '/buttons/floating-button', icon: <ButtonsIcon /> },
     ],
   },
   {
@@ -135,12 +143,20 @@ const nav = [
     ],
   },
   {
+    section: 'Map',
+    sectionIcon: <MapIcon />,
+    items: [
+      { label: 'Mapbox Map', href: '/map/mapbox',   icon: <MapIcon /> },
+      { label: 'Map Pins',   href: '/map/map-pins', icon: <MapIcon /> },
+    ],
+  },
+  {
     section: 'Overlays',
     sectionIcon: <OverlaysIcon />,
     items: [
       { label: 'Toast',        href: '/overlays/toast',        icon: <OverlaysIcon /> },
       { label: 'Bottom Tray',  href: '/overlays/bottom-tray',  icon: <OverlaysIcon /> },
-      { label: 'Alert Modal',  href: '/overlays/alert-modal',  icon: <OverlaysIcon /> },
+      { label: 'Validation Modal', href: '/overlays/validation-modal', icon: <OverlaysIcon /> },
     ],
   },
 ];

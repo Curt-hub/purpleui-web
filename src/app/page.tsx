@@ -3,8 +3,8 @@ import { LayoutShell } from '@/components/layouts/LayoutShell';
 import { PurpleLogo } from '@/components/ui/PurpleLogo';
 
 const stats = [
-  { value: '10', label: 'Components' },
-  { value: '5',  label: 'Foundations' },
+  { value: '11', label: 'Components' },
+  { value: '6',  label: 'Foundations' },
   { value: 'iOS', label: 'SwiftUI Ready' },
 ];
 

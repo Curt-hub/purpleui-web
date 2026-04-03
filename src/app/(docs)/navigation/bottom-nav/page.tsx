@@ -68,7 +68,7 @@ export default function BottomNavPage() {
         <h2 className="text-lg font-bold text-primary mb-5">In Context</h2>
         <PhoneFrame label="Bottom nav — anchored to screen bottom" dark={isDark} onToggle={() => setIsDark(d => !d)}>
           <div className="flex flex-col h-full">
-            <div className="flex-1" />
+            <div className="flex-1" style={{ background: isDark ? '#011638' : '#F5F5F7' }} />
             {/* Scale wrapper: PUBottomNav inner content is ~406px; scale to fit 300px screen */}
             <div style={{ position: 'relative', height: 65, overflow: 'hidden' }}>
               <div style={{ width: 406, position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%) scale(0.74)', transformOrigin: 'bottom center' }}>
