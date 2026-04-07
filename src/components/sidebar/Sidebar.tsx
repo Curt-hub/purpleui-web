@@ -109,7 +109,8 @@ const nav = [
       { label: 'Spacing',     href: '/foundation/spacing',     icon: <SpacingIcon /> },
       { label: 'Icons',       href: '/foundation/icons',       icon: <IconsIcon /> },
       { label: 'Shadows',     href: '/foundation/shadows',     icon: <ShadowsIcon /> },
-      { label: 'Logo',        href: '/foundation/logos',       icon: <LogoIcon /> },
+      { label: 'Logo',           href: '/foundation/logos',           icon: <LogoIcon /> },
+      { label: 'Illustrations', href: '/foundation/illustrations', icon: <IconsIcon /> },
     ],
   },
   {

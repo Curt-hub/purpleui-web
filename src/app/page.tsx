@@ -4,7 +4,7 @@ import { PurpleLogo } from '@/components/ui/PurpleLogo';
 
 const stats = [
   { value: '11', label: 'Components' },
-  { value: '6',  label: 'Foundations' },
+  { value: '7',  label: 'Foundations' },
   { value: 'iOS', label: 'SwiftUI Ready' },
 ];
 
