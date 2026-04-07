@@ -28,29 +28,95 @@ const colourways = [
   },
 ];
 
-function DownloadButton({ href, filename }: { href: string; filename: string }) {
+// ── Download helpers ──────────────────────────────────────────────────────────
+
+function downloadSVG(href: string, filename: string) {
+  const a = document.createElement('a');
+  a.href = href;
+  a.download = filename;
+  a.click();
+}
+
+async function downloadPNG(svgHref: string, filename: string, scale = 3) {
+  const res = await fetch(svgHref);
+  const svgText = await res.text();
+
+  // Parse the SVG to get its natural dimensions
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(svgText, 'image/svg+xml');
+  const root = doc.documentElement;
+  const w = parseFloat(root.getAttribute('width') ?? '500');
+  const h = parseFloat(root.getAttribute('height') ?? '130');
+
+  const blob = new Blob([svgText], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width  = Math.round(w * scale);
+    canvas.height = Math.round(h * scale);
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(scale, scale);
+    ctx.drawImage(img, 0, 0, w, h);
+    URL.revokeObjectURL(url);
+    canvas.toBlob(blob => {
+      if (!blob) return;
+      const pngUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = pngUrl;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(pngUrl);
+    }, 'image/png');
+  };
+  img.src = url;
+}
+
+// ── Download button group ─────────────────────────────────────────────────────
+
+function DownloadButtons({ svgHref, baseName }: { svgHref: string; baseName: string }) {
+  const btnStyle = {
+    base: { background: '#f3f4f6', color: '#6b7280' },
+    hover: { background: 'rgba(116,88,253,0.1)', color: '#7458FD' },
+  };
+
+  const cls = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-poppins font-medium transition-all cursor-pointer';
+
   return (
-    <a
-      href={href}
-      download={filename}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-poppins font-medium transition-all"
-      style={{ background: '#f3f4f6', color: '#6b7280' }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(116,88,253,0.1)';
-        (e.currentTarget as HTMLAnchorElement).style.color = '#7458FD';
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLAnchorElement).style.background = '#f3f4f6';
-        (e.currentTarget as HTMLAnchorElement).style.color = '#6b7280';
-      }}
-    >
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M6 1v7M3 5.5l3 3 3-3M1 10h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-      SVG
-    </a>
+    <div className="flex items-center gap-2">
+      {/* SVG */}
+      <button
+        className={cls}
+        style={btnStyle.base}
+        onMouseEnter={e => Object.assign((e.currentTarget as HTMLElement).style, btnStyle.hover)}
+        onMouseLeave={e => Object.assign((e.currentTarget as HTMLElement).style, btnStyle.base)}
+        onClick={() => downloadSVG(svgHref, `${baseName}.svg`)}
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 1v7M3 5.5l3 3 3-3M1 10h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        SVG
+      </button>
+
+      {/* PNG */}
+      <button
+        className={cls}
+        style={btnStyle.base}
+        onMouseEnter={e => Object.assign((e.currentTarget as HTMLElement).style, btnStyle.hover)}
+        onMouseLeave={e => Object.assign((e.currentTarget as HTMLElement).style, btnStyle.base)}
+        onClick={() => downloadPNG(svgHref, `${baseName}.png`)}
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 1v7M3 5.5l3 3 3-3M1 10h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        PNG
+      </button>
+    </div>
   );
 }
+
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function LogosPage() {
   return (
@@ -76,7 +142,7 @@ export default function LogosPage() {
                 <p className="text-sm text-[#595959] mt-0.5">{usage}</p>
               </div>
               <div className="flex items-center gap-3">
-                <DownloadButton href={logoFile} filename={`purple-logo-${variant}.svg`} />
+                <DownloadButtons svgHref={logoFile} baseName={`purple-logo-${variant}`} />
                 <div
                   className="w-8 h-8 rounded-full border border-[#DDDDDF] flex-shrink-0"
                   style={{ backgroundColor: bg }}
@@ -107,7 +173,7 @@ export default function LogosPage() {
                 <p className="text-sm text-[#595959] mt-0.5">{usage}</p>
               </div>
               <div className="flex items-center gap-3">
-                <DownloadButton href={iconFile} filename={`purple-icon-${variant}.svg`} />
+                <DownloadButtons svgHref={iconFile} baseName={`purple-icon-${variant}`} />
                 <div
                   className="w-8 h-8 rounded-full border border-[#DDDDDF] flex-shrink-0"
                   style={{ backgroundColor: bg }}
