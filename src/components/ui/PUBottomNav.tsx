@@ -72,13 +72,13 @@ export function PUBottomNav({ activeTab, onTabChange, dark }: PUBottomNavProps) 
     <div
       className="w-full h-[88px] flex items-center justify-center px-6"
       style={dark ? {
-        background: '#011638',
-        borderTop: '1px solid rgba(255,255,255,0.08)',
+        background: '#011638',   // backgroundNavy
+        borderTop: '1px solid rgba(255,255,255,0.08)',  // outlineSubtle dark
         boxShadow: '0px -4px 24px rgba(0,0,0,0.4)',
       } : {
-        background: '#ffffff',
+        background: '#ffffff',   // background
         boxShadow: '0px -2px 2px 0px rgba(0,0,0,0.03)',
-        borderTop: '1px solid rgba(247,247,248,0.8)',
+        borderTop: '1px solid rgba(247,247,248,0.8)',   // backgroundElevated tint
       }}
     >
       <div className="flex items-center justify-center w-full" style={{ gap: 50 }}>
@@ -86,8 +86,8 @@ export function PUBottomNav({ activeTab, onTabChange, dark }: PUBottomNavProps) 
           const isActive = activeTab === id;
 
           const iconColor = dark
-            ? (isActive ? '#7458fd' : 'rgba(255,255,255,0.35)')
-            : (isActive ? '#000000' : '#AAACB0');
+            ? (isActive ? '#7458fd' : 'rgba(255,255,255,0.35)')  // brand : onBackgroundTertiary dark
+            : (isActive ? '#000000' : '#AAACB0');                  // onBackground : onBackgroundTertiary
 
           const labelColor = dark
             ? (isActive ? '#7458fd' : 'rgba(255,255,255,0.35)')

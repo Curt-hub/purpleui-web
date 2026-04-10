@@ -1,5 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
+import { colors } from '@/lib/tokens';
 
 export type PUAlertModalVariant = 'info' | 'warning' | 'destructive';
 
@@ -16,13 +17,13 @@ interface PUAlertModalProps {
 }
 
 const confirmBg: Record<PUAlertModalVariant, string> = {
-  info:        '#7458FD',
-  warning:     '#E9D502',
-  destructive: '#F03A47',
+  info:        colors.brand,
+  warning:     colors.warning,
+  destructive: colors.error,
 };
 const confirmColor: Record<PUAlertModalVariant, string> = {
   info:        '#ffffff',
-  warning:     '#000000',
+  warning:     colors.onBackground,
   destructive: '#ffffff',
 };
 
@@ -57,9 +58,9 @@ export function PUAlertModal({
               style={{
                 width: '100%',
                 maxWidth: 393,
-                background: dark ? '#0a2048' : '#ffffff',
+                background: dark ? '#0a2048' : colors.background,   // backgroundElevated dark : background
                 borderRadius: 12,
-                border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #EFF0F0',
+                border: dark ? '1px solid rgba(255,255,255,0.1)' : `1px solid ${colors.outlineSubtle}`,  // outline dark : outlineSubtle
                 boxShadow: '0px 10px 20px 0px rgba(0,0,0,0.1)',
                 padding: '50px 30px',
                 display: 'flex',
@@ -73,7 +74,7 @@ export function PUAlertModal({
                   fontFamily: 'Poppins, sans-serif',
                   fontWeight: 700,
                   fontSize: 18,
-                  color: dark ? '#ffffff' : '#000000',
+                  color: dark ? '#ffffff' : colors.onBackground,  // onBackground dark : onBackground
                   margin: 0,
                   lineHeight: 1.3,
                 }}>
@@ -83,7 +84,7 @@ export function PUAlertModal({
                   fontFamily: 'Poppins, sans-serif',
                   fontWeight: 400,
                   fontSize: 14,
-                  color: dark ? 'rgba(255,255,255,0.7)' : '#000000',
+                  color: dark ? 'rgba(255,255,255,0.7)' : colors.onBackground,  // onBackgroundSecondary dark : onBackground
                   margin: 0,
                   lineHeight: 1.5,
                 }}>
@@ -118,9 +119,9 @@ export function PUAlertModal({
                     width: '100%',
                     height: 48,
                     borderRadius: 50,
-                    border: dark ? '1px solid rgba(255,255,255,0.2)' : '1.5px solid #000000',
+                    border: dark ? '1px solid rgba(255,255,255,0.2)' : `1.5px solid ${colors.onBackground}`,  // outline dark : onBackground
                     background: 'transparent',
-                    color: dark ? 'rgba(255,255,255,0.8)' : '#000000',
+                    color: dark ? 'rgba(255,255,255,0.8)' : colors.onBackground,  // onBackgroundSecondary dark : onBackground
                     fontFamily: 'Poppins, sans-serif',
                     fontWeight: 700,
                     fontSize: 14,

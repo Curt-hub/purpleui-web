@@ -21,8 +21,8 @@ interface PUIconButtonProps {
 // Light — white bg + off-black border (use on light backgrounds)
 // Dark  — navy bg + white border (use on dark backgrounds)
 const variantStyles: Record<PUIconButtonVariant, string> = {
-  light: 'bg-white border-[1.5px] border-[#595959] text-[#595959] hover:bg-[#F7F7F8]',
-  dark:  'bg-[#011638] border-[1.5px] border-white text-white hover:bg-[#02204f]',
+  light: 'bg-background border-[1.5px] border-on-background-secondary text-on-background-secondary hover:bg-background-elevated',
+  dark:  'bg-background-navy border-[1.5px] border-white text-white hover:bg-[#02204f]',
 };
 
 export function PUIconButton({

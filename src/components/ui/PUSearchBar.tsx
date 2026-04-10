@@ -20,9 +20,9 @@ export function PUSearchBar({
       style={{
         height: 48,
         borderRadius: 50,
-        background: dark ? '#0a2048' : '#ffffff',
+        background: dark ? '#0a2048' : '#ffffff',           // backgroundElevated dark : background
         boxShadow: dark ? 'none' : '0px 2px 15px rgba(0,0,0,0.1)',
-        border: dark ? '1px solid rgba(255,255,255,0.1)' : 'none',
+        border: dark ? '1px solid rgba(255,255,255,0.1)' : 'none',  // outline dark
         display: 'flex',
         alignItems: 'center',
         paddingLeft: 12,

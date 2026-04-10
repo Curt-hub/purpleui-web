@@ -23,10 +23,10 @@ interface PUButtonProps {
 
 // Figma: Primary = purple fill, Secondary = black outline (light bg), Secondary Dark = dark fill white outline
 const variantStyles: Record<PUButtonVariant, string> = {
-  primary:          'bg-[#7458FD] text-white border border-transparent hover:bg-[#5f43e0] active:bg-[#4d34cc]',
-  secondary:        'bg-white text-black border border-black hover:bg-[#F7F7F8]',
-  'secondary-dark': 'bg-[#011638] text-white border border-white hover:bg-[#02204f]',
-  destructive:      'bg-[#F03A47] text-white border border-transparent hover:bg-[#d42f3c]',
+  primary:          'bg-brand text-white border border-transparent hover:bg-[#5f43e0] active:bg-[#4d34cc]',
+  secondary:        'bg-background text-on-background border border-on-background hover:bg-background-elevated',
+  'secondary-dark': 'bg-background-navy text-white border border-white hover:bg-[#02204f]',
+  destructive:      'bg-error text-white border border-transparent hover:bg-[#d42f3c]',
 };
 
 // Figma: h-[48px] px-[16px] py-[10px], pill shape — sm uses 40px height

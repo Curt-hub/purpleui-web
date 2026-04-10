@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import { colors } from '@/lib/tokens';
 
 export type PUFloatingButtonVariant = 'icon' | 'pill';
 
@@ -22,8 +23,8 @@ function NavigateIcon() {
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z"
-        fill="#7458FD"
-        stroke="#7458FD"
+        fill={colors.brand}
+        stroke={colors.brand}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -38,7 +39,7 @@ function PlusIcon() {
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M12 5V19M5 12H19"
-        stroke="#7458FD"
+        stroke={colors.brand}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -53,16 +54,16 @@ function PlusIcon() {
 //        rgba(255,255,255,0.15) border (= Bottom Tray drag handle opacity)
 //        strong drop shadow to lift off the dark map
 const LIGHT = {
-  bg:     '#ffffff',
+  bg:     colors.background,
   border: 'none',
   shadow: '0px 2px 15px rgba(0,0,0,0.10)',
-  label:  '#7458FD',
+  label:  colors.brand,
 };
 const DARK = {
-  bg:     '#0a2048',
-  border: '1px solid rgba(255,255,255,0.15)',
+  bg:     '#0a2048',                              // backgroundElevated dark
+  border: '1px solid rgba(255,255,255,0.15)',     // outline dark
   shadow: '0px 4px 24px rgba(0,0,0,0.50)',
-  label:  '#ffffff',
+  label:  '#ffffff',                              // onBackground dark
 };
 
 export function PUFloatingButton({

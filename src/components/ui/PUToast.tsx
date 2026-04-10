@@ -1,5 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
+import { colors } from '@/lib/tokens';
 
 export type PUToastVariant = 'success' | 'error' | 'warning' | 'info' | 'offline';
 
@@ -13,7 +14,7 @@ interface PUToastProps {
 
 const config: Record<PUToastVariant, { bg: string; textColor: string; Icon: () => JSX.Element }> = {
   success: {
-    bg: '#16C172',
+    bg: colors.success,
     textColor: '#ffffff',
     Icon: () => (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -22,7 +23,7 @@ const config: Record<PUToastVariant, { bg: string; textColor: string; Icon: () =
     ),
   },
   error: {
-    bg: '#F03A47',
+    bg: colors.error,
     textColor: '#ffffff',
     Icon: () => (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -31,8 +32,8 @@ const config: Record<PUToastVariant, { bg: string; textColor: string; Icon: () =
     ),
   },
   warning: {
-    bg: '#E9D502',
-    textColor: '#000000',
+    bg: colors.warning,
+    textColor: colors.onBackground,
     Icon: () => (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
         <path d="M8 2L14.5 13.5H1.5L8 2Z" stroke="black" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
@@ -42,7 +43,7 @@ const config: Record<PUToastVariant, { bg: string; textColor: string; Icon: () =
     ),
   },
   info: {
-    bg: '#045DEC',
+    bg: colors.info,
     textColor: '#ffffff',
     Icon: () => (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -53,7 +54,7 @@ const config: Record<PUToastVariant, { bg: string; textColor: string; Icon: () =
     ),
   },
   offline: {
-    bg: '#3A3D4A',
+    bg: '#3A3D4A',   // no semantic token — offline is a one-off neutral state
     textColor: '#ffffff',
     Icon: () => (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
