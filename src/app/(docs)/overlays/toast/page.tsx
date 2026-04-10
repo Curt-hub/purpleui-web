@@ -5,35 +5,42 @@ import { PUButton } from '@/components/ui/PUButton';
 import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 import type { PUToastVariant } from '@/components/ui/PUToast';
 
-const swiftCode = `// In your view:
-.toast(isPresented: $showToast, message: "Connected!", variant: .success)
+const swiftCode = `// Attach the modifier to any view — auto-dismisses after 2.5s
+ContentView()
+    .puToast(isPresented: $showToast, message: "Connected!", style: .success)
 
-// ToastView modifier:
-struct ToastModifier: ViewModifier {
-    @Binding var isPresented: Bool
-    let message: String
-    let variant: PUToastVariant
-    let showIcon: Bool
+// All five variants
+.puToast(isPresented: $show, message: "Map saved!", style: .success)
+.puToast(isPresented: $show, message: "Syncing passes…", style: .info)
+.puToast(isPresented: $show, message: "Low signal detected", style: .warning)
+.puToast(isPresented: $show, message: "Connection failed", style: .error)
+.puToast(isPresented: $show, message: "You're offline", style: .offline)
 
-    func body(content: Content) -> some View {
-        content.overlay(alignment: .top) {
-            if isPresented {
-                PUToast(message: message, variant: variant, showIcon: showIcon)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 60)
-                    .transition(.move(edge: .top).combined(with: .opacity))
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                            isPresented = false
-                        }
-                    }
-            }
-        }
-    }
-}`;
+// Without icon
+.puToast(isPresented: $show, message: "Done", style: .success, showIcon: false)`;
+
+const kotlinCode = `// Wrap your screen content in PUToastHost
+PUToastHost(
+    isVisible = showToast,
+    message = "Connected to PurpleWi-Fi!",
+    style = PUToastStyle.Success,
+    onDismiss = { showToast = false }
+) {
+    YourScreenContent()
+}
+
+// All five variants
+PUToastHost(isVisible = show, message = "Map saved!",        style = PUToastStyle.Success,  onDismiss = { show = false }) { }
+PUToastHost(isVisible = show, message = "Syncing passes…",   style = PUToastStyle.Info,     onDismiss = { show = false }) { }
+PUToastHost(isVisible = show, message = "Low signal",        style = PUToastStyle.Warning,  onDismiss = { show = false }) { }
+PUToastHost(isVisible = show, message = "Connection failed", style = PUToastStyle.Error,    onDismiss = { show = false }) { }
+PUToastHost(isVisible = show, message = "You're offline",    style = PUToastStyle.Offline,  onDismiss = { show = false }) { }
+
+// Without icon
+PUToastHost(isVisible = show, message = "Done", style = PUToastStyle.Success, showIcon = false, onDismiss = { show = false }) { }`;
 
 const props = [
   { name: 'isPresented', type: 'Binding<Bool>',  required: true,      description: 'Controls visibility' },
@@ -135,8 +142,7 @@ export default function ToastPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="ToastView.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUToast" />
     </div>
   );
 }

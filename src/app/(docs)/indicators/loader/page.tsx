@@ -4,19 +4,43 @@ import { PULoader } from '@/components/ui/PULoader';
 import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 
-const swiftCode = `import SwiftUI
+const swiftCode = `// Light variant — use on white/light backgrounds
+PULoader(variant: .light)
 
-struct ContentView: View {
+// Dark variant — use on dark/navy backgrounds
+PULoader(variant: .dark)
+
+// Inside a full-screen loading state
+struct LoadingView: View {
     var body: some View {
-        VStack(spacing: 24) {
+        ZStack {
+            Color.appBackground.ignoresSafeArea()
             PULoader(variant: .light)
-            PULoader(variant: .dark)
         }
-        .padding()
     }
-}`;
+}
+
+// Inline loading inside a button
+PUButton("Connect", variant: .primary, isLoading: true) { }`;
+
+const kotlinCode = `// Light variant — use on white/light backgrounds
+PULoader(variant = PULoaderVariant.Light)
+
+// Dark variant — use on dark/navy backgrounds
+PULoader(variant = PULoaderVariant.Dark)
+
+// Full-screen loading state
+Box(
+    modifier = Modifier.fillMaxSize().background(Color.White),
+    contentAlignment = Alignment.Center
+) {
+    PULoader(variant = PULoaderVariant.Light)
+}
+
+// Inline loading inside a button
+PUButton(title = "Connect", isLoading = true, onClick = { })`;
 
 const props = [
   { name: 'variant', type: 'PULoaderVariant', default: "'light'", description: 'light | dark' },
@@ -55,8 +79,7 @@ export default function LoaderPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="PULoader.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PULoader" />
     </div>
   );
 }

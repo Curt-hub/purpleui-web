@@ -5,19 +5,71 @@ import { PUButton } from '@/components/ui/PUButton';
 import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 import type { PUAlertModalVariant } from '@/components/ui/PUAlertModal';
 
-const swiftCode = `PUValidationModal(
+const swiftCode = `// Destructive — irreversible action
+PUAlertModal(
     isPresented: $showModal,
     title: "You haven't added all Wi-Fi passes",
-    message: "If you leave now, any remaining passes won't be added",
+    message: "If you leave now, any remaining passes won't be added.",
     confirmLabel: "Leave",
     cancelLabel: "Continue adding passes",
-    variant: .destructive
-) {
-    dismiss()
-}`;
+    variant: .destructive,
+    onConfirm: { dismiss() }
+)
+
+// Warning — proceed with caution
+PUAlertModal(
+    isPresented: $showModal,
+    title: "Are you sure?",
+    message: "This action may affect your settings.",
+    confirmLabel: "Continue",
+    variant: .warning,
+    onConfirm: { applyChanges() }
+)
+
+// Info — neutral confirmation
+PUAlertModal(
+    isPresented: $showModal,
+    title: "Confirm this action",
+    message: "This will apply the selected changes.",
+    variant: .info,
+    onConfirm: { confirm() }
+)`;
+
+const kotlinCode = `// Destructive — irreversible action
+PUAlertModal(
+    isVisible = showModal,
+    title = "You haven't added all Wi-Fi passes",
+    message = "If you leave now, any remaining passes won't be added.",
+    confirmLabel = "Leave",
+    cancelLabel = "Continue adding passes",
+    variant = PUAlertModalVariant.Destructive,
+    onConfirm = { navController.popBackStack() },
+    onDismiss = { showModal = false }
+)
+
+// Warning — proceed with caution
+PUAlertModal(
+    isVisible = showModal,
+    title = "Are you sure?",
+    message = "This action may affect your settings.",
+    confirmLabel = "Continue",
+    variant = PUAlertModalVariant.Warning,
+    onConfirm = { applyChanges() },
+    onDismiss = { showModal = false }
+)
+
+// Info — neutral confirmation
+PUAlertModal(
+    isVisible = showModal,
+    title = "Confirm this action",
+    message = "This will apply the selected changes.",
+    variant = PUAlertModalVariant.Info,
+    onConfirm = { confirm() },
+    onDismiss = { showModal = false }
+)`;
 
 const props = [
   { name: 'isPresented',  type: 'Binding<Bool>',            required: true,       description: 'Controls modal visibility' },
@@ -132,9 +184,7 @@ export default function ValidationModalPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      {/* ── Swift ── */}
-      <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="PUValidationModal.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUAlertModal" />
     </div>
   );
 }

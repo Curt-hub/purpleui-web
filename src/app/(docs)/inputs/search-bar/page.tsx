@@ -4,7 +4,7 @@ import { PUSearchBar } from '@/components/ui/PUSearchBar';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 
 // ── Phone-frame mock ─────────────────────────────────────────
 
@@ -60,26 +60,47 @@ const props = [
   { name: 'dark',          type: 'boolean',             default: 'false', description: 'Dark surface variant' },
 ];
 
-const swiftCode = `struct MapSearchBar: View {
-    @State private var query = ""
-    @State private var showFilters = false
+const swiftCode = `// Basic usage
+PUSearchBar(text: $query, placeholder: "Search networks…") { }
 
-    var body: some View {
-        VStack {
-            PUSearchBar(
-                text: $query,
-                placeholder: "Search networks…",
-                onFilterTap: { showFilters = true }
-            )
-            .padding(.horizontal, 16)
-            .padding(.top, 12)
-            Spacer()
-        }
-        .sheet(isPresented: $showFilters) {
-            FiltersView()
-        }
-    }
-}`;
+// With filter button
+PUSearchBar(
+    text: $query,
+    placeholder: "Search networks…",
+    onFilterTap: { showFilters = true }
+)
+
+// Dark surface (e.g. over a dark map)
+PUSearchBar(
+    text: $query,
+    placeholder: "Search networks…",
+    dark: true,
+    onFilterTap: { showFilters = true }
+)`;
+
+const kotlinCode = `// Basic usage
+PUSearchBar(
+    value = query,
+    onValueChange = { query = it },
+    placeholder = "Search networks…"
+)
+
+// With filter button
+PUSearchBar(
+    value = query,
+    onValueChange = { query = it },
+    placeholder = "Search networks…",
+    onFilterPress = { showFilters = true }
+)
+
+// Dark surface (e.g. over a dark map)
+PUSearchBar(
+    value = query,
+    onValueChange = { query = it },
+    placeholder = "Search networks…",
+    dark = true,
+    onFilterPress = { showFilters = true }
+)`;
 
 // ── Page ─────────────────────────────────────────────────────
 
@@ -166,9 +187,7 @@ export default function SearchBarPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-10 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      {/* ── Swift ── */}
-      <h2 className="text-base font-semibold text-gray-800 mt-10 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="PUSearchBar.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUSearchBar" />
     </div>
   );
 }

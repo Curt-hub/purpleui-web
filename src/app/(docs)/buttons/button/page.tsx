@@ -4,23 +4,59 @@ import { PUButton } from '@/components/ui/PUButton';
 import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-const swiftCode = `import SwiftUI
+const swiftCode = `// Variants
+PUButton("Get Started", variant: .primary) { }
+PUButton("Learn More",  variant: .secondary) { }
+PUButton("Go Back",     variant: .secondaryDark) { }
+PUButton("Delete",      variant: .destructive) { }
 
-struct ContentView: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            PUButton(label: "Get Started", variant: .primary) { }
-            PUButton(label: "Learn More", variant: .secondary) { }
-            PUButton(label: "Continue", variant: .secondaryDark) { }
-            PUButton(label: "Next", variant: .primary, icon: .arrowRight, iconPosition: .after) { }
-            PUButton(label: "Submit", variant: .primary, loading: true) { }
-        }
-        .padding()
-    }
-}`;
+// Sizes
+PUButton("Small",  variant: .primary, size: .sm) { }
+PUButton("Medium", variant: .primary, size: .md) { }   // default
+PUButton("Large",  variant: .primary, size: .lg) { }
+
+// With icon
+PUButton("Connect",
+    variant: .primary,
+    icon: FA.wifi,
+    iconPosition: .before) { }
+
+// Loading state — disables tap automatically
+PUButton("Saving…", variant: .primary, loading: true) { }
+
+// Full width — stretches to container
+PUButton("Get Started", variant: .primary, fullWidth: true) { }`;
+
+const kotlinCode = `// Variants
+PUButton(title = "Get Started", onClick = { })
+PUButton(title = "Learn More",  variant = PUButtonVariant.Secondary,    onClick = { })
+PUButton(title = "Go Back",     variant = PUButtonVariant.SecondaryDark, onClick = { })
+PUButton(title = "Delete",      variant = PUButtonVariant.Destructive,  onClick = { })
+
+// Sizes
+PUButton(title = "Small",  size = PUButtonSize.Sm, onClick = { })
+PUButton(title = "Medium", size = PUButtonSize.Md, onClick = { })  // default
+PUButton(title = "Large",  size = PUButtonSize.Lg, onClick = { })
+
+// With icon
+PUButton(
+    title = "Connect",
+    leadingIcon = FA.wifi,
+    onClick = { }
+)
+
+// Loading state
+PUButton(title = "Saving…", isLoading = true, onClick = { })
+
+// Full width
+PUButton(
+    title = "Get Started",
+    modifier = Modifier.fillMaxWidth(),
+    onClick = { }
+)`;
 
 const props = [
   { name: 'label',        type: 'String',               required: true,       description: 'Button text label' },
@@ -114,8 +150,7 @@ export default function ButtonPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="PUButton.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUButton" />
     </div>
   );
 }

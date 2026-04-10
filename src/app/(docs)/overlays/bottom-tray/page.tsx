@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { motion, useMotionValue, animate } from 'framer-motion';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 
 // ── Figma-exact SVG icons ────────────────────────────────────
 
@@ -341,21 +341,63 @@ const trayProps = [
   { name: 'defaultExpanded', type: 'boolean',   default: 'false', description: 'Start in expanded state' },
 ];
 
-const traySwiftCode = `struct ExploreView: View {
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            MapView()
-            PUBottomTray(title: "34 WiFi nearby") {
-                ForEach(networks) { network in
-                    PUListRow(
-                        title: network.name,
-                        subtitle: network.address,
-                        trailing: Label(network.distance, systemImage: "location.fill")
-                    )
-                }
-            }
+const traySwiftCode = `// Basic usage — peek + expand over a map
+ZStack(alignment: .bottom) {
+    PUMapView()
+    PUBottomTray(title: "34 WiFi nearby") {
+        ForEach(networks) { network in
+            PUListRow(
+                title: network.name,
+                subtitle: network.address,
+                trailing: .text(network.distance)
+            )
         }
     }
+}
+
+// Dark surface variant
+PUBottomTray(title: "Nearby", dark: true) {
+    // content
+}
+
+// Custom peek and expand heights
+PUBottomTray(
+    title: "Nearby",
+    peekHeight: 200,
+    expandHeight: 500
+) {
+    // content
+}`;
+
+const trayKotlinCode = `// Basic usage — peek + expand over a map
+Box(modifier = Modifier.fillMaxSize()) {
+    PUMapView()
+    PUBottomTray(
+        title = "34 WiFi nearby",
+        modifier = Modifier.align(Alignment.BottomCenter)
+    ) {
+        networks.forEach { network ->
+            PUListRow(
+                title = network.name,
+                subtitle = network.address,
+                trailing = PUListRowTrailing.Text(network.distance)
+            )
+        }
+    }
+}
+
+// Dark surface variant
+PUBottomTray(title = "Nearby", dark = true) {
+    // content
+}
+
+// Custom peek and expand heights
+PUBottomTray(
+    title = "Nearby",
+    peekHeight = 200.dp,
+    expandHeight = 500.dp
+) {
+    // content
 }`;
 
 // ── Page ─────────────────────────────────────────────────────
@@ -403,8 +445,7 @@ export default function BottomTrayPage() {
       <h2 className="text-base font-semibold text-gray-800 mb-2">Tray Props</h2>
       <PropsTable props={trayProps} />
 
-      <h2 className="text-base font-semibold text-gray-800 mt-10 mb-2">Swift Usage</h2>
-      <CodeBlock code={traySwiftCode} title="PUBottomTray.swift" />
+      <PlatformCodeBlock swift={traySwiftCode} kotlin={trayKotlinCode} title="PUBottomTray" />
     </div>
   );
 }

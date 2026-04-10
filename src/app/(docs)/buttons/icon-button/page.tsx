@@ -4,21 +4,55 @@ import { PUIconButton } from '@/components/ui/PUIconButton';
 import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 import { faArrowLeft, faXmark, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-const swiftCode = `import SwiftUI
+const swiftCode = `// Back button — light surface (default)
+PUIconButton(variant: .light) { dismiss() }
 
-struct ContentView: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            PUIconButton(variant: .light) { }
-            PUIconButton(variant: .dark) { }
-            PUIconButton(icon: .xmark, variant: .light) { }
-        }
-        .padding()
-    }
+// Back button — dark surface
+PUIconButton(variant: .dark) { dismiss() }
+
+// Custom icon — close/dismiss
+PUIconButton(icon: FA.xmark, variant: .light) { dismiss() }
+
+// With text label — pill shape
+PUIconButton(icon: FA.plus, variant: .light, text: "Add Pass") {
+    showAddPassSheet = true
+}
+
+// Dark surface with label
+PUIconButton(icon: FA.plus, variant: .dark, text: "Add WiFi") {
+    showAddWifiSheet = true
 }`;
+
+const kotlinCode = `// Back button — light surface (default)
+PUIconButton(variant = PUIconButtonVariant.Light, onClick = { navController.popBackStack() })
+
+// Back button — dark surface
+PUIconButton(variant = PUIconButtonVariant.Dark, onClick = { navController.popBackStack() })
+
+// Custom icon — close/dismiss
+PUIconButton(
+    icon = FA.xmark,
+    variant = PUIconButtonVariant.Light,
+    onClick = { dismiss() }
+)
+
+// With text label — pill shape
+PUIconButton(
+    icon = FA.plus,
+    variant = PUIconButtonVariant.Light,
+    text = "Add Pass",
+    onClick = { showAddPassSheet = true }
+)
+
+// Disabled state
+PUIconButton(
+    variant = PUIconButtonVariant.Light,
+    enabled = false,
+    onClick = { }
+)`;
 
 const props = [
   { name: 'icon',     type: 'IconDefinition',     default: 'faArrowLeft', description: 'FA icon shown inside the button' },
@@ -85,8 +119,7 @@ export default function IconButtonPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="PUIconButton.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUIconButton" />
     </div>
   );
 }

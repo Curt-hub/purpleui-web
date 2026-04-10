@@ -3,21 +3,55 @@ import { useState } from 'react';
 import { PUBottomNav, PUBottomNavTab } from '@/components/ui/PUBottomNav';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 
-const swiftCode = `import SwiftUI
-
-struct ContentView: View {
+const swiftCode = `// Attach to your root content view
+struct RootView: View {
     @State private var activeTab: PUBottomNavTab = .explore
 
     var body: some View {
-        VStack {
-            Spacer()
+        ZStack(alignment: .bottom) {
+            // Swap screen content based on active tab
+            switch activeTab {
+            case .explore:  ExploreView()
+            case .wallet:   WalletView()
+            case .activity: ActivityView()
+            case .profile:  ProfileView()
+            }
+
             PUBottomNav(activeTab: $activeTab)
         }
         .ignoresSafeArea(edges: .bottom)
     }
-}`;
+}
+
+// Dark mode variant
+PUBottomNav(activeTab: $activeTab, dark: true)`;
+
+const kotlinCode = `// Attach to your root scaffold
+@Composable
+fun RootScreen() {
+    var activeTab by remember { mutableStateOf(PUBottomNavTab.Explore) }
+
+    Scaffold(
+        bottomBar = {
+            PUBottomNav(
+                activeTab = activeTab,
+                onTabChange = { activeTab = it }
+            )
+        }
+    ) { innerPadding ->
+        when (activeTab) {
+            PUBottomNavTab.Explore  -> ExploreScreen(Modifier.padding(innerPadding))
+            PUBottomNavTab.Wallet   -> WalletScreen(Modifier.padding(innerPadding))
+            PUBottomNavTab.Activity -> ActivityScreen(Modifier.padding(innerPadding))
+            PUBottomNavTab.Profile  -> ProfileScreen(Modifier.padding(innerPadding))
+        }
+    }
+}
+
+// Dark mode variant
+PUBottomNav(activeTab = activeTab, onTabChange = { activeTab = it }, dark = true)`;
 
 const props = [
   { name: 'activeTab',   type: 'PUBottomNavTab',                default: 'undefined', description: 'explore | wallet | activity | profile' },
@@ -113,8 +147,7 @@ export default function BottomNavPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="PUBottomNav.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUBottomNav" />
     </div>
   );
 }

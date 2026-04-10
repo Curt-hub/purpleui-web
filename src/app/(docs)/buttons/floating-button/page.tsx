@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { PUFloatingButton } from '@/components/ui/PUFloatingButton';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
-import { CodeBlock } from '@/components/docs/CodeBlock';
+import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 
 // ── Props table ───────────────────────────────────────────────
 
@@ -15,17 +15,40 @@ const props = [
   { name: 'onClick',  type: '() => void',                 default: '—',         description: 'Tap handler' },
 ];
 
-// ── Swift snippet ─────────────────────────────────────────────
+// ── Code snippets ─────────────────────────────────────────────
 
-const swiftCode = `// Icon floating button — navigate to location
+const swiftCode = `// Icon — navigate to user location
 PUFloatingButton(variant: .icon, icon: .navigate) {
     mapView.camera.animate(toLocation: userLocation)
 }
 
-// Pill floating button — add WiFi
+// Pill — labelled action
 PUFloatingButton(variant: .pill, icon: .plus, label: "Add WiFi") {
     showAddWifiSheet = true
-}`;
+}
+
+// Dark surface variants
+PUFloatingButton(variant: .icon, icon: .navigate, dark: true) { }
+PUFloatingButton(variant: .pill, icon: .plus, label: "Add WiFi", dark: true) { }`;
+
+const kotlinCode = `// Icon — navigate to user location
+PUFloatingButton(
+    variant = PUFloatingButtonVariant.Icon,
+    icon = PUFloatingButtonIcon.Navigate,
+    onClick = { mapViewModel.centerOnUser() }
+)
+
+// Pill — labelled action
+PUFloatingButton(
+    variant = PUFloatingButtonVariant.Pill,
+    icon = PUFloatingButtonIcon.Plus,
+    label = "Add WiFi",
+    onClick = { showAddWifiSheet = true }
+)
+
+// Dark surface variants
+PUFloatingButton(variant = PUFloatingButtonVariant.Icon, dark = true, onClick = { })
+PUFloatingButton(variant = PUFloatingButtonVariant.Pill, label = "Add WiFi", dark = true, onClick = { })`;
 
 // ── Phone frame map demo ──────────────────────────────────────
 
@@ -191,9 +214,7 @@ export default function FloatingButtonPage() {
       <h2 className="text-base font-semibold text-gray-800 mb-2">Props</h2>
       <PropsTable props={props} />
 
-      {/* ── Swift ── */}
-      <h2 className="text-base font-semibold text-gray-800 mt-10 mb-2">Swift Usage</h2>
-      <CodeBlock code={swiftCode} title="PUFloatingButton.swift" />
+      <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUFloatingButton" />
     </div>
   );
 }
