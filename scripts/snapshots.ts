@@ -14,16 +14,16 @@ import * as path from 'path';
 const BASE_URL = 'http://localhost:3000';
 
 const PAGES: { name: string; path: string }[] = [
-  { name: 'button',           path: '/components/button' },
-  { name: 'icon-button',      path: '/components/icon-button' },
-  { name: 'floating-button',  path: '/components/floating-button' },
-  { name: 'toast',            path: '/components/toast' },
-  { name: 'bottom-tray',      path: '/components/bottom-tray' },
-  { name: 'validation-modal', path: '/components/validation-modal' },
-  { name: 'loader',           path: '/components/loader' },
-  { name: 'search-bar',       path: '/components/search-bar' },
-  { name: 'bottom-nav',       path: '/components/bottom-nav' },
-  { name: 'map-pins',         path: '/components/map-pins' },
+  { name: 'button',           path: '/buttons/button' },
+  { name: 'icon-button',      path: '/buttons/icon-button' },
+  { name: 'floating-button',  path: '/buttons/floating-button' },
+  { name: 'toast',            path: '/overlays/toast' },
+  { name: 'bottom-tray',      path: '/overlays/bottom-tray' },
+  { name: 'validation-modal', path: '/overlays/validation-modal' },
+  { name: 'loader',           path: '/indicators/loader' },
+  { name: 'search-bar',       path: '/inputs/search-bar' },
+  { name: 'bottom-nav',       path: '/navigation/bottom-nav' },
+  { name: 'map-pins',         path: '/map/map-pins' },
 ];
 
 function sanitizeFilename(label: string): string {
@@ -32,7 +32,15 @@ function sanitizeFilename(label: string): string {
 
 async function main() {
   const browser = await chromium.launch();
-  const page = await browser.newPage();
+  const context = await browser.newContext();
+  // Bypass the simple session-cookie auth gate used by the dev server
+  await context.addCookies([{
+    name: 'purpleui-session',
+    value: 'snapshots',
+    domain: 'localhost',
+    path: '/',
+  }]);
+  const page = await context.newPage();
   await page.setViewportSize({ width: 1280, height: 900 });
 
   let total = 0;
@@ -76,6 +84,7 @@ async function main() {
     }
   }
 
+  await context.close();
   await browser.close();
   console.log(`\nDone — ${total} snapshot(s) written to public/snapshots/`);
 }

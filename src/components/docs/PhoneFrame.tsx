@@ -11,7 +11,7 @@ export function PhoneFrame({ children, label, dark = false, onToggle }: PhoneFra
   const screenBg = dark ? '#011638' : '#ffffff';
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3" data-testid="component-preview" data-label={label ?? ''}>
       {/* Light / Dark toggle — above the frame */}
       {onToggle && (
         <div
