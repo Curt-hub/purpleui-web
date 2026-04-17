@@ -1,0 +1,68 @@
+{
+  "name": "PUBottomTray",
+  "description": "Persistent tray anchored to the bottom of the screen. Drags and snaps between a peeked state and an expanded state — no backdrop, always visible. Used over the Explore map to show nearby WiFi venues.",
+  "platforms": ["web", "ios", "android"],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "required": false,
+      "description": "Header title text (e.g. '34 WiFi nearby')",
+      "platforms": { "ios": "title: String?", "android": "title: String?" }
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "Tray body content (typically a list of rows)",
+      "platforms": {
+        "ios": "content: @ViewBuilder () -> Content",
+        "android": "content: @Composable () -> Unit"
+      }
+    },
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark surface — navy background, white text",
+      "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
+    },
+    {
+      "name": "peekHeight",
+      "type": "number",
+      "default": 160,
+      "description": "Visible height in px when tray is in peeked (collapsed) state",
+      "platforms": { "ios": "peekHeight: CGFloat", "android": "peekHeight: Dp" }
+    },
+    {
+      "name": "expandHeight",
+      "type": "number",
+      "default": 460,
+      "description": "Visible height in px when tray is fully expanded",
+      "platforms": { "ios": "expandHeight: CGFloat", "android": "expandHeight: Dp" }
+    },
+    {
+      "name": "defaultExpanded",
+      "type": "boolean",
+      "default": false,
+      "description": "Start in expanded state",
+      "platforms": { "ios": "defaultExpanded: Bool", "android": "defaultExpanded: Boolean" }
+    }
+  ],
+  "behaviour": {
+    "dragSnap": "snaps to peek or expand positions based on velocity and midpoint threshold",
+    "handle": "60×5px pill at top center, greyD (#DDDDDF) on light, rgba(255,255,255,0.15) on dark",
+    "noBackdrop": true
+  },
+  "tokens": {
+    "background": {
+      "light": "colors.background (#FFFFFF)",
+      "dark": "#0a2048"
+    },
+    "shadow": "shadows.topC (0px -2px 2px rgba(0,0,0,0.10))",
+    "radius": "radius.lg (16px) on top corners only",
+    "headerTypography": "Poppins Bold 16px"
+  },
+  "docPage": "/overlays/bottom-tray",
+  "sourceFile": "src/components/ui/PUBottomTray.tsx"
+}

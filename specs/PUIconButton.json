@@ -1,0 +1,73 @@
+{
+  "name": "PUIconButton",
+  "description": "Circular navigation button used to go back or dismiss. Available in Light and Dark variants to suit both light and dark backgrounds. Can optionally render as a pill with an icon and text label.",
+  "platforms": ["web", "ios", "android"],
+  "variants": ["light", "dark"],
+  "props": [
+    {
+      "name": "icon",
+      "type": "IconDefinition",
+      "default": "faArrowLeft",
+      "description": "FontAwesome icon shown inside the button",
+      "platforms": { "ios": "icon: FA (default: FA.arrowLeft)", "android": "icon: FA (default: FA.arrowLeft)" }
+    },
+    {
+      "name": "variant",
+      "type": "\"light\" | \"dark\"",
+      "default": "light",
+      "description": "Surface variant — light for white/light backgrounds, dark for navy/dark backgrounds",
+      "platforms": {
+        "ios": "variant: PUIconButtonVariant (.light | .dark)",
+        "android": "variant: PUIconButtonVariant (Light | Dark)"
+      }
+    },
+    {
+      "name": "text",
+      "type": "string | undefined",
+      "default": "undefined",
+      "description": "Optional label — renders as a pill shape with icon + text when provided",
+      "platforms": { "ios": "text: String?", "android": "text: String?" }
+    },
+    {
+      "name": "label",
+      "type": "string | undefined",
+      "default": "undefined",
+      "description": "Accessible aria-label (web) or accessibilityLabel (native)",
+      "platforms": { "ios": "accessibilityLabel: String?", "android": "contentDescription: String?" }
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Disables interaction and dims the button",
+      "platforms": { "ios": ".disabled(true)", "android": "enabled: Boolean = false" }
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "default": "undefined",
+      "description": "Tap/click handler",
+      "platforms": { "ios": "action: () -> Void (trailing closure)", "android": "onClick: () -> Unit" }
+    }
+  ],
+  "tokens": {
+    "size": "40×40px circle (pill expands to fit text)",
+    "radius": "radius.full (9999px)",
+    "variants": {
+      "light": {
+        "background": "colors.backgroundElevated (#F7F7F8)",
+        "icon": "colors.onBackground"
+      },
+      "dark": {
+        "background": "rgba(255,255,255,0.12)",
+        "icon": "#FFFFFF"
+      }
+    }
+  },
+  "accessibility": {
+    "role": "button",
+    "notes": "provide label prop when used as a back button with no visible text"
+  },
+  "docPage": "/buttons/icon-button",
+  "sourceFile": "src/components/ui/PUIconButton.tsx"
+}

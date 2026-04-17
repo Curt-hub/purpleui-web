@@ -1,0 +1,36 @@
+{
+  "name": "Shadows",
+  "type": "foundation",
+  "description": "Named shadow tokens for elevating UI elements. All are CSS box-shadow strings — convert offset/blur/spread/color to platform equivalents.",
+  "tokenFile": "src/lib/tokens.ts",
+  "dtcgFile": "tokens.json (shadow.*)",
+  "shadows": {
+    "bottomA": {
+      "value": "0px 2px 2px 0px rgba(0,0,0,0.03)",
+      "usage": "subtle card lift, button default"
+    },
+    "bottomB": {
+      "value": "0px 2px 2px 0px rgba(0,0,0,0.06)",
+      "usage": "light card"
+    },
+    "bottomC": {
+      "value": "0px 2px 10px 0px rgba(0,0,0,0.05)",
+      "usage": "floating elements, light"
+    },
+    "bottomD": {
+      "value": "0px 2px 15px 0px rgba(0,0,0,0.10)",
+      "usage": "floating buttons, modals, heavy"
+    },
+    "topA": { "value": "0px -2px 2px 0px rgba(0,0,0,0.03)" },
+    "topB": { "value": "0px -2px 2px 0px rgba(0,0,0,0.06)" },
+    "topC": {
+      "value": "0px -2px 2px 0px rgba(0,0,0,0.10)",
+      "usage": "bottom tray top edge"
+    },
+    "topD": { "value": "0px -2px 15px 0px rgba(0,0,0,0.10)" },
+    "sideNav":     { "value": "4px 0px 15px 0px rgba(0,0,0,0.20)", "usage": "side navigation drawer" },
+    "tilesActive": { "value": "0px 10px 15px -3px rgba(0,0,0,0.10)", "usage": "selected map tile" },
+    "tilesHover":  { "value": "0px 10px 15px -3px rgba(116,88,253,0.40)", "usage": "hovered map tile (brand-tinted)" }
+  },
+  "docPage": "/foundation/shadows"
+}

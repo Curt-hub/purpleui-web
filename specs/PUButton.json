@@ -1,0 +1,112 @@
+{
+  "name": "PUButton",
+  "description": "Branded button styles to trigger actions in the user interface. All buttons use a pill shape, Poppins Bold 14px, and the Bottom A shadow.",
+  "platforms": ["web", "ios", "android"],
+  "variants": ["primary", "secondary", "secondary-dark", "destructive"],
+  "sizes": ["sm", "md", "lg", "compact"],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "required": true,
+      "description": "Button text label",
+      "platforms": { "ios": "label: String", "android": "title: String" }
+    },
+    {
+      "name": "variant",
+      "type": "\"primary\" | \"secondary\" | \"secondary-dark\" | \"destructive\"",
+      "default": "primary",
+      "description": "Visual style of the button",
+      "platforms": {
+        "ios": "variant: PUButtonVariant (.primary | .secondary | .secondaryDark | .destructive)",
+        "android": "variant: PUButtonVariant (Primary | Secondary | SecondaryDark | Destructive)"
+      }
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | \"compact\"",
+      "default": "md",
+      "description": "sm = 40pt height | md = 48pt height | lg = 56pt height",
+      "platforms": {
+        "ios": "size: PUButtonSize (.sm | .md | .lg)",
+        "android": "size: PUButtonSize (Sm | Md | Lg)"
+      }
+    },
+    {
+      "name": "icon",
+      "type": "IconDefinition | undefined",
+      "default": "undefined",
+      "description": "Optional FontAwesome icon shown before or after label",
+      "platforms": { "ios": "icon: FA? (nil)", "android": "leadingIcon / trailingIcon: FA?" }
+    },
+    {
+      "name": "iconPosition",
+      "type": "\"before\" | \"after\"",
+      "default": "after",
+      "description": "Icon placement relative to label",
+      "platforms": {
+        "ios": "iconPosition: PUButtonIconPosition (.before | .after)",
+        "android": "use leadingIcon for before, trailingIcon for after"
+      }
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "default": false,
+      "description": "Shows spinner and disables interaction",
+      "platforms": { "ios": "loading: Bool", "android": "isLoading: Boolean" }
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "default": false,
+      "description": "Expands to fill available width",
+      "platforms": { "ios": "fullWidth: Bool", "android": "modifier = Modifier.fillMaxWidth()" }
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Disables interaction",
+      "platforms": { "ios": ".disabled(true) modifier", "android": "enabled: Boolean = false" }
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "required": true,
+      "description": "Tap/click handler",
+      "platforms": { "ios": "action: () -> Void (trailing closure)", "android": "onClick: () -> Unit" }
+    }
+  ],
+  "tokens": {
+    "typography": "Poppins Bold 14px",
+    "radius": "radius.full (9999px — pill shape)",
+    "shadow": "shadows.bottomA",
+    "variants": {
+      "primary": {
+        "background": "colors.brand (#7458FD)",
+        "text": "#FFFFFF"
+      },
+      "secondary": {
+        "background": "transparent",
+        "border": "colors.onBackground",
+        "text": "colors.onBackground"
+      },
+      "secondary-dark": {
+        "background": "transparent",
+        "border": "rgba(255,255,255,0.8)",
+        "text": "#FFFFFF"
+      },
+      "destructive": {
+        "background": "colors.error (#F03A47)",
+        "text": "#FFFFFF"
+      }
+    }
+  },
+  "accessibility": {
+    "role": "button",
+    "notes": "loading state disables tap and should announce spinner to assistive technology"
+  },
+  "docPage": "/buttons/button",
+  "sourceFile": "src/components/ui/PUButton.tsx"
+}

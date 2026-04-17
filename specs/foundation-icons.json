@@ -1,0 +1,18 @@
+{
+  "name": "Icons",
+  "type": "foundation",
+  "description": "Purple UI uses Font Awesome icons throughout. Free Solid and Regular icon sets are bundled. Icons are referenced by their FA name (e.g. faArrowRight, faXmark).",
+  "library": "Font Awesome",
+  "packages": {
+    "web": ["@fortawesome/fontawesome-svg-core", "@fortawesome/free-solid-svg-icons", "@fortawesome/free-regular-svg-icons", "@fortawesome/react-fontawesome"],
+    "ios": "FontAwesome Swift package or icon PNG assets",
+    "android": "FontAwesome Android library or icon drawable assets"
+  },
+  "usage": {
+    "web": "import { faArrowRight } from '@fortawesome/free-solid-svg-icons'; <FontAwesomeIcon icon={faArrowRight} />",
+    "ios": "FA.arrowRight (PUButton/PUIconButton accept icon: IconDefinition via FA namespace)",
+    "android": "FA.arrowRight (same naming convention)"
+  },
+  "colourRule": "Icon colour always inherits from the parent component token — never hardcode icon colours",
+  "docPage": "/foundation/icons"
+}

@@ -1,0 +1,73 @@
+{
+  "name": "PUSearchBar",
+  "description": "Pill-shaped search input that floats above the map. Search icon on the left, purple filter button on the right. Light and dark surface variants.",
+  "platforms": ["web", "ios", "android"],
+  "variants": ["light", "dark"],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "required": true,
+      "description": "Controlled input value",
+      "platforms": {
+        "ios": "text: Binding<String> ($query)",
+        "android": "value: String"
+      }
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "required": true,
+      "description": "Value change handler",
+      "platforms": {
+        "ios": "handled by Binding",
+        "android": "onValueChange: (String) -> Unit"
+      }
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "default": "Search networks…",
+      "description": "Input placeholder text",
+      "platforms": { "ios": "placeholder: String", "android": "placeholder: String" }
+    },
+    {
+      "name": "onFilterPress",
+      "type": "() => void",
+      "default": "undefined",
+      "description": "Filter button tap handler — omit to hide filter button",
+      "platforms": { "ios": "onFilterTap: (() -> Void)?", "android": "onFilterPress: (() -> Unit)?" }
+    },
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark surface variant — navy background, white text, white search icon",
+      "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
+    }
+  ],
+  "tokens": {
+    "height": "48px",
+    "radius": "radius.full (9999px — pill shape)",
+    "variants": {
+      "light": {
+        "background": "#FFFFFF",
+        "shadow": "shadows.bottomD",
+        "searchIcon": "colors.onBackgroundTertiary (#AAACB0)",
+        "filterButton": "colors.brand (#7458FD)"
+      },
+      "dark": {
+        "background": "colors.backgroundNavy (#011638)",
+        "border": "rgba(255,255,255,0.1)",
+        "searchIcon": "rgba(255,255,255,0.4)",
+        "filterButton": "colors.brand (#7458FD)"
+      }
+    }
+  },
+  "accessibility": {
+    "role": "searchbox",
+    "notes": "filter button should have accessibilityLabel 'Filter'"
+  },
+  "docPage": "/inputs/search-bar",
+  "sourceFile": "src/components/ui/PUSearchBar.tsx"
+}

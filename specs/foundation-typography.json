@@ -1,0 +1,23 @@
+{
+  "name": "Typography",
+  "type": "foundation",
+  "description": "All text in Purple UI uses Poppins. Five named sizes and two weights. Font must be bundled manually on iOS (not a system font).",
+  "tokenFile": "src/lib/tokens.ts",
+  "dtcgFile": "tokens.json (typography.*)",
+  "fontFamily": "Poppins",
+  "sizes": {
+    "supporting": { "rem": "0.75rem", "px": 12, "usage": "captions, secondary labels" },
+    "body":       { "rem": "0.875rem", "px": 14, "usage": "primary body text, button labels" },
+    "section":    { "rem": "1.125rem", "px": 18, "usage": "section headings" },
+    "title":      { "rem": "1.375rem", "px": 22, "usage": "screen/card titles" },
+    "hero":       { "rem": "2.5rem",   "px": 40, "usage": "landing/hero headings" }
+  },
+  "weights": {
+    "regular": 400,
+    "bold":    700
+  },
+  "nativeSizes": {
+    "note": "px values map 1:1 to pt on native (12px → 12pt, 14px → 14pt)"
+  },
+  "docPage": "/foundation/typography"
+}

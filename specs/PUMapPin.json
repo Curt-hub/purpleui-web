@@ -1,0 +1,61 @@
+{
+  "name": "PUMapPin",
+  "description": "Two pin types used on the Explore map. Tap to select — selected pins spring up and turn primary purple. Tap again to deselect.",
+  "platforms": ["web", "ios"],
+  "variants": ["teardrop", "dot"],
+  "props": [
+    {
+      "name": "variant",
+      "type": "\"teardrop\" | \"dot\"",
+      "default": "teardrop",
+      "description": "Pin shape — teardrop (46×62px) for WiFi hotspots, dot (30×30px) for secondary points of interest",
+      "platforms": {
+        "ios": "variant: PUMapPinVariant (.teardrop | .dot)",
+        "android": "N/A — see iOS only"
+      }
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "default": false,
+      "description": "Selected state — turns pin primary purple and springs up with a lift animation",
+      "platforms": { "ios": "selected: Bool" }
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "default": "undefined",
+      "description": "Tap handler — enables pointer cursor on web",
+      "platforms": { "ios": ".onTapGesture { }" }
+    },
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark surface — adjusts spot shadow from black to white tint",
+      "platforms": { "ios": "dark: Bool" }
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "default": "#045DEC",
+      "description": "Override fill colour for unselected state. Selected state always uses colors.brand (#7458FD) regardless of this prop.",
+      "platforms": { "ios": "color: Color?" }
+    }
+  ],
+  "tokens": {
+    "selectedColor": "colors.brand (#7458FD)",
+    "defaultColor": "#045DEC (colors.info)",
+    "sizes": {
+      "teardrop": "46×62px",
+      "dot": "30×30px"
+    }
+  },
+  "behaviour": {
+    "selectAnimation": "spring scale + translateY(-8px) on selection",
+    "multiSelect": false,
+    "notes": "manage selected state externally — pin is a controlled component"
+  },
+  "docPage": "/map/map-pins",
+  "sourceFile": "src/components/ui/PUMapPin.tsx"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Illustrations",
+  "type": "foundation",
+  "description": "Brand illustrations used in empty states and onboarding. Stored as static assets in /public/illustrations/.",
+  "assetDirectory": "public/illustrations/",
+  "format": "PNG and/or SVG",
+  "usage": {
+    "web": "<img src='/illustrations/{name}.png' />",
+    "ios": "UIImage(named: '{name}') or SwiftUI Image('{name}')",
+    "android": "R.drawable.{name}"
+  },
+  "docPage": "/foundation/illustrations"
+}

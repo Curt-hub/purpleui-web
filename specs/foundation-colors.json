@@ -1,0 +1,30 @@
+{
+  "name": "Colors",
+  "type": "foundation",
+  "description": "Two-tier colour system. Tier 1 (palette) holds raw hex values — never reference these in components. Tier 2 (semantic tokens) provides role-based names that components use.",
+  "tokenFile": "src/lib/tokens.ts",
+  "dtcgFile": "tokens.json",
+  "tiers": {
+    "palette": {
+      "note": "Internal only. Exported only to tokens.json for reference. Do not import palette in components.",
+      "colors": ["purple", "navy", "cream", "black", "offBlack", "greyA", "greyB", "greyC", "greyD", "greyE", "greyF", "white", "green", "red", "blue", "yellow"]
+    },
+    "semantic": {
+      "note": "Import from src/lib/tokens.ts as: import { colors } from '@/lib/tokens'",
+      "groups": {
+        "brand": ["brand", "brandSubtle"],
+        "background": ["background", "backgroundElevated", "backgroundSunken", "backgroundNavy", "backgroundAlt"],
+        "text": ["onBackground", "onBackgroundSecondary", "onBackgroundTertiary"],
+        "border": ["outline", "outlineSubtle"],
+        "status": ["success", "successSubtle", "successStrong", "error", "errorSubtle", "warning", "warningSubtle", "info", "infoSubtle"],
+        "vendor": ["vendorBrown", "vendorForest", "vendorRed", "vendorAmber"]
+      }
+    }
+  },
+  "darkMode": {
+    "strategy": "swap semantic token values — the token names stay the same",
+    "mappings": "documented as inline comments in tokens.ts and as $description fields in tokens.json",
+    "invariantTokens": ["brand", "backgroundNavy", "backgroundAlt", "success", "error", "info", "loaderTrack"]
+  },
+  "docPage": "/foundation/colors"
+}

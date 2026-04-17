@@ -1,0 +1,75 @@
+{
+  "name": "PUFloatingButton",
+  "description": "Contextual action buttons that float above the map. Two variants: a circular icon button for single actions (e.g. navigate to location) and a pill button for labelled actions (e.g. Add WiFi).",
+  "platforms": ["web", "ios", "android"],
+  "variants": ["icon", "pill"],
+  "icons": ["navigate", "plus"],
+  "props": [
+    {
+      "name": "variant",
+      "type": "\"icon\" | \"pill\"",
+      "required": true,
+      "description": "icon = 56×56px circle | pill = icon + label side by side",
+      "platforms": {
+        "ios": "variant: PUFloatingButtonVariant (.icon | .pill)",
+        "android": "variant: PUFloatingButtonVariant (Icon | Pill)"
+      }
+    },
+    {
+      "name": "icon",
+      "type": "\"navigate\" | \"plus\"",
+      "required": true,
+      "description": "Icon to display inside the button",
+      "platforms": {
+        "ios": "icon: PUFloatingButtonIcon (.navigate | .plus)",
+        "android": "icon: PUFloatingButtonIcon (Navigate | Plus)"
+      }
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "required": false,
+      "description": "Text label shown beside the icon (pill variant only). Also used as accessibilityLabel on icon variant.",
+      "platforms": { "ios": "label: String?", "android": "label: String?" }
+    },
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark surface — switches to navy background with subtle border",
+      "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "required": true,
+      "description": "Tap/click handler",
+      "platforms": { "ios": "action: () -> Void (trailing closure)", "android": "onClick: () -> Unit" }
+    }
+  ],
+  "tokens": {
+    "size": {
+      "icon": "56×56px circle",
+      "pill": "56px height, auto-width to fit icon + label"
+    },
+    "radius": "radius.full (9999px)",
+    "shadow": "shadows.bottomD",
+    "variants": {
+      "light": {
+        "background": "#FFFFFF",
+        "icon": "colors.brand"
+      },
+      "dark": {
+        "background": "rgba(255,255,255,0.12)",
+        "border": "rgba(255,255,255,0.15)",
+        "icon": "#FFFFFF"
+      }
+    }
+  },
+  "accessibility": {
+    "role": "button",
+    "notes": "icon variant requires label prop for accessibility even though label is not visually rendered"
+  },
+  "docPage": "/buttons/floating-button",
+  "sourceFile": "src/components/ui/PUFloatingButton.tsx"
+}

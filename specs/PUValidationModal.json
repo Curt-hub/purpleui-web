@@ -1,0 +1,102 @@
+{
+  "name": "PUValidationModal",
+  "description": "Centered confirmation dialog with a blurred backdrop and spring scale-in animation. Stacked pill buttons — confirm action on top, cancel below. Three semantic variants for different action severities.",
+  "platforms": ["web", "ios", "android"],
+  "variants": ["info", "warning", "destructive"],
+  "aliases": ["PUAlertModal"],
+  "props": [
+    {
+      "name": "isPresented",
+      "type": "boolean",
+      "required": true,
+      "description": "Controls modal visibility",
+      "platforms": {
+        "web": "isOpen: boolean",
+        "ios": "isPresented: Binding<Bool>",
+        "android": "isVisible: Boolean"
+      }
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "required": true,
+      "description": "Modal heading",
+      "platforms": { "ios": "title: String", "android": "title: String" }
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "required": true,
+      "description": "Descriptive body text",
+      "platforms": { "ios": "message: String", "android": "message: String" }
+    },
+    {
+      "name": "confirmLabel",
+      "type": "string",
+      "default": "Confirm",
+      "description": "Confirm/action button label",
+      "platforms": { "ios": "confirmLabel: String", "android": "confirmLabel: String" }
+    },
+    {
+      "name": "cancelLabel",
+      "type": "string",
+      "default": "Cancel",
+      "description": "Cancel button label",
+      "platforms": { "ios": "cancelLabel: String", "android": "cancelLabel: String" }
+    },
+    {
+      "name": "variant",
+      "type": "\"info\" | \"warning\" | \"destructive\"",
+      "default": "info",
+      "description": "Determines confirm button colour",
+      "platforms": {
+        "ios": "variant: PUAlertModalVariant (.info | .warning | .destructive)",
+        "android": "variant: PUAlertModalVariant (Info | Warning | Destructive)"
+      }
+    },
+    {
+      "name": "onConfirm",
+      "type": "() => void",
+      "required": true,
+      "description": "Confirm button action",
+      "platforms": { "ios": "onConfirm: () -> Void", "android": "onConfirm: () -> Unit" }
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "required": true,
+      "description": "Called when modal is dismissed (cancel or backdrop tap)",
+      "platforms": {
+        "ios": "handled by isPresented binding",
+        "android": "onDismiss: () -> Unit"
+      }
+    }
+  ],
+  "behaviour": {
+    "backdrop": "blurred overlay (blur(5px)), tapping dismisses modal",
+    "animation": "spring scale-in from 0.85 to 1.0",
+    "buttonLayout": "stacked vertically — confirm on top, cancel below"
+  },
+  "tokens": {
+    "card": {
+      "background": { "light": "#FFFFFF", "dark": "#0a2048" },
+      "border": { "light": "colors.outlineSubtle", "dark": "rgba(255,255,255,0.1)" },
+      "radius": "radius.md (12px)",
+      "padding": "30px 20px"
+    },
+    "confirmButton": {
+      "info":        { "background": "colors.brand (#7458FD)" },
+      "warning":     { "background": "colors.warning (#E9D502)" },
+      "destructive": { "background": "colors.error (#F03A47)" }
+    },
+    "cancelButton": {
+      "border": { "light": "colors.onBackground", "dark": "rgba(255,255,255,0.2)" }
+    }
+  },
+  "accessibility": {
+    "role": "alertdialog",
+    "notes": "focus trapped within modal while open"
+  },
+  "docPage": "/overlays/validation-modal",
+  "sourceFile": "src/components/ui/PUAlertModal.tsx"
+}

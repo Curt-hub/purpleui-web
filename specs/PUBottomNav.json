@@ -1,0 +1,64 @@
+{
+  "name": "PUBottomNav",
+  "description": "Fixed navigation bar at the bottom of every screen. Four tabs: Explore, Wallet, Activity, Profile. Light and dark variants.",
+  "platforms": ["web", "ios", "android"],
+  "tabs": ["explore", "wallet", "activity", "profile"],
+  "props": [
+    {
+      "name": "activeTab",
+      "type": "\"explore\" | \"wallet\" | \"activity\" | \"profile\" | undefined",
+      "default": "undefined",
+      "description": "Currently active tab — all tabs render unselected if undefined",
+      "platforms": {
+        "ios": "activeTab: Binding<PUBottomNavTab> ($activeTab)",
+        "android": "activeTab: PUBottomNavTab, onTabChange: (PUBottomNavTab) -> Unit"
+      }
+    },
+    {
+      "name": "onTabChange",
+      "type": "(tab: string) => void",
+      "default": "undefined",
+      "description": "Called when a tab is tapped",
+      "platforms": {
+        "ios": "handled by Binding<PUBottomNavTab>",
+        "android": "onTabChange: (PUBottomNavTab) -> Unit"
+      }
+    },
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark mode — navy background",
+      "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
+    }
+  ],
+  "tokens": {
+    "height": "65px (plus safe area bottom inset on native)",
+    "background": {
+      "light": "colors.background (#FFFFFF)",
+      "dark": "colors.backgroundNavy (#011638)"
+    },
+    "border": {
+      "light": "colors.outlineSubtle (#EFF0F0) top",
+      "dark": "rgba(255,255,255,0.08) top"
+    },
+    "activeTab": {
+      "icon": "colors.brand (#7458FD)",
+      "label": "colors.brand (#7458FD)"
+    },
+    "inactiveTab": {
+      "icon": "colors.onBackgroundTertiary (#AAACB0)",
+      "label": "colors.onBackgroundTertiary (#AAACB0)"
+    }
+  },
+  "usage": {
+    "ios": "Place in a ZStack(alignment: .bottom) with .ignoresSafeArea(edges: .bottom)",
+    "android": "Place in Scaffold bottomBar parameter"
+  },
+  "accessibility": {
+    "role": "tabbar",
+    "notes": "each tab item should announce its label and selected state"
+  },
+  "docPage": "/navigation/bottom-nav",
+  "sourceFile": "src/components/ui/PUBottomNav.tsx"
+}

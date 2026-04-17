@@ -1,0 +1,72 @@
+{
+  "name": "PUToast",
+  "description": "Ephemeral notification pill anchored to the top of the screen. Auto-dismisses after 2.5 seconds. Five semantic variants, each available with or without a leading icon.",
+  "platforms": ["web", "ios", "android"],
+  "variants": ["success", "info", "warning", "error", "offline"],
+  "props": [
+    {
+      "name": "isPresented",
+      "type": "boolean",
+      "required": true,
+      "description": "Controls toast visibility",
+      "platforms": {
+        "web": "visible: boolean",
+        "ios": "isPresented: Binding<Bool> (view modifier: .puToast(isPresented: $show, ...))",
+        "android": "isVisible: Boolean (wraps content: PUToastHost)"
+      }
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "required": true,
+      "description": "Toast message text",
+      "platforms": { "ios": "message: String", "android": "message: String" }
+    },
+    {
+      "name": "variant",
+      "type": "\"success\" | \"error\" | \"warning\" | \"info\" | \"offline\"",
+      "default": "success",
+      "description": "Semantic colour variant",
+      "platforms": {
+        "ios": "style: PUToastStyle (.success | .error | .warning | .info | .offline)",
+        "android": "style: PUToastStyle (Success | Error | Warning | Info | Offline)"
+      }
+    },
+    {
+      "name": "showIcon",
+      "type": "boolean",
+      "default": true,
+      "description": "Show leading icon",
+      "platforms": { "ios": "showIcon: Bool", "android": "showIcon: Boolean" }
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "default": "undefined",
+      "description": "Called when toast is dismissed (auto or manual)",
+      "platforms": { "ios": "handled by .puToast modifier automatically", "android": "onDismiss: () -> Unit" }
+    }
+  ],
+  "behaviour": {
+    "autoDismiss": "2500ms",
+    "position": "anchored to screen top, horizontally centered",
+    "animation": "slide in from top, fade out"
+  },
+  "tokens": {
+    "radius": "radius.full (9999px — pill shape)",
+    "typography": "Poppins Bold 12px",
+    "variants": {
+      "success":  { "background": "colors.success (#16C172)", "text": "#FFFFFF" },
+      "info":     { "background": "colors.info (#045DEC)",    "text": "#FFFFFF" },
+      "warning":  { "background": "colors.warning (#E9D502)", "text": "colors.onBackground" },
+      "error":    { "background": "colors.error (#F03A47)",   "text": "#FFFFFF" },
+      "offline":  { "background": "colors.onBackground",      "text": "colors.background" }
+    }
+  },
+  "accessibility": {
+    "role": "alert",
+    "notes": "announced immediately on appearance by assistive technology"
+  },
+  "docPage": "/overlays/toast",
+  "sourceFile": "src/components/ui/PUToast.tsx"
+}

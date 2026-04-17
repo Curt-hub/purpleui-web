@@ -1,0 +1,60 @@
+{
+  "name": "PUMapbox",
+  "description": "Interactive Mapbox map powering the Explore screen. Supports light and dark styles, pan, zoom, and gesture controls. On web built on react-map-gl; on iOS built on MapboxMaps SDK.",
+  "platforms": ["web", "ios"],
+  "props": [
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Switches between Mapbox streets-v12 (light) and dark-v11 styles",
+      "platforms": {
+        "ios": "isDark: Bool (controls styleURI: .light | .dark)",
+        "android": "N/A — use MapboxMaps Android SDK directly"
+      }
+    },
+    {
+      "name": "longitude",
+      "type": "number",
+      "default": -0.1276,
+      "description": "Initial map centre longitude",
+      "platforms": { "ios": "centre: CLLocationCoordinate2D longitude" }
+    },
+    {
+      "name": "latitude",
+      "type": "number",
+      "default": 51.5074,
+      "description": "Initial map centre latitude (default: London)",
+      "platforms": { "ios": "centre: CLLocationCoordinate2D latitude" }
+    },
+    {
+      "name": "zoom",
+      "type": "number",
+      "default": 13,
+      "description": "Initial zoom level",
+      "platforms": { "ios": "zoom: CGFloat" }
+    },
+    {
+      "name": "style",
+      "type": "CSSProperties",
+      "default": "undefined",
+      "description": "Additional CSS styles applied to the map container (web only)",
+      "platforms": { "ios": "N/A — use frame() modifier" }
+    }
+  ],
+  "mapboxStyles": {
+    "light": "mapbox://styles/mapbox/streets-v12",
+    "dark": "mapbox://styles/mapbox/dark-v11"
+  },
+  "defaultCamera": {
+    "latitude": 51.5074,
+    "longitude": -0.1276,
+    "zoom": 13
+  },
+  "dependencies": {
+    "web": "react-map-gl ^8 + mapbox-gl ^3",
+    "ios": "MapboxMaps SDK (import MapboxMaps)"
+  },
+  "docPage": "/map/mapbox",
+  "sourceFile": "src/components/ui/PUMap.tsx"
+}

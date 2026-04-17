@@ -1,0 +1,40 @@
+{
+  "name": "PULoader",
+  "description": "Spinning activity indicator used to signal background work. Light and Dark variants suit any surface. Not a standalone loading screen — compose with a background view.",
+  "platforms": ["web", "ios", "android"],
+  "variants": ["light", "dark"],
+  "props": [
+    {
+      "name": "variant",
+      "type": "\"light\" | \"dark\"",
+      "default": "light",
+      "description": "light = purple spinner for white/light surfaces | dark = white spinner for navy/dark surfaces",
+      "platforms": {
+        "ios": "variant: PULoaderVariant (.light | .dark)",
+        "android": "variant: PULoaderVariant (Light | Dark)"
+      }
+    }
+  ],
+  "tokens": {
+    "variants": {
+      "light": {
+        "color": "colors.brand (#7458FD)",
+        "track": "colors.loaderTrack (#DDDDDF)"
+      },
+      "dark": {
+        "color": "#FFFFFF",
+        "track": "rgba(255,255,255,0.2)"
+      }
+    }
+  },
+  "usage": [
+    "Full-screen loading: center in a ZStack/Box over the page background",
+    "Inline loading: PUButton has a built-in loading prop — prefer that over composing PULoader manually"
+  ],
+  "accessibility": {
+    "role": "progressbar",
+    "notes": "announce 'Loading' via accessibilityLabel when displayed as a full-screen state"
+  },
+  "docPage": "/indicators/loader",
+  "sourceFile": "src/components/ui/PULoader.tsx"
+}

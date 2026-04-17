@@ -1,0 +1,135 @@
+{
+  "$schema": "Purple UI component registry — enumerate all components and foundations without reading every spec file",
+  "components": [
+    {
+      "name": "PUButton",
+      "spec": "specs/PUButton.json",
+      "docPage": "/buttons/button",
+      "platforms": ["web", "ios", "android"],
+      "category": "buttons"
+    },
+    {
+      "name": "PUIconButton",
+      "spec": "specs/PUIconButton.json",
+      "docPage": "/buttons/icon-button",
+      "platforms": ["web", "ios", "android"],
+      "category": "buttons"
+    },
+    {
+      "name": "PUFloatingButton",
+      "spec": "specs/PUFloatingButton.json",
+      "docPage": "/buttons/floating-button",
+      "platforms": ["web", "ios", "android"],
+      "category": "buttons"
+    },
+    {
+      "name": "PUToast",
+      "spec": "specs/PUToast.json",
+      "docPage": "/overlays/toast",
+      "platforms": ["web", "ios", "android"],
+      "category": "overlays"
+    },
+    {
+      "name": "PUBottomTray",
+      "spec": "specs/PUBottomTray.json",
+      "docPage": "/overlays/bottom-tray",
+      "platforms": ["web", "ios", "android"],
+      "category": "overlays"
+    },
+    {
+      "name": "PUValidationModal",
+      "spec": "specs/PUValidationModal.json",
+      "docPage": "/overlays/validation-modal",
+      "platforms": ["web", "ios", "android"],
+      "category": "overlays",
+      "aliases": ["PUAlertModal"]
+    },
+    {
+      "name": "PULoader",
+      "spec": "specs/PULoader.json",
+      "docPage": "/indicators/loader",
+      "platforms": ["web", "ios", "android"],
+      "category": "indicators"
+    },
+    {
+      "name": "PUSearchBar",
+      "spec": "specs/PUSearchBar.json",
+      "docPage": "/inputs/search-bar",
+      "platforms": ["web", "ios", "android"],
+      "category": "inputs"
+    },
+    {
+      "name": "PUBottomNav",
+      "spec": "specs/PUBottomNav.json",
+      "docPage": "/navigation/bottom-nav",
+      "platforms": ["web", "ios", "android"],
+      "category": "navigation"
+    },
+    {
+      "name": "PUMapbox",
+      "spec": "specs/PUMapbox.json",
+      "docPage": "/map/mapbox",
+      "platforms": ["web", "ios"],
+      "category": "map"
+    },
+    {
+      "name": "PUMapPin",
+      "spec": "specs/PUMapPin.json",
+      "docPage": "/map/map-pins",
+      "platforms": ["web", "ios"],
+      "category": "map"
+    }
+  ],
+  "foundations": [
+    {
+      "name": "Colors",
+      "spec": "specs/foundation-colors.json",
+      "tokenFile": "src/lib/tokens.ts",
+      "dtcgFile": "tokens.json",
+      "docPage": "/foundation/colors"
+    },
+    {
+      "name": "Typography",
+      "spec": "specs/foundation-typography.json",
+      "tokenFile": "src/lib/tokens.ts",
+      "dtcgFile": "tokens.json",
+      "docPage": "/foundation/typography"
+    },
+    {
+      "name": "Spacing",
+      "spec": "specs/foundation-spacing.json",
+      "tokenFile": "src/lib/tokens.ts",
+      "dtcgFile": "tokens.json",
+      "docPage": "/foundation/spacing"
+    },
+    {
+      "name": "Shadows",
+      "spec": "specs/foundation-shadows.json",
+      "tokenFile": "src/lib/tokens.ts",
+      "dtcgFile": "tokens.json",
+      "docPage": "/foundation/shadows"
+    },
+    {
+      "name": "Icons",
+      "spec": "specs/foundation-icons.json",
+      "docPage": "/foundation/icons"
+    },
+    {
+      "name": "Illustrations",
+      "spec": "specs/foundation-illustrations.json",
+      "assetDirectory": "public/illustrations/",
+      "docPage": "/foundation/illustrations"
+    },
+    {
+      "name": "Logos",
+      "spec": "specs/foundation-logos.json",
+      "assetDirectory": "public/logo/",
+      "docPage": "/foundation/logos"
+    }
+  ],
+  "tokens": {
+    "source": "src/lib/tokens.ts",
+    "dtcg": "tokens.json",
+    "regenerate": "npm run export-tokens"
+  }
+}
