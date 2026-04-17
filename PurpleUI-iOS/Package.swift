@@ -4,7 +4,8 @@ import PackageDescription
 let package = Package(
     name: "PurpleUI",
     platforms: [
-        .iOS(.v16)
+        .iOS(.v16),
+        .macOS(.v13)
     ],
     products: [
         .library(name: "PurpleUI", targets: ["PurpleUI"])

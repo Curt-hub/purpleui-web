@@ -7,9 +7,19 @@ This file tells you where everything lives and how to consume it.
 
 ## What's in this repo
 
-This is the **documentation site** for Purple UI — a Next.js app that renders component previews
-and platform-specific code examples. It is not a published npm/Swift/Kotlin package; the native
-APIs are documented here until a distributable package ships.
+| Path | What it is |
+|------|------------|
+| `src/` | Next.js documentation site (component previews + code examples) |
+| `tokens.json` | DTCG-format token export — consumable without a JS runtime |
+| `specs/` | Machine-readable JSON spec per component + `index.json` registry |
+| `PurpleUI-iOS/` | Swift Package (swift-tools-version 5.9, iOS 16+, macOS 13+) |
+| `PurpleUI-Android/` | Gradle library module (minSdk 26, Compose BOM 2024.05) |
+| `public/snapshots/` | Per-state PNG screenshots of every component (generated) |
+| `examples/ios/` | SwiftUI composition examples (Explore + Root screens) |
+| `examples/android/` | Compose composition examples (Explore + Root screens) |
+
+Key constraint: **all colours and spacing in components reference semantic token names, never
+raw hex values.** Always map hex colours you see in designs back to a token before using them.
 
 Key constraint: **all colours and spacing in components reference semantic token names, never
 raw hex values.** Always map hex colours you see in designs back to a token before using them.
@@ -101,24 +111,54 @@ string literals passed to `<PlatformCodeBlock swift={...} kotlin={...} />`.
 
 ---
 
-## How to consume — iOS
+## How to consume — iOS (Swift Package)
 
-The Swift APIs shown in docs are SwiftUI components with a `PU` prefix. Until a Swift Package
-ships, hand-implement each component once using:
+The Swift Package lives at `PurpleUI-iOS/`. Add it to Xcode via File → Add Package Dependencies
+(local path). Requires adding Poppins and FontAwesome 5 Free fonts to the app target — see
+`PurpleUI-iOS/` for setup instructions.
 
-1. Token values from `tokens.json` (or `src/lib/tokens.ts`)
-2. The prop contract from `specs/{ComponentName}.json`
-3. The Swift code sample from the component's doc page as the reference signature
+```swift
+import PurpleUI
 
-Typography: Poppins (must be bundled manually). All sizes are in `pt` matching the `rem`
-values in tokens (12px → 12pt, 14px → 14pt, etc.)
+PUButton("Get started") { }
+PUSearchBar(text: $query, placeholder: "Search…")
+PUBottomNav(activeTab: $activeTab)
+```
+
+**Verify the build:**
+```bash
+cd PurpleUI-iOS && swift build
+```
+
+Token files: `PurpleUI-iOS/Sources/PurpleUI/Tokens/`
+Component files: `PurpleUI-iOS/Sources/PurpleUI/Components/`
+Example composition: `examples/ios/`
 
 ---
 
-## How to consume — Android
+## How to consume — Android (Gradle module)
 
-Same pattern as iOS. Kotlin APIs use `PUButtonVariant.Primary` enum style instead of
-Swift dot-syntax. Spacing and size values are the same pixel values from tokens, expressed as `dp`.
+The Gradle module lives at `PurpleUI-Android/`. Include `:purpleui` in your project's
+`settings.gradle.kts` and add `implementation(project(":purpleui"))` to your app module.
+Requires Poppins and FontAwesome 5 Free fonts in your app's `res/font/` — see
+`PurpleUI-Android/README.md` for setup instructions.
+
+```kotlin
+import ai.purple.purpleui.components.*
+
+PUButton("Get started") { }
+PUSearchBar(value = query, onValueChange = { query = it })
+PUBottomNav(activeTab = activeTab) { activeTab = it }
+```
+
+**Verify the build:**
+```bash
+cd PurpleUI-Android && ./gradlew :purpleui:compileDebugKotlin
+```
+
+Token files: `PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/tokens/`
+Component files: `PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/`
+Example composition: `examples/android/`
 
 ---
 
@@ -134,7 +174,20 @@ Tailwind classes in this project map to semantic tokens (see `tailwind.config.ts
 
 ---
 
+## Snapshots
+
+Per-state PNG screenshots of every component live in `public/snapshots/{ComponentName}/{label}.png`.
+Regenerate after UI changes:
+
+```bash
+npm run dev          # terminal 1 — must be running on port 3000
+npm run snapshots    # terminal 2 — writes PNGs to public/snapshots/
+```
+
+---
+
 ## Specs index
 
-`specs/index.json` — lists every component with name, spec file path, and supported platforms.
+`specs/index.json` — lists every component with name, spec file path, supported platforms,
+and pointers to the native package paths and snapshot directory.
 Use this to enumerate the design system without reading every file.

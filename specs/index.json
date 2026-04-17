@@ -131,5 +131,34 @@
     "source": "src/lib/tokens.ts",
     "dtcg": "tokens.json",
     "regenerate": "npm run export-tokens"
+  },
+  "nativePackages": {
+    "ios": {
+      "path": "PurpleUI-iOS/",
+      "type": "SwiftPackage",
+      "swiftToolsVersion": "5.9",
+      "platforms": ["iOS 16+", "macOS 13+"],
+      "entryPoint": "PurpleUI-iOS/Sources/PurpleUI/",
+      "build": "cd PurpleUI-iOS && swift build"
+    },
+    "android": {
+      "path": "PurpleUI-Android/",
+      "type": "GradleModule",
+      "namespace": "ai.purple.purpleui",
+      "minSdk": 26,
+      "composeBom": "2024.05.00",
+      "entryPoint": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/",
+      "build": "cd PurpleUI-Android && ./gradlew :purpleui:compileDebugKotlin"
+    }
+  },
+  "snapshots": {
+    "directory": "public/snapshots/",
+    "generate": "npm run snapshots",
+    "requires": "npm run dev  # dev server must be running on port 3000",
+    "selector": "[data-testid='component-preview']"
+  },
+  "examples": {
+    "ios": "examples/ios/",
+    "android": "examples/android/"
   }
 }

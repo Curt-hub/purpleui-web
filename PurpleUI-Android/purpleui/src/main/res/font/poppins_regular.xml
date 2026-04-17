@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Placeholder for Poppins Regular.
+    Replace with poppins_regular.ttf from https://fonts.google.com/specimen/Poppins
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+</font-family>

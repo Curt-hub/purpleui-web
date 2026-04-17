@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Placeholder for FontAwesome 5 Free Solid.
+    Replace this file with fa_solid.ttf (rename extension to .ttf) downloaded from
+    https://fontawesome.com/download — use "Free for Web" → otf/ttf package.
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+</font-family>
