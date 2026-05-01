@@ -54,6 +54,14 @@ const InputsIcon = () => (
   </svg>
 );
 
+const PassesIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <rect x="1.5" y="4.5" width="13" height="8" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+    <path d="M4.5 8h4M4.5 10.5h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+    <circle cx="11.5" cy="9.25" r="1.25" stroke="currentColor" strokeWidth="1.2"/>
+  </svg>
+);
+
 // ── Foundation per-item icons ───────────────────────────────
 
 const ColorsIcon = () => (
@@ -141,6 +149,14 @@ const nav = [
     sectionIcon: <InputsIcon />,
     items: [
       { label: 'Search Bar', href: '/inputs/search-bar', icon: <InputsIcon /> },
+    ],
+  },
+  {
+    section: 'Passes',
+    sectionIcon: <PassesIcon />,
+    items: [
+      { label: 'Pass Card',    href: '/passes/pass-card',    icon: <PassesIcon /> },
+      { label: 'Wallet Stack', href: '/passes/wallet-stack', icon: <PassesIcon /> },
     ],
   },
   {

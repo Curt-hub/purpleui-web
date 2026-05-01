@@ -1,0 +1,33 @@
+{
+  "$schema": "Purple UI component spec",
+  "name": "PUPassCard",
+  "category": "passes",
+  "description": "Branded WiFi pass card with a 2:1 aspect ratio. Supports a holographic 3D-tilt + rainbow shimmer effect on focus (holo prop), stacked-depth dimming for Apple Wallet-style layering, and an optional amber warning badge. Typically rendered inside PUWalletStack.",
+  "platforms": ["web"],
+  "docPage": "/passes/pass-card",
+  "props": [
+    { "name": "title",           "type": "string",          "required": true,                      "description": "Pass name displayed on the card" },
+    { "name": "backgroundColor", "type": "string",          "default": "colors.brand (#7458FD)",   "description": "Solid background colour or gradient start colour" },
+    { "name": "gradientTo",      "type": "string",          "default": "undefined",                "description": "Gradient end colour — rendered as a 135° linear gradient" },
+    { "name": "logoSrc",         "type": "string",          "default": "undefined",                "description": "URL or path for a logo image rendered bottom-left" },
+    { "name": "badgeSrc",        "type": "string",          "default": "undefined",                "description": "URL or path for a badge image rendered bottom-right" },
+    { "name": "holo",            "type": "boolean",         "default": "false",                    "description": "Enables holographic 3D tilt (±8°) and rainbow shimmer on mouse move" },
+    { "name": "stackDepth",      "type": "number",          "default": "undefined",                "description": "Depth position in a stack. 0 = top card (no effect). 1+ applies brightness dimming and a white top-edge inset highlight" },
+    { "name": "warning",         "type": "boolean",         "default": "false",                    "description": "Renders an amber warning badge in the bottom-right corner" },
+    { "name": "onClick",         "type": "() => void",      "default": "undefined",                "description": "Optional click handler — enables pointer cursor" }
+  ],
+  "variants": [
+    "default",
+    "holo",
+    "stacked-depth-1",
+    "stacked-depth-2",
+    "warning"
+  ],
+  "relatedComponents": ["PUWalletStack"],
+  "tokens": {
+    "borderRadius": 20,
+    "aspectRatio": "2/1",
+    "holoTiltMax": "8deg",
+    "holoBlendMode": "screen"
+  }
+}

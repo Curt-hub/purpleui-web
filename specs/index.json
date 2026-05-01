@@ -66,6 +66,21 @@
       "category": "navigation"
     },
     {
+      "name": "PUPassCard",
+      "spec": "specs/PUPassCard.json",
+      "docPage": "/passes/pass-card",
+      "platforms": ["web"],
+      "category": "passes"
+    },
+    {
+      "name": "PUWalletStack",
+      "spec": "specs/PUPassCard.json",
+      "docPage": "/passes/wallet-stack",
+      "platforms": ["web"],
+      "category": "passes",
+      "notes": "Self-contained Apple Wallet stack container. Uses PUPassCard internally."
+    },
+    {
       "name": "PUMapbox",
       "spec": "specs/PUMapbox.json",
       "docPage": "/map/mapbox",
