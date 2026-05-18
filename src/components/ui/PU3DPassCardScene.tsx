@@ -22,8 +22,8 @@ function WifiPassModel() {
       const newMat = new THREE.MeshStandardMaterial({
         color,
         emissive: color,
-        emissiveIntensity: 0.15,
-        roughness: 0.85,
+        emissiveIntensity: 0.5,
+        roughness: 0.82,
         metalness: 0,
       });
       mesh.material = newMat;
@@ -44,9 +44,8 @@ export default function PU3DPassCardScene({ autoRotate = false, interactive = fa
       gl={{ alpha: true, antialias: true }}
       camera={{ fov: 38, position: [0, 0, 3.2] }}
     >
-      <ambientLight intensity={2.5} />
-      <directionalLight position={[2, 4, 3]} intensity={0.8} />
-      <directionalLight position={[-2, -2, 2]} intensity={0.4} />
+      <ambientLight intensity={3} />
+      <directionalLight position={[2, 4, 3]} intensity={1} />
       <Suspense fallback={null}>
         <WifiPassModel />
       </Suspense>
