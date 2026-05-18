@@ -1,40 +1,10 @@
 'use client';
-import { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useGLTF, OrbitControls } from '@react-three/drei';
-import * as THREE from 'three';
+import { RoundedBox, OrbitControls } from '@react-three/drei';
 
 export interface SceneProps {
   autoRotate?: boolean;
   interactive?: boolean;
-}
-
-function WifiPassModel() {
-  const { scene } = useGLTF('/models/wifi-pass.glb?v=4');
-
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (!(child as THREE.Mesh).isMesh) return;
-      const mesh = child as THREE.Mesh;
-      const isEdge = (Array.isArray(mesh.material) ? mesh.material : [mesh.material])
-        .some(m => (m as THREE.Material).name === 'PassEdge');
-      const color = isEdge ? '#5a3de8' : '#7458fd';
-      const newMat = new THREE.MeshStandardMaterial({
-        color,
-        emissive: color,
-        emissiveIntensity: 0.5,
-        roughness: 0.82,
-        metalness: 0,
-      });
-      mesh.material = newMat;
-    });
-  }, [scene]);
-
-  return (
-    <group rotation={[Math.PI / 2, 0, 0]}>
-      <primitive object={scene} />
-    </group>
-  );
 }
 
 export default function PU3DPassCardScene({ autoRotate = false, interactive = false }: SceneProps) {
@@ -42,13 +12,19 @@ export default function PU3DPassCardScene({ autoRotate = false, interactive = fa
     <Canvas
       style={{ position: 'absolute', inset: 0 }}
       gl={{ alpha: true, antialias: true }}
-      camera={{ fov: 38, position: [0, 0, 3.2] }}
+      camera={{ fov: 38, position: [0, 0, 3.0] }}
     >
       <ambientLight intensity={3} />
       <directionalLight position={[2, 4, 3]} intensity={1} />
-      <Suspense fallback={null}>
-        <WifiPassModel />
-      </Suspense>
+      <RoundedBox args={[1.57, 0.96, 0.05]} radius={0.06} smoothness={4}>
+        <meshStandardMaterial
+          color="#7458fd"
+          roughness={0.82}
+          metalness={0}
+          emissive="#7458fd"
+          emissiveIntensity={0.4}
+        />
+      </RoundedBox>
       <OrbitControls
         enableZoom={false}
         enablePan={false}
@@ -61,5 +37,3 @@ export default function PU3DPassCardScene({ autoRotate = false, interactive = fa
     </Canvas>
   );
 }
-
-useGLTF.preload('/models/wifi-pass.glb?v=4');
