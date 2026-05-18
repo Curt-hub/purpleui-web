@@ -1,10 +1,40 @@
 'use client';
+import { Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { RoundedBox, OrbitControls } from '@react-three/drei';
+import { useGLTF, OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
 
 export interface SceneProps {
   autoRotate?: boolean;
   interactive?: boolean;
+}
+
+function WifiPassModel() {
+  const { scene } = useGLTF('/models/wifi-pass.glb?v=4');
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (!(child as THREE.Mesh).isMesh) return;
+      const mesh = child as THREE.Mesh;
+      const isEdge = (Array.isArray(mesh.material) ? mesh.material : [mesh.material])
+        .some(m => (m as THREE.Material).name === 'PassEdge');
+      const color = isEdge ? '#5a3de8' : '#7458fd';
+      const newMat = new THREE.MeshStandardMaterial({
+        color,
+        emissive: color,
+        emissiveIntensity: 0.5,
+        roughness: 0.82,
+        metalness: 0,
+      });
+      mesh.material = newMat;
+    });
+  }, [scene]);
+
+  return (
+    <group rotation={[Math.PI / 2, 0, 0]}>
+      <primitive object={scene} />
+    </group>
+  );
 }
 
 export default function PU3DPassCardScene({ autoRotate = false, interactive = false }: SceneProps) {
@@ -12,28 +42,25 @@ export default function PU3DPassCardScene({ autoRotate = false, interactive = fa
     <Canvas
       style={{ position: 'absolute', inset: 0 }}
       gl={{ alpha: true, antialias: true }}
-      camera={{ fov: 38, position: [0, 0, 3.0] }}
+      camera={{ fov: 38, position: [0, 0, 2.4] }}
     >
       <ambientLight intensity={3} />
-      <directionalLight position={[2, 4, 3]} intensity={1} />
-      <RoundedBox args={[1.57, 0.96, 0.05]} radius={0.06} smoothness={4}>
-        <meshStandardMaterial
-          color="#7458fd"
-          roughness={0.82}
-          metalness={0}
-          emissive="#7458fd"
-          emissiveIntensity={0.4}
-        />
-      </RoundedBox>
+      <directionalLight position={[2, 4, 3]} intensity={2} />
+      <directionalLight position={[-2, -2, 2]} intensity={1} />
+      <Suspense fallback={null}>
+        <WifiPassModel />
+      </Suspense>
       <OrbitControls
         enableZoom={false}
         enablePan={false}
         autoRotate={autoRotate}
         autoRotateSpeed={1.8}
         enabled={interactive || autoRotate}
-        minPolarAngle={Math.PI * 0.1}
-        maxPolarAngle={Math.PI * 0.9}
+        minPolarAngle={Math.PI * 0.25}
+        maxPolarAngle={Math.PI * 0.75}
       />
     </Canvas>
   );
 }
+
+useGLTF.preload('/models/wifi-pass.glb?v=4');

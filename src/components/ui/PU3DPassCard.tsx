@@ -22,7 +22,7 @@ export function PU3DPassCard({
       style={{
         position: 'relative',
         width: '100%',
-        paddingBottom: '75%',
+        paddingBottom: '61.22%',
         cursor: interactive ? 'grab' : 'default',
       }}
     >
