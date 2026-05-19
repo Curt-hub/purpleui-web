@@ -62,6 +62,15 @@ const PassesIcon = () => (
   </svg>
 );
 
+const WifiIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <path d="M1 5.5a9.5 9.5 0 0 1 14 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M3.5 8a6.5 6.5 0 0 1 9 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M6 10.5a3.5 3.5 0 0 1 4 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="8" cy="13" r="1" fill="currentColor"/>
+  </svg>
+);
+
 // ── Foundation per-item icons ───────────────────────────────
 
 const ColorsIcon = () => (
@@ -157,6 +166,15 @@ const nav = [
     items: [
       { label: 'Pass Card',    href: '/passes/pass-card',    icon: <PassesIcon /> },
       { label: 'Wallet Stack', href: '/passes/wallet-stack', icon: <PassesIcon /> },
+      { label: '3D Pass Card',     href: '/passes/3d-pass-card',     icon: <PassesIcon /> },
+      { label: 'Brand Guidelines', href: '/passes/brand-guidelines', icon: <PassesIcon /> },
+    ],
+  },
+  {
+    section: 'WiFi Pass',
+    sectionIcon: <WifiIcon />,
+    items: [
+      { label: 'Pass Setup', href: '/wifi-pass-setup', icon: <WifiIcon /> },
     ],
   },
   {
