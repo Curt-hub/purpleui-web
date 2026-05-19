@@ -1,35 +1,15 @@
 'use client';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useGLTF, OrbitControls } from '@react-three/drei';
-import * as THREE from 'three';
 
 export interface SceneProps {
   autoRotate?: boolean;
   interactive?: boolean;
 }
 
-function WifiPassModel() {
-  const { scene } = useGLTF('/models/wifi-pass.glb?v=4');
-
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (!(child as THREE.Mesh).isMesh) return;
-      const mesh = child as THREE.Mesh;
-      const isEdge = (Array.isArray(mesh.material) ? mesh.material : [mesh.material])
-        .some(m => (m as THREE.Material).name === 'PassEdge');
-      const color = isEdge ? '#5a3de8' : '#7458fd';
-      const newMat = new THREE.MeshStandardMaterial({
-        color,
-        emissive: color,
-        emissiveIntensity: 0.5,
-        roughness: 0.82,
-        metalness: 0,
-      });
-      mesh.material = newMat;
-    });
-  }, [scene]);
-
+function PassCard() {
+  const { scene } = useGLTF('/models/pass-card.glb');
   return (
     <group rotation={[Math.PI / 2, 0, 0]}>
       <primitive object={scene} />
@@ -46,9 +26,8 @@ export default function PU3DPassCardScene({ autoRotate = false, interactive = fa
     >
       <ambientLight intensity={3} />
       <directionalLight position={[2, 4, 3]} intensity={2} />
-      <directionalLight position={[-2, -2, 2]} intensity={1} />
       <Suspense fallback={null}>
-        <WifiPassModel />
+        <PassCard />
       </Suspense>
       <OrbitControls
         enableZoom={false}
@@ -63,4 +42,4 @@ export default function PU3DPassCardScene({ autoRotate = false, interactive = fa
   );
 }
 
-useGLTF.preload('/models/wifi-pass.glb?v=4');
+useGLTF.preload('/models/pass-card.glb');
