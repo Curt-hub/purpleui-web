@@ -1,14 +1,34 @@
 'use client';
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
 import { colors } from '@/lib/tokens';
 
 export type PULogoVariant = 'white-navy' | 'white-purple' | 'dark-purple';
+export type PULogoOrientation = 'landscape' | 'square' | 'portrait';
+
+function contrastColour(hex: string): '#ffffff' | '#000000' {
+  const h = hex.replace('#', '');
+  const toLinear = (c: number) => {
+    const s = c / 255;
+    return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const r = toLinear(parseInt(h.slice(0, 2), 16));
+  const g = toLinear(parseInt(h.slice(2, 4), 16));
+  const b = toLinear(parseInt(h.slice(4, 6), 16));
+  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return L > 0.179 ? '#000000' : '#ffffff';
+}
 
 const LOGO_SRCS: Record<PULogoVariant, string> = {
   'white-navy':   '/logo/icon-white-navy.svg',
   'white-purple': '/logo/purple-wi-white.svg',
   'dark-purple':  '/logo/icon-dark-purple.svg',
+};
+
+const LOGO_SIZE: Record<PULogoOrientation, React.CSSProperties> = {
+  landscape: { height: 22, width: 'auto' },
+  square:    { width: 28, height: 28 },
+  portrait:  { height: 36, width: 'auto' },
 };
 
 export interface PUPassCardProps {
@@ -19,6 +39,10 @@ export interface PUPassCardProps {
   stackDepth?: number;
   warning?: boolean;
   logoVariant?: PULogoVariant;
+  /** Custom partner/company logo URL — replaces the default Purple logo. */
+  partnerLogoUrl?: string;
+  /** Orientation of the partner logo — controls size constraints. */
+  partnerLogoOrientation?: PULogoOrientation;
   onClick?: () => void;
 }
 
@@ -29,9 +53,14 @@ export function PUPassCard({
   holo = false,
   stackDepth,
   warning = false,
-  logoVariant = 'white-purple',
+  logoVariant,
+  partnerLogoUrl,
+  partnerLogoOrientation = 'landscape',
   onClick,
 }: PUPassCardProps) {
+  const textColour   = contrastColour(backgroundColor);
+  const isLight      = textColour === '#000000';
+  const resolvedLogoVariant = logoVariant ?? (isLight ? 'dark-purple' : 'white-purple');
   const holoRef = useRef<HTMLDivElement>(null);
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
@@ -81,9 +110,9 @@ export function PUPassCard({
         filter: isStacked ? `brightness(${brightness})` : undefined,
         boxShadow: isStacked
           ? 'inset 0 2px 0 0 rgba(255,255,255,0.25), 0 4px 20px rgba(0,0,0,0.18)'
-          : '0 4px 20px rgba(0,0,0,0.18)',
-        borderRadius: 20,
-        aspectRatio: '2 / 1',
+          : '0 8px 32px rgba(0,0,0,0.22), inset 0.757px 0.606px 0.606px rgba(255,255,255,0.25), inset -0.303px -0.303px 0.454px rgba(0,0,0,0.36)',
+        borderRadius: 14,
+        aspectRatio: '312 / 191',
         position: 'relative',
         overflow: 'hidden',
         userSelect: 'none',
@@ -95,6 +124,19 @@ export function PUPassCard({
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
     >
+      {/* Radial white gloss — top-left shine matching Figma */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: 'inherit',
+          background: 'radial-gradient(ellipse 75% 60% at 15% 18%, rgba(255,255,255,0.26) 0%, rgba(255,255,255,0) 100%)',
+          pointerEvents: 'none',
+          zIndex: 2,
+        }}
+      />
+
       {/* Holographic shimmer overlay */}
       <div
         ref={holoRef}
@@ -123,7 +165,7 @@ export function PUPassCard({
         style={{
           position: 'absolute',
           inset: 0,
-          padding: 16,
+          padding: 20,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -134,8 +176,8 @@ export function PUPassCard({
           style={{
             fontFamily: 'Poppins, sans-serif',
             fontWeight: 700,
-            color: '#ffffff',
-            fontSize: 13,
+            color: textColour,
+            fontSize: 14,
             margin: 0,
             lineHeight: 1.3,
           }}
@@ -149,14 +191,14 @@ export function PUPassCard({
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              height: 28,
-              width: 28,
+              height: 32,
+              width: 32,
               borderRadius: '50%',
               background: 'linear-gradient(119.73deg, #ABABAB 0%, #FFFFFF 29.18%, #BDBDBD 58.85%, #5E5E5E 93.38%)',
               flexShrink: 0,
             }}
           >
-            <img src="/illustrations/wifi-metallic.svg" alt="" style={{ height: 14, width: 14, display: 'block' }} />
+            <img src="/illustrations/wifi-metallic.svg" alt="" style={{ height: 16, width: 16, display: 'block' }} />
           </div>
 
           {/* Right side: warning badge + Purple logo */}
@@ -180,16 +222,28 @@ export function PUPassCard({
                 !
               </div>
             )}
-            <img
-              src={LOGO_SRCS[logoVariant]}
-              alt="Purple"
-              style={{
-                height: 20,
-                width: 'auto',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
-              }}
-            />
+            {partnerLogoUrl ? (
+              <img
+                src={partnerLogoUrl}
+                alt="Partner logo"
+                style={{
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
+                  ...LOGO_SIZE[partnerLogoOrientation],
+                }}
+              />
+            ) : (
+              <img
+                src={LOGO_SRCS[resolvedLogoVariant]}
+                alt="Purple"
+                style={{
+                  height: 22,
+                  width: 'auto',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
