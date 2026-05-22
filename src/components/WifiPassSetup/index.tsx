@@ -8,6 +8,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { useBrandConfig } from './useBrandConfig';
 import { WalletComposite } from './WalletComposite';
 import { PUPassCard } from '@/components/ui/PUPassCard';
+import { darkenHex } from './utils/colorUtils';
 import type { LogoOrientation } from './utils/colorUtils';
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
@@ -36,7 +37,21 @@ const INPUT: React.CSSProperties = {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const PRESETS = ['#7458FD', '#011638', '#0f9b63', '#2d3748', '#C0392B'] as const;
+// Light → mid → dark across hues
+const PRESETS = [
+  '#C4B5FD', // Lavender (light)
+  '#BAE6FD', // Sky (light)
+  '#A7F3D0', // Mint (light)
+  '#FCA5A5', // Rose (light)
+  '#7458FD', // Purple (mid)
+  '#2563EB', // Blue (mid)
+  '#059669', // Emerald (mid)
+  '#DC2626', // Red (mid)
+  '#011638', // Navy (dark)
+  '#3B0764', // Midnight purple (dark)
+  '#064E3B', // Forest green (dark)
+  '#7F1D1D', // Dark red (dark)
+] as const;
 
 const ORIENTATION_LABELS: Record<LogoOrientation, string> = {
   landscape: 'Landscape • 80×28 px max on card',
@@ -48,8 +63,13 @@ const ORIENTATION_LABELS: Record<LogoOrientation, string> = {
 
 export default function WifiPassSetup() {
   const brand = useBrandConfig();
-  const [hexInput, setHexInput]   = useState(brand.primaryColor);
-  const [copied, setCopied]       = useState(false);
+  const [hexInput, setHexInput]     = useState(brand.primaryColor);
+  const [copied, setCopied]         = useState(false);
+  const [tintMode, setTintMode]     = useState<'light' | 'dark'>('light');
+
+  const gradientTo = tintMode === 'light'
+    ? brand.gradientTo
+    : darkenHex(brand.primaryColor, 0.28);
   const logoInputRef              = useRef<HTMLInputElement>(null);
   const customColorRef            = useRef<HTMLInputElement>(null);
 
@@ -101,7 +121,7 @@ export default function WifiPassSetup() {
           <PUPassCard
             title={brand.passTitle}
             backgroundColor={brand.primaryColor}
-            gradientTo={brand.gradientTo}
+            gradientTo={gradientTo}
             partnerLogoUrl={brand.logoDataUrl ?? undefined}
             partnerLogoOrientation={brand.logoOrientation ?? 'landscape'}
             holo
@@ -188,6 +208,29 @@ export default function WifiPassSetup() {
                   onBlurCapture={e => { e.currentTarget.style.borderColor = '#D1D5DB'; }}
                 />
               </div>
+            </div>
+          </div>
+
+          {/* Tint mode */}
+          <div>
+            <p style={{ ...LABEL, display: 'block', marginBottom: 8 }}>Gradient Tint</p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {(['light', 'dark'] as const).map(mode => (
+                <button
+                  key={mode}
+                  onClick={() => setTintMode(mode)}
+                  style={{
+                    padding: '6px 14px', borderRadius: 8, border: '1.5px solid',
+                    borderColor: tintMode === mode ? '#7458FD' : '#D1D5DB',
+                    background: tintMode === mode ? '#7458FD14' : '#fff',
+                    color: tintMode === mode ? '#7458FD' : '#374151',
+                    fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 12,
+                    cursor: 'pointer', textTransform: 'capitalize',
+                  }}
+                >
+                  {mode === 'light' ? 'Light' : 'Dark'}
+                </button>
+              ))}
             </div>
           </div>
 

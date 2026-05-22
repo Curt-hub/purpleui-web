@@ -54,6 +54,17 @@ export function lightenHex(hex: string, amount: number): string {
     .join('');
 }
 
+// Blend each RGB channel towards black by `amount` (0–1).
+export function darkenHex(hex: string, amount: number): string {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return '#' + [r, g, b]
+    .map(c => Math.max(0, Math.round(c * (1 - amount))).toString(16).padStart(2, '0'))
+    .join('');
+}
+
 export function hexToRgba(hex: string, alpha: number): string {
   const h = hex.replace('#', '');
   const r = parseInt(h.slice(0, 2), 16);
