@@ -14,7 +14,10 @@
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-regular-svg-icons": "^7.2.0",
     "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/pro-regular-svg-icons": "^7.2.0",
     "@fortawesome/react-fontawesome": "^3.3.0",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "framer-motion": "^12.38.0",
     "mapbox-gl": "^3.20.0",
@@ -23,13 +26,16 @@
     "react": "^18",
     "react-dom": "^18",
     "react-map-gl": "^8.1.0",
-    "react-syntax-highlighter": "^16.1.1"
+    "react-syntax-highlighter": "^16.1.1",
+    "three": "^0.167.1",
+    "vercel": "^53.2.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/three": "^0.184.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "postcss": "^8",
