@@ -8,7 +8,6 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { useBrandConfig } from './useBrandConfig';
 import { WalletComposite } from './WalletComposite';
 import { PUPassCard } from '@/components/ui/PUPassCard';
-import { darkenHex } from './utils/colorUtils';
 import type { LogoOrientation } from './utils/colorUtils';
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
@@ -65,11 +64,6 @@ export default function WifiPassSetup() {
   const brand = useBrandConfig();
   const [hexInput, setHexInput]     = useState(brand.primaryColor);
   const [copied, setCopied]         = useState(false);
-  const [tintMode, setTintMode]     = useState<'light' | 'dark'>('light');
-
-  const gradientTo = tintMode === 'light'
-    ? brand.gradientTo
-    : darkenHex(brand.primaryColor, 0.28);
   const logoInputRef              = useRef<HTMLInputElement>(null);
   const customColorRef            = useRef<HTMLInputElement>(null);
 
@@ -121,7 +115,7 @@ export default function WifiPassSetup() {
           <PUPassCard
             title={brand.passTitle}
             backgroundColor={brand.primaryColor}
-            gradientTo={gradientTo}
+            gradientTo={brand.gradientTo}
             partnerLogoUrl={brand.logoDataUrl ?? undefined}
             partnerLogoOrientation={brand.logoOrientation ?? 'landscape'}
             holo
@@ -208,29 +202,6 @@ export default function WifiPassSetup() {
                   onBlurCapture={e => { e.currentTarget.style.borderColor = '#D1D5DB'; }}
                 />
               </div>
-            </div>
-          </div>
-
-          {/* Tint mode */}
-          <div>
-            <p style={{ ...LABEL, display: 'block', marginBottom: 8 }}>Gradient Tint</p>
-            <div style={{ display: 'flex', gap: 8 }}>
-              {(['light', 'dark'] as const).map(mode => (
-                <button
-                  key={mode}
-                  onClick={() => setTintMode(mode)}
-                  style={{
-                    padding: '6px 14px', borderRadius: 8, border: '1.5px solid',
-                    borderColor: tintMode === mode ? '#7458FD' : '#D1D5DB',
-                    background: tintMode === mode ? '#7458FD14' : '#fff',
-                    color: tintMode === mode ? '#7458FD' : '#374151',
-                    fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 12,
-                    cursor: 'pointer', textTransform: 'capitalize',
-                  }}
-                >
-                  {mode === 'light' ? 'Light' : 'Dark'}
-                </button>
-              ))}
             </div>
           </div>
 
