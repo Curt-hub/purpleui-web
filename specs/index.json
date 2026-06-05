@@ -59,6 +59,13 @@
       "category": "inputs"
     },
     {
+      "name": "PUTextInput",
+      "spec": "specs/PUTextInput.json",
+      "docPage": "/inputs/text-input",
+      "platforms": ["web", "ios", "android"],
+      "category": "inputs"
+    },
+    {
       "name": "PUBottomNav",
       "spec": "specs/PUBottomNav.json",
       "docPage": "/navigation/bottom-nav",
@@ -79,6 +86,14 @@
       "platforms": ["web"],
       "category": "passes",
       "notes": "Self-contained Apple Wallet stack container. Uses PUPassCard internally."
+    },
+    {
+      "name": "PU3DPassCard",
+      "spec": "specs/PU3DPassCard.json",
+      "docPage": "/passes/3d-pass-card",
+      "platforms": ["web"],
+      "category": "passes",
+      "notes": "WebGL 3D render of the Purple WiFi Pass. Client-side only, zero SSR impact."
     },
     {
       "name": "PUMapbox",

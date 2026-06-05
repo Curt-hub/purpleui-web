@@ -157,7 +157,8 @@ const nav = [
     section: 'Inputs',
     sectionIcon: <InputsIcon />,
     items: [
-      { label: 'Search Bar', href: '/inputs/search-bar', icon: <InputsIcon /> },
+      { label: 'Search Bar',  href: '/inputs/search-bar',  icon: <InputsIcon /> },
+      { label: 'Text Input',  href: '/inputs/text-input',  icon: <InputsIcon /> },
     ],
   },
   {
