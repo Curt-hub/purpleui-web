@@ -86,6 +86,7 @@ Machine-readable specs: `specs/`
 | PULoader | /indicators/loader | specs/PULoader.json | web, ios, android |
 | PUSearchBar | /inputs/search-bar | specs/PUSearchBar.json | web, ios, android |
 | PUBottomNav | /navigation/bottom-nav | specs/PUBottomNav.json | web, ios, android |
+| PU3DPassCard | /passes/3d-pass-card | specs/PU3DPassCard.json | web |
 | PUMapbox | /map/mapbox | specs/PUMapbox.json | web, ios |
 | PUMapPin | /map/map-pins | specs/PUMapPin.json | web, ios |
 

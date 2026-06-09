@@ -55,36 +55,8 @@ export default function WalletStackPage() {
               background: isDark ? colors.backgroundNavy : colors.backgroundElevated,
             }}
           />
-          {/* Mini header */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 56,
-              background: isDark ? '#0a2048' : '#ffffff',
-              borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : '#EFF0F0'}`,
-              display: 'flex',
-              alignItems: 'center',
-              padding: '0 16px',
-              zIndex: 100,
-            }}
-          >
-            <p
-              style={{
-                fontFamily: 'Poppins, sans-serif',
-                fontWeight: 700,
-                fontSize: 13,
-                color: isDark ? '#ffffff' : '#000000',
-                margin: 0,
-              }}
-            >
-              WiFi Passes
-            </p>
-          </div>
-          {/* Stack lives below the header */}
-          <div style={{ position: 'absolute', top: 56, left: 0, right: 0, bottom: 0 }}>
+          {/* Stack fills entire frame */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
             <PUWalletStack cards={SAMPLE_CARDS.slice(0, 3)} />
           </div>
         </PhoneFrame>
@@ -98,7 +70,7 @@ export default function WalletStackPage() {
       <ComponentPreview label="Click cards to interact" bg="gray">
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center' }}>
           {/* Stack preview — phone-width container so cards stay proportional */}
-          <div style={{ width: 320, height: 500, position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#F7F7F8' }}>
+          <div style={{ width: 320, height: 540, position: 'relative', borderRadius: 16, overflow: 'hidden', background: '#F7F7F8' }}>
             <PUWalletStack key={cardCount} cards={cards} />
           </div>
           {/* Card count controls */}

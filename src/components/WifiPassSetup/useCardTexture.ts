@@ -5,12 +5,14 @@ import { getLogoMaxDims, type LogoOrientation } from './utils/colorUtils';
 const CANVAS_W = 512;
 const CANVAS_H = 320;
 const CORNER_R = 28;
+const POPPINS_URL = 'https://fonts.gstatic.com/s/poppins/v21/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2';
 
 export interface CardTextureConfig {
   primaryColor: string;
   gradientTo: string;
   logoDataUrl: string | null;
   logoOrientation: LogoOrientation | null;
+  passTitle: string;
 }
 
 function drawRoundedRect(
@@ -33,12 +35,13 @@ function drawRoundedRect(
 }
 
 export function useCardTexture(config: CardTextureConfig, hologramImageUrl: string) {
-  const canvasRef  = useRef<HTMLCanvasElement | null>(null);
-  const textureRef = useRef<THREE.CanvasTexture | null>(null);
-  const holoImgRef = useRef<HTMLImageElement | null>(null);
-  const logoImgRef = useRef<HTMLImageElement | null>(null);
+  const canvasRef    = useRef<HTMLCanvasElement | null>(null);
+  const textureRef   = useRef<THREE.CanvasTexture | null>(null);
+  const holoImgRef   = useRef<HTMLImageElement | null>(null);
+  const logoImgRef   = useRef<HTMLImageElement | null>(null);
+  const fontReadyRef = useRef(false);
   // Always-current snapshot of config so stable callbacks can read latest values
-  const configRef  = useRef(config);
+  const configRef    = useRef(config);
   useEffect(() => { configRef.current = config; });
 
   const [texture, setTexture] = useState<THREE.CanvasTexture | null>(null);
@@ -90,7 +93,15 @@ export function useCardTexture(config: CardTextureConfig, hologramImageUrl: stri
       ctx.drawImage(holoImgRef.current, 32, CANVAS_H - 32 - sz, sz, sz);
     }
 
-    // 5. Partner logo — bottom-right with white pill background
+    // 5. Pass title — top-left, drawn only once Poppins has loaded
+    if (fontReadyRef.current) {
+      const { passTitle } = configRef.current;
+      ctx.font = 'bold 26px Poppins, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.fillText(passTitle, 36, 56, CANVAS_W - 72);
+    }
+
+    // 6. Partner logo — bottom-right with white pill background
     const logoImg = logoImgRef.current;
     if (logoImg && logoOrientation) {
       const { maxW, maxH } = getLogoMaxDims(logoOrientation);
@@ -146,10 +157,25 @@ export function useCardTexture(config: CardTextureConfig, hologramImageUrl: stri
     img.src = config.logoDataUrl;
   }, [config.logoDataUrl, rebuildTexture]);
 
-  // Rebuild when colors or logo orientation change
+  // Rebuild when colors, passTitle, or logo orientation change
   useEffect(() => {
     rebuildTexture();
-  }, [config.primaryColor, config.gradientTo, config.logoOrientation, rebuildTexture]);
+  }, [config.primaryColor, config.gradientTo, config.logoOrientation, config.passTitle, rebuildTexture]);
+
+  // Load Poppins 700 for canvas text — fires once, then triggers a redraw
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const font = new FontFace('Poppins', `url(${POPPINS_URL})`, { weight: '700' });
+    font.load().then((loaded) => {
+      document.fonts.add(loaded);
+      fontReadyRef.current = true;
+      rebuildTexture();
+    }).catch(() => {
+      // Font failed (e.g. offline) — draw without Poppins guarantee
+      fontReadyRef.current = true;
+      rebuildTexture();
+    });
+  }, [rebuildTexture]);
 
   // Dispose texture on unmount
   useEffect(() => {

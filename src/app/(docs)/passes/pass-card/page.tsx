@@ -35,7 +35,7 @@ export default function PassCardPage() {
     <div className="max-w-3xl">
       <h1 className="text-3xl font-bold text-gray-900 mb-2">Pass Card</h1>
       <p className="text-gray-500 mb-8">
-        Branded WiFi pass card with a 2:1 aspect ratio. Supports a holographic 3D-tilt + rainbow
+        Branded WiFi pass card with a 312:191 aspect ratio (credit card proportions). Supports a holographic 3D-tilt + rainbow
         shimmer effect when focused, stacked-depth dimming for wallet stacking, and an optional
         warning state. Used inside{' '}
         <code className="text-sm bg-gray-100 px-1 rounded">PUWalletStack</code>.
@@ -47,19 +47,8 @@ export default function PassCardPage() {
         <PhoneFrame label="Pass Card — focused with holo active" dark={isDark} onToggle={() => setIsDark(d => !d)}>
           {/* Background */}
           <div style={{ position: 'absolute', inset: 0, background: isDark ? colors.backgroundNavy : colors.backgroundElevated }} />
-          {/* Mini header */}
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, height: 56,
-            background: isDark ? '#0a2048' : '#ffffff',
-            borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : '#EFF0F0'}`,
-            display: 'flex', alignItems: 'center', padding: '0 16px', zIndex: 10,
-          }}>
-            <p style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700, fontSize: 13, color: isDark ? '#ffffff' : '#000000', margin: 0 }}>
-              WiFi Passes
-            </p>
-          </div>
-          {/* Card — full width, 40px below header */}
-          <div style={{ position: 'absolute', top: 96, left: 16, right: 16 }}>
+          {/* Card — centred in frame */}
+          <div style={{ position: 'absolute', top: 80, left: 16, right: 16 }}>
             <PUPassCard
               title="Purple WiFi Pass"
               backgroundColor={colors.brand}
