@@ -142,6 +142,39 @@ export default function ToastPage() {
       <h2 className="text-base font-semibold text-gray-800 mt-12 mb-2">Props</h2>
       <PropsTable props={props} />
 
+      <h2 className="text-base font-semibold text-gray-800 mt-10 mb-3">Design tokens</h2>
+      <table className="w-full text-sm border-collapse mb-10">
+        <thead>
+          <tr className="border-b border-gray-200 text-left text-gray-500">
+            <th className="pb-2 font-medium w-1/3">Property</th>
+            <th className="pb-2 font-medium w-1/3">Token</th>
+            <th className="pb-2 font-medium">Value</th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-700">
+          <tr className="border-b border-gray-100">
+            <td className="py-2">Corner radius</td>
+            <td className="py-2 font-mono text-xs text-purple-600">radius.md</td>
+            <td className="py-2">12px</td>
+          </tr>
+          <tr className="border-b border-gray-100">
+            <td className="py-2">Horizontal padding</td>
+            <td className="py-2 font-mono text-xs text-purple-600">spacing.lg</td>
+            <td className="py-2">16px</td>
+          </tr>
+          <tr className="border-b border-gray-100">
+            <td className="py-2">Vertical padding</td>
+            <td className="py-2 font-mono text-xs text-purple-600">spacing.sm + 2</td>
+            <td className="py-2">10px</td>
+          </tr>
+          <tr className="border-b border-gray-100">
+            <td className="py-2">Icon gap</td>
+            <td className="py-2 font-mono text-xs text-purple-600">spacing.sm + 2</td>
+            <td className="py-2">10px</td>
+          </tr>
+        </tbody>
+      </table>
+
       <PlatformCodeBlock swift={swiftCode} kotlin={kotlinCode} title="PUToast" />
     </div>
   );
