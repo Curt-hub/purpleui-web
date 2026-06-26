@@ -7,6 +7,8 @@ import './SideNav.css';
 interface SidebarProps {
   collapsed?: boolean;
   onToggle?: () => void;
+  mobileOpen?: boolean;
+  onNavClick?: () => void;
 }
 
 // ── Section icons ───────────────────────────────────────────
@@ -199,11 +201,11 @@ const nav = [
 
 // ── Component ───────────────────────────────────────────────
 
-export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed = false, onToggle, mobileOpen = false, onNavClick }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className={['side-nav', collapsed ? 'side-nav--collapsed' : ''].filter(Boolean).join(' ')}>
+    <div className={['side-nav', collapsed ? 'side-nav--collapsed' : '', mobileOpen ? 'side-nav--mobile-open' : ''].filter(Boolean).join(' ')}>
       {/* Toggle button — outside panel so overflow:hidden doesn't clip it */}
       <button
         className="side-nav__toggle"
@@ -249,6 +251,7 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
                       className={['side-nav__link', isActive ? 'side-nav__link--active' : ''].filter(Boolean).join(' ')}
                       title={collapsed ? item.label : undefined}
                       aria-current={isActive ? 'page' : undefined}
+                      onClick={onNavClick}
                     >
                       <span className="side-nav__link-name">
                         <span className="side-nav__link-icon">{item.icon}</span>
