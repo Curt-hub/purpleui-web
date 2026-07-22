@@ -110,7 +110,11 @@ export function PUButton({
     <AnimatedPressable
       onPress={isDisabled ? undefined : onPress}
       onPressIn={isDisabled ? undefined : onPressIn}
-      onPressOut={isDisabled ? undefined : onPressOut}
+      // Always spring back to scale 1 on release, even if `disabled`/
+      // `loading` flipped true while the press was still active (e.g. set
+      // inside `onPress` itself) - otherwise the scale can stick at 0.97.
+      // Only the ACTION (onPress firing) is gated on disabled/loading.
+      onPressOut={onPressOut}
       disabled={isDisabled}
       accessibilityRole="button"
       accessibilityState={{ disabled: isDisabled, busy: loading }}

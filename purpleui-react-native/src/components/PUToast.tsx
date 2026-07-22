@@ -77,11 +77,32 @@ export function PUToast({
   const progress = useRef(new Animated.Value(visible ? 1 : 0)).current;
   const autoDismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Keep the latest `onDismiss` in a ref instead of a dependency of the
+  // effect below. The documented usage passes an inline arrow
+  // (`onDismiss={() => setShowToast(false)}`), which is a new reference on
+  // every render - if the auto-dismiss effect depended on it directly, any
+  // unrelated parent re-render would clear and restart the countdown timer.
+  const onDismissRef = useRef(onDismiss);
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
+
   useEffect(() => {
     if (autoDismissTimer.current) {
       clearTimeout(autoDismissTimer.current);
       autoDismissTimer.current = null;
     }
+
+    const runExitAnimation = () => {
+      Animated.timing(progress, {
+        toValue: 0,
+        duration: 180,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }).start(({ finished }) => {
+        if (finished) setMounted(false);
+      });
+    };
 
     if (visible) {
       setMounted(true);
@@ -92,24 +113,27 @@ export function PUToast({
         bounciness: 6,
       }).start();
 
-      if (onDismiss) {
-        autoDismissTimer.current = setTimeout(onDismiss, duration);
-      }
+      // The toast hides itself after `duration` regardless of whether
+      // `onDismiss` is provided - dismissal is driven by internal state,
+      // not by the presence of the prop. `onDismiss` is only a
+      // notification fired alongside it, read from the ref above so it
+      // never influences when this timer fires.
+      autoDismissTimer.current = setTimeout(() => {
+        autoDismissTimer.current = null;
+        runExitAnimation();
+        onDismissRef.current?.();
+      }, duration);
     } else {
-      Animated.timing(progress, {
-        toValue: 0,
-        duration: 180,
-        easing: Easing.out(Easing.quad),
-        useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (finished) setMounted(false);
-      });
+      runExitAnimation();
     }
 
     return () => {
-      if (autoDismissTimer.current) clearTimeout(autoDismissTimer.current);
+      if (autoDismissTimer.current) {
+        clearTimeout(autoDismissTimer.current);
+        autoDismissTimer.current = null;
+      }
     };
-  }, [visible, duration, onDismiss, progress]);
+  }, [visible, duration, progress]);
 
   if (!mounted) return null;
 

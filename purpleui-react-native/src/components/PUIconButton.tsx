@@ -84,7 +84,10 @@ export function PUIconButton({
     <AnimatedPressable
       onPress={disabled ? undefined : onPress}
       onPressIn={disabled ? undefined : onPressIn}
-      onPressOut={disabled ? undefined : onPressOut}
+      // Always spring back to scale 1 on release, even if `disabled` flips
+      // true while the press was still active - otherwise the scale can
+      // stick at 0.92. Only the ACTION (onPress firing) is gated on disabled.
+      onPressOut={onPressOut}
       disabled={disabled}
       accessibilityRole="button"
       accessibilityState={{ disabled }}
