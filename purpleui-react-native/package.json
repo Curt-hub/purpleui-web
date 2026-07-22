@@ -1,0 +1,25 @@
+{
+  "name": "purpleui-react-native",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Purple UI design system for React Native - tokens + components, matching PurpleUI-iOS and PurpleUI-Android.",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.72"
+  },
+  "devDependencies": {
+    "@types/react": "^18",
+    "react": "^18",
+    "react-native": "^0.74",
+    "typescript": "^5"
+  }
+}
