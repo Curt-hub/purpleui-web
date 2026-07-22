@@ -13,7 +13,7 @@
 
 import { writeFileSync } from 'fs';
 import { resolve } from 'path';
-import { colors, spacing, radius, shadows, typography } from '../src/lib/tokens';
+import { colors, spacing, radius, shadows, typography, passThemes } from '../src/lib/tokens';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
@@ -112,6 +112,19 @@ const colorTokens: DtcgGroup = {
   vendorAmber:  color(colors.vendorAmber,  'Activity feed only — do not use elsewhere'),
 };
 
+// ─── pass themes ──────────────────────────────────────────────────────────────
+
+const passThemeTokens: DtcgGroup = Object.fromEntries(
+  Object.entries(passThemes).map(([name, theme]) => [
+    name,
+    {
+      gradientFrom: color(theme.gradientFrom),
+      gradientTo:   color(theme.gradientTo),
+      on:           color(theme.on),
+    },
+  ])
+);
+
 // ─── spacing ──────────────────────────────────────────────────────────────────
 
 const spacingTokens: DtcgGroup = Object.fromEntries(
@@ -150,6 +163,7 @@ const dtcg: DtcgGroup = {
     palette,
     ...colorTokens,
   },
+  passThemes: passThemeTokens,
   spacing: spacingTokens,
   borderRadius: radiusTokens,
   shadow: shadowTokens,

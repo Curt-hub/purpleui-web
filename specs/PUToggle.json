@@ -1,0 +1,90 @@
+{
+  "$schema": "Purple UI component spec",
+  "name": "PUToggle",
+  "category": "inputs",
+  "description": "Binary on/off control rendered as a pill-shaped track with a sliding circular thumb. Used for settings rows and preference switches. No toggle/switch exists on any PurpleUI platform today - this spec defines the contract ahead of implementation.",
+  "platforms": ["web", "ios", "android"],
+  "aliases": ["PUSwitch"],
+  "variants": ["light", "dark"],
+  "sizes": ["sm", "md"],
+  "states": ["off", "on", "disabled"],
+  "anatomy": {
+    "track": "Pill shape (radius.full). Background cross-fades between the off colour and colors.brand as the on state changes.",
+    "thumb": "Circular, centred vertically in the track with equal inset on all sides. Slides from the left edge (off) to the right edge (on)."
+  },
+  "props": [
+    {
+      "name": "checked",
+      "type": "boolean",
+      "required": true,
+      "description": "Controlled on/off state",
+      "platforms": { "ios": "isOn: Binding<Bool> ($isOn)", "android": "checked: Boolean" }
+    },
+    {
+      "name": "onChange",
+      "type": "(checked: boolean) => void",
+      "required": true,
+      "description": "Called when the toggle is tapped",
+      "platforms": { "ios": "handled by Binding<Bool>", "android": "onCheckedChange: (Boolean) -> Unit" }
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "default": "md",
+      "description": "sm = 36x20px track | md = 44x24px track",
+      "platforms": {
+        "ios": "size: PUToggleSize (.sm | .md)",
+        "android": "size: PUToggleSize (Sm | Md)"
+      }
+    },
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark surface variant - lightens the off-state track so it reads on navy backgrounds",
+      "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "default": false,
+      "description": "Disables interaction and dims the control to 40% opacity",
+      "platforms": { "ios": ".disabled(true) modifier", "android": "enabled: Boolean = false" }
+    },
+    {
+      "name": "label",
+      "type": "string | undefined",
+      "default": "undefined",
+      "description": "Accessible aria-label (web) or accessibilityLabel (native) - required whenever no visible text label sits beside the toggle",
+      "platforms": { "ios": "accessibilityLabel: String?", "android": "contentDescription: String?" }
+    }
+  ],
+  "tokens": {
+    "radius": "radius.full (9999px - pill track + circular thumb)",
+    "sizes": {
+      "sm": { "track": "36x20px", "thumb": "16x16px", "thumbInset": "2px" },
+      "md": { "track": "44x24px", "thumb": "20x20px", "thumbInset": "2px" }
+    },
+    "variants": {
+      "light": {
+        "on":  { "track": "colors.brand (#7458FD)", "thumb": "#FFFFFF" },
+        "off": { "track": "colors.outline (#CDCED0)", "thumb": "#FFFFFF" }
+      },
+      "dark": {
+        "on":  { "track": "colors.brand (#7458FD)", "thumb": "#FFFFFF" },
+        "off": { "track": "rgba(255,255,255,0.15)", "thumb": "#FFFFFF" }
+      }
+    },
+    "disabled": {
+      "opacity": 0.4,
+      "notes": "applies on top of whichever on/off + variant colours are resolved above"
+    },
+    "animation": "thumb slides left/right on a spring transition; track background colour cross-fades"
+  },
+  "accessibility": {
+    "role": "switch",
+    "notes": "expose aria-checked (web) / accessibilityValue (native) reflecting the on/off state; disabled toggles must still announce label and state, just not accept input"
+  },
+  "docPage": "/inputs/toggle",
+  "sourceFile": "src/components/ui/PUToggle.tsx"
+}

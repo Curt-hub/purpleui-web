@@ -66,6 +66,15 @@
       "category": "inputs"
     },
     {
+      "name": "PUToggle",
+      "spec": "specs/PUToggle.json",
+      "docPage": "/inputs/toggle",
+      "platforms": ["web", "ios", "android"],
+      "category": "inputs",
+      "aliases": ["PUSwitch"],
+      "notes": "Spec only - no PurpleUI toggle/switch implementation exists yet on any platform. Contract for a follow-up build."
+    },
+    {
       "name": "PUBottomNav",
       "spec": "specs/PUBottomNav.json",
       "docPage": "/navigation/bottom-nav",

@@ -83,6 +83,56 @@ export const colors = {
 };
 
 // ─────────────────────────────────────────────────────────────
+// PASS THEME TOKENS
+// Named gradient skins for WiFi Pass cards (PUPassCard / PU3DPassCard /
+// PUWalletStack). Screens should reference passThemes.<name> instead of
+// hardcoding gradient hex pairs per screen.
+//
+// Convention:
+//   gradientFrom / gradientTo - 135° linear gradient stops
+//   on                        - text/icon colour for content on the card
+// ─────────────────────────────────────────────────────────────
+
+export const passThemes = {
+  // Purple brand pass - default skin
+  purple: {
+    gradientFrom: colors.brand,        // #7458FD
+    gradientTo:   '#9B7FFE',
+    on:           colors.background,   // #FFFFFF
+  },
+
+  // NHS-branded venue pass
+  nhs: {
+    gradientFrom: '#005EB8',           // NHS Blue
+    gradientTo:   '#003087',           // NHS Dark Blue
+    on:           colors.background,   // #FFFFFF
+  },
+
+  // University / institutional pass - reuses Purple's own navy
+  university: {
+    gradientFrom: colors.backgroundNavy, // #011638
+    gradientTo:   '#1A3A5C',
+    on:           colors.background,     // #FFFFFF
+  },
+
+  // Cafe / hospitality pass — reuses the success green
+  cafe: {
+    gradientFrom: '#0F9B63',
+    gradientTo:   colors.success,       // #16C172
+    on:           colors.background,    // #FFFFFF
+  },
+
+  // Neutral guest-network pass
+  guest: {
+    gradientFrom: '#4A2545',
+    gradientTo:   '#7C3F6E',
+    on:           colors.background,    // #FFFFFF
+  },
+};
+
+export type PassThemeName = keyof typeof passThemes;
+
+// ─────────────────────────────────────────────────────────────
 // SPACING TOKENS
 // ─────────────────────────────────────────────────────────────
 
