@@ -57,12 +57,91 @@ consuming app's `package.json`:
 
 The package ships a compiled `dist/` (plain JS + `.d.ts`, built from `src/`
 with `npm run build`) as `main`/`types`/`exports`, so a consuming Expo/Metro
-app resolves and bundles it like any other JS dependency - no Metro/Babel
-config changes, `watchFolders`, or workspace setup needed to get TypeScript
-inside `node_modules` transformed. `dist/` is committed (not gitignored)
-since this package isn't published to a registry yet; re-run `npm run build`
-after changing anything in `src/` and commit the updated `dist/` alongside
-it.
+app resolves and bundles it like any other JS dependency - no Babel config
+changes or workspace setup needed to get TypeScript inside `node_modules`
+transformed. `dist/` is committed (not gitignored) since this package isn't
+published to a registry yet; re-run `npm run build` after changing anything
+in `src/` and commit the updated `dist/` alongside it.
+
+**Metro config is still required.** A `file:` dependency resolves to a
+symlink at `node_modules/purpleui-react-native`, pointing outside the
+consuming app's project root (into this sibling repo). That has two
+consequences the consuming app's `metro.config.js` has to handle itself -
+this package cannot do it for you:
+
+1. **`watchFolders`** - Metro's file watcher only crawls the app's own
+   project root by default. Without watching this package's directory too,
+   Metro can resolve the symlink on disk but hasn't indexed the target's
+   files, so `import ... from 'purpleui-react-native'` fails to resolve.
+2. **`resolver.blockList` (plus `extraNodeModules` as a fallback)** - this
+   package declares `react`/`react-native` as peer dependencies and doesn't
+   bundle them, on the assumption it's built against the consuming app's own
+   copies. But because its directory is watched from *outside* the app's
+   root, Metro's hierarchical module resolution for its `require('react')`
+   calls walks **up** from this package's own location - so if this repo (or
+   this package itself) ever has its own `node_modules` on disk (e.g. after
+   running `npm install`/`npm run build` here directly), Metro finds *that*
+   `react`/`react-native` first, before it ever reaches the app's copy. That
+   silently ships two React runtimes in one bundle, which crashes at runtime
+   with an invalid-hook-call error inside this package's components (e.g.
+   `PUIconButton`, `PUToast`). `extraNodeModules` alone does not prevent
+   this - Metro only consults it as a fallback once normal resolution has
+   already failed, so it can't override a `node_modules/react` Metro already
+   found. A `blockList` that hides this repo's `node_modules` from Metro's
+   resolver is what actually forces resolution back up to the app's own
+   copy.
+
+Add both to the consuming app's `metro.config.js`:
+
+```js
+const { getDefaultConfig } = require('expo/metro-config');
+const path = require('path');
+
+const config = getDefaultConfig(__dirname);
+
+// Watch the sibling package so Metro indexes its files, not just the
+// symlink to them.
+const purpleUiReactNativeRoot = path.resolve(__dirname, '../../purpleui-web/purpleui-react-native');
+const purpleUiWebRoot = path.resolve(__dirname, '../../purpleui-web');
+config.watchFolders = [
+  ...(config.watchFolders ?? []),
+  purpleUiReactNativeRoot,
+];
+
+// Hide any node_modules inside the sibling repo from Metro's resolver, so
+// require('react') / require('react-native') from inside the package can
+// never resolve to a copy other than this app's own - even if the sibling
+// repo (or the package itself) has its own node_modules on disk.
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+const pathSepPattern = path.sep === '\\' ? '\\\\' : '/';
+const purpleUiWebNodeModules = new RegExp(
+  `^${escapeRegExp(purpleUiWebRoot)}(?:${pathSepPattern}.*)?${pathSepPattern}node_modules${pathSepPattern}.*`
+);
+config.resolver.blockList = [
+  ...(Array.isArray(config.resolver.blockList)
+    ? config.resolver.blockList
+    : config.resolver.blockList
+    ? [config.resolver.blockList]
+    : []),
+  purpleUiWebNodeModules,
+];
+
+// Belt-and-braces: also point react/react-native at this app's own copies
+// directly.
+config.resolver.extraNodeModules = {
+  ...(config.resolver.extraNodeModules ?? {}),
+  react: path.resolve(__dirname, 'node_modules/react'),
+  'react-native': path.resolve(__dirname, 'node_modules/react-native'),
+};
+
+module.exports = config;
+```
+
+Adjust the relative paths to match where the two repos actually sit on disk
+relative to each other. See `wifi-map-app/metro.config.js` for the version
+of this config verified against a real consuming app.
 
 ## Usage
 
@@ -155,6 +234,14 @@ infra. `npm run typecheck` remains as a package script for future CI.
 Consumption from a real app was verified end-to-end in the `wifi-map-app`
 (React Native/Expo) repo: added as `"purpleui-react-native": "file:../purpleui-web/purpleui-react-native"`,
 `PUIconButton` imported and used to replace its hand-rolled circular
-icon/back buttons (8+ call sites), and bundled with `npx expo export`
-(Metro) with no config changes - confirming `dist/`'s plain-JS output
-resolves and bundles without any TypeScript-in-`node_modules` workaround.
+icon/back buttons (8+ call sites), and bundled with `npx expo export:embed`
+(Metro) - confirming `dist/`'s plain-JS output resolves and bundles without
+any TypeScript-in-`node_modules` workaround. This *did* require the
+`watchFolders` + `resolver.blockList`/`extraNodeModules` additions to
+`wifi-map-app/metro.config.js` documented above; also verified by
+reproducing a double-React-copy scenario (running `npm install` inside this
+package so it has its own `node_modules/react`, then producing a release
+bundle with `npx expo export:embed --platform ios --dev false`) and
+confirming via the output sourcemap that exactly one `react` and one
+`react-native` end up in the bundle, with none resolving from this package's
+`node_modules`.
