@@ -188,6 +188,15 @@
       "composeBom": "2024.05.00",
       "entryPoint": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/",
       "build": "cd PurpleUI-Android && ./gradlew :purpleui:compileDebugKotlin"
+    },
+    "reactNative": {
+      "path": "purpleui-react-native/",
+      "type": "npm package (local/workspace - not published)",
+      "packageName": "purpleui-react-native",
+      "peerDependencies": ["react >=18", "react-native >=0.72"],
+      "entryPoint": "purpleui-react-native/src/index.ts",
+      "build": "cd purpleui-react-native && npm run typecheck",
+      "status": "first slice - theme tokens + PUButton, PUIconButton, PUToast. Remaining components (PUFloatingButton, PUBottomTray, PUValidationModal, PULoader, PUSearchBar, PUBottomNav) not yet ported."
     }
   },
   "snapshots": {
