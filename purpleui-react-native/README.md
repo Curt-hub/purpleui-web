@@ -55,10 +55,14 @@ consuming app's `package.json`:
 }
 ```
 
-If your Metro config doesn't already resolve TypeScript inside
-`node_modules` for local/workspace packages, add this package's `src/` to
-`watchFolders` (or add it as a proper Yarn/npm workspace member) so Metro
-transforms its `.ts`/`.tsx` files like the rest of the app.
+The package ships a compiled `dist/` (plain JS + `.d.ts`, built from `src/`
+with `npm run build`) as `main`/`types`/`exports`, so a consuming Expo/Metro
+app resolves and bundles it like any other JS dependency - no Metro/Babel
+config changes, `watchFolders`, or workspace setup needed to get TypeScript
+inside `node_modules` transformed. `dist/` is committed (not gitignored)
+since this package isn't published to a registry yet; re-run `npm run build`
+after changing anything in `src/` and commit the updated `dist/` alongside
+it.
 
 ## Usage
 
@@ -147,3 +151,10 @@ offline colour, default PUIconButton size/colour) was verified with a
 temporary `react-test-renderer` smoke test during development; it was removed
 before committing since this slice's scope is tokens + components, not test
 infra. `npm run typecheck` remains as a package script for future CI.
+
+Consumption from a real app was verified end-to-end in the `wifi-map-app`
+(React Native/Expo) repo: added as `"purpleui-react-native": "file:../purpleui-web/purpleui-react-native"`,
+`PUIconButton` imported and used to replace its hand-rolled circular
+icon/back buttons (8+ call sites), and bundled with `npx expo export`
+(Metro) with no config changes - confirming `dist/`'s plain-JS output
+resolves and bundles without any TypeScript-in-`node_modules` workaround.
