@@ -1,8 +1,20 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUSearchBar",
+  "category": "inputs",
   "description": "Pill-shaped search input that floats above the map. Search icon on the left, purple filter button on the right. Light and dark surface variants.",
   "platforms": ["web", "ios", "android"],
-  "variants": ["light", "dark"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUSearchBar.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUSearchBar.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PUSearchBar.kt" }
+  },
+  "variants": {
+    "kind": "derivedScenario",
+    "derivedFromProps": ["dark"],
+    "values": ["light", "dark"]
+  },
+  "states": ["default", "focused"],
   "props": [
     {
       "name": "value",
@@ -35,20 +47,20 @@
       "name": "onFilterPress",
       "type": "() => void",
       "default": "undefined",
-      "description": "Filter button tap handler — omit to hide filter button",
+      "description": "Filter button tap handler - omit to hide filter button",
       "platforms": { "ios": "onFilterTap: (() -> Void)?", "android": "onFilterPress: (() -> Unit)?" }
     },
     {
       "name": "dark",
       "type": "boolean",
       "default": false,
-      "description": "Dark surface variant — navy background, white text, white search icon",
+      "description": "Dark surface variant - navy background, white text, white search icon",
       "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
     }
   ],
   "tokens": {
     "height": "48px",
-    "radius": "radius.full (9999px — pill shape)",
+    "radius": "radius.full (9999px - pill shape)",
     "variants": {
       "light": {
         "background": "#FFFFFF",
@@ -68,6 +80,5 @@
     "role": "searchbox",
     "notes": "filter button should have accessibilityLabel 'Filter'"
   },
-  "docPage": "/inputs/search-bar",
-  "sourceFile": "src/components/ui/PUSearchBar.tsx"
+  "docPage": "/inputs/search-bar"
 }

@@ -41,6 +41,8 @@ export const colors = {
   backgroundElevated: palette.greyF,     // dark: '#0a2048'
   backgroundSunken:   '#F9F9FC',         // dark: '#09193d'
   backgroundNavy:     palette.navy,      // dark: palette.navy   (invariant - always navy)
+  backgroundElevatedNavy: '#0A2048',     // invariant - dark-mode-only elevated surface (modals/tray/search bar/floating button
+                                         // raised above backgroundNavy). No light equivalent.
   backgroundAlt:      palette.cream,     // dark: palette.cream  (invariant - always cream)
 
   // Text & icon colours

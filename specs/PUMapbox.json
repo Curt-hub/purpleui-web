@@ -1,7 +1,13 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUMapbox",
+  "category": "map",
   "description": "Interactive Mapbox map powering the Explore screen. Supports light and dark styles, pan, zoom, and gesture controls. On web built on react-map-gl; on iOS built on MapboxMaps SDK.",
   "platforms": ["web", "ios"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUMap.tsx" },
+    "ios": { "status": "implemented", "sourceFile": null }
+  },
   "props": [
     {
       "name": "dark",
@@ -10,7 +16,7 @@
       "description": "Switches between Mapbox streets-v12 (light) and dark-v11 styles",
       "platforms": {
         "ios": "isDark: Bool (controls styleURI: .light | .dark)",
-        "android": "N/A — use MapboxMaps Android SDK directly"
+        "android": "N/A - use MapboxMaps Android SDK directly"
       }
     },
     {
@@ -39,7 +45,7 @@
       "type": "CSSProperties",
       "default": "undefined",
       "description": "Additional CSS styles applied to the map container (web only)",
-      "platforms": { "ios": "N/A — use frame() modifier" }
+      "platforms": { "ios": "N/A - use frame() modifier" }
     }
   ],
   "mapboxStyles": {
@@ -55,6 +61,10 @@
     "web": "react-map-gl ^8 + mapbox-gl ^3",
     "ios": "MapboxMaps SDK (import MapboxMaps)"
   },
-  "docPage": "/map/mapbox",
-  "sourceFile": "src/components/ui/PUMap.tsx"
+  "notes": "iOS `sourceFile` is null even though status is `implemented` - iOS consumes the MapboxMaps SDK directly (see `dependencies.ios`) rather than through a PurpleUI-owned wrapper component, so there is no PurpleUI-iOS source file to point to.",
+  "accessibility": {
+    "role": "none",
+    "notes": "Delegates to the underlying Mapbox SDK's own accessibility behaviour (web: mapbox-gl's built-in ARIA landmarks; iOS: MapboxMaps SDK's UIAccessibility support). PUMapbox itself adds no extra labelling - any custom pins/overlays layered on top (see PUMapPin) must carry their own accessible labels, since the base map won't describe them."
+  },
+  "docPage": "/map/mapbox"
 }

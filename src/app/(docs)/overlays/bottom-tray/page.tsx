@@ -4,6 +4,7 @@ import { motion, useMotionValue, animate } from 'framer-motion';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
 import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
+import { colors } from '@/lib/tokens';
 
 // ── Figma-exact SVG icons ────────────────────────────────────
 
@@ -101,7 +102,7 @@ function PhoneTrayDemo({ dark }: { dark: boolean }) {
       <div style={{
         position: 'absolute', inset: 0,
         background: dark
-          ? 'linear-gradient(160deg,#011638 0%,#0a2048 100%)'
+          ? `linear-gradient(160deg,#011638 0%,${colors.backgroundElevatedNavy} 100%)`
           : 'linear-gradient(160deg,#dce8f5 0%,#e8f0f8 100%)',
       }} />
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.12 }} preserveAspectRatio="none">
@@ -118,7 +119,7 @@ function PhoneTrayDemo({ dark }: { dark: boolean }) {
       <div style={{ position: 'absolute', top: 58, left: 16, right: 16, zIndex: 10 }}>
         <div style={{
           height: 36, borderRadius: 50,
-          background: dark ? '#0a2048' : '#ffffff',
+          background: dark ? colors.backgroundElevatedNavy : '#ffffff',
           boxShadow: dark ? 'none' : '0px 2px 15px rgba(0,0,0,0.1)',
           border: dark ? '1px solid rgba(255,255,255,0.1)' : 'none',
           display: 'flex', alignItems: 'center', paddingLeft: 10, paddingRight: 10, gap: 8,
@@ -146,7 +147,7 @@ function PhoneTrayDemo({ dark }: { dark: boolean }) {
           position: 'absolute', bottom: 0, left: 0, right: 0,
           height: PHONE_EXPAND_H,
           borderRadius: '12px 12px 0 0',
-          background: dark ? '#0a2048' : '#ffffff',
+          background: dark ? colors.backgroundElevatedNavy : '#ffffff',
           boxShadow: '0px -2px 15px rgba(0,0,0,0.1)',
           zIndex: 20, touchAction: 'none', userSelect: 'none',
         }}
@@ -247,13 +248,13 @@ function StaticTrayPreview({ dark }: { dark: boolean }) {
     <div style={{
       width: 300,
       borderRadius: '12px 12px 0 0',
-      background: dark ? '#0a2048' : '#ffffff',
+      background: dark ? colors.backgroundElevatedNavy : '#ffffff',
       boxShadow: '0px -2px 15px rgba(0,0,0,0.1)',
       overflow: 'hidden',
     }}>
       {/* Drag handle */}
       <div style={{ height: 35, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: 104, height: 7, borderRadius: 9999, background: dark ? 'rgba(255,255,255,0.15)' : '#DDDDDF' }} />
+        <div style={{ width: 60, height: 5, borderRadius: 9999, background: dark ? 'rgba(255,255,255,0.15)' : '#DDDDDF' }} />
       </div>
 
       {/* Header */}
@@ -416,7 +417,7 @@ export default function BottomTrayPage() {
       {/* ── In Context ── */}
       <div className="mb-12">
         <h2 className="text-lg font-bold text-primary mb-5">In Context</h2>
-        <p className="text-sm text-gray-500 mb-4">Drag the tray handle up and down — it snaps between peek and expand.</p>
+        <p className="text-sm text-gray-500 mb-4">Drag the tray handle up and down - it snaps between peek and expand.</p>
         <PhoneFrame
           label="Drag the handle to snap between states"
           dark={isDark}

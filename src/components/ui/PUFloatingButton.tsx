@@ -50,7 +50,7 @@ function PlusIcon() {
 
 // ── Tokens — mirrors Bottom Tray / Bottom Nav dark patterns ──
 // Light: exact Figma spec (white bg, soft shadow)
-// Dark:  #0a2048 elevated surface (= Bottom Tray dark bg)
+// Dark:  colors.backgroundElevatedNavy elevated surface (= Bottom Tray dark bg)
 //        rgba(255,255,255,0.15) border (= Bottom Tray drag handle opacity)
 //        strong drop shadow to lift off the dark map
 const LIGHT = {
@@ -60,7 +60,7 @@ const LIGHT = {
   label:  colors.brand,
 };
 const DARK = {
-  bg:     '#0a2048',                              // backgroundElevated dark
+  bg:     colors.backgroundElevatedNavy,          // backgroundElevatedNavy dark
   border: '1px solid rgba(255,255,255,0.15)',     // outline dark
   shadow: '0px 4px 24px rgba(0,0,0,0.50)',
   label:  '#ffffff',                              // onBackground dark

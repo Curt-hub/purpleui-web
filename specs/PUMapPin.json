@@ -1,14 +1,25 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUMapPin",
-  "description": "Two pin types used on the Explore map. Tap to select — selected pins spring up and turn primary purple. Tap again to deselect.",
+  "category": "map",
+  "description": "Two pin types used on the Explore map. Tap to select - selected pins spring up and turn primary purple. Tap again to deselect.",
   "platforms": ["web", "ios"],
-  "variants": ["teardrop", "dot"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUMapPin.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUMapPin.swift" }
+  },
+  "variants": {
+    "kind": "propEnum",
+    "propName": "variant",
+    "values": ["teardrop", "dot"]
+  },
+  "states": ["unselected", "selected"],
   "props": [
     {
       "name": "variant",
       "type": "\"teardrop\" | \"dot\"",
       "default": "teardrop",
-      "description": "Pin shape — teardrop (46×62px) for WiFi hotspots, dot (30×30px) for secondary points of interest",
+      "description": "Pin shape - teardrop (46×62px) for WiFi hotspots, dot (30×30px) for secondary points of interest",
       "platforms": {
         "ios": "variant: PUMapPinVariant (.teardrop | .dot)",
         "android": "N/A — see iOS only"
@@ -18,21 +29,21 @@
       "name": "selected",
       "type": "boolean",
       "default": false,
-      "description": "Selected state — turns pin primary purple and springs up with a lift animation",
+      "description": "Selected state - turns pin primary purple and springs up with a lift animation",
       "platforms": { "ios": "selected: Bool" }
     },
     {
       "name": "onClick",
       "type": "() => void",
       "default": "undefined",
-      "description": "Tap handler — enables pointer cursor on web",
+      "description": "Tap handler - enables pointer cursor on web",
       "platforms": { "ios": ".onTapGesture { }" }
     },
     {
       "name": "dark",
       "type": "boolean",
       "default": false,
-      "description": "Dark surface — adjusts spot shadow from black to white tint",
+      "description": "Dark surface - adjusts spot shadow from black to white tint",
       "platforms": { "ios": "dark: Bool" }
     },
     {
@@ -54,8 +65,11 @@
   "behaviour": {
     "selectAnimation": "spring scale + translateY(-8px) on selection",
     "multiSelect": false,
-    "notes": "manage selected state externally — pin is a controlled component"
+    "notes": "manage selected state externally - pin is a controlled component"
   },
-  "docPage": "/map/map-pins",
-  "sourceFile": "src/components/ui/PUMapPin.tsx"
+  "accessibility": {
+    "role": "button",
+    "notes": "Pin has no built-in accessible label today - consumers must supply one externally (e.g. the venue/network name), since PUMapPin only renders shape + colour. Expose selected state via aria-pressed (web) / accessibilityValue (native), not colour alone."
+  },
+  "docPage": "/map/map-pins"
 }

@@ -1,7 +1,15 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUBottomTray",
-  "description": "Persistent tray anchored to the bottom of the screen. Drags and snaps between a peeked state and an expanded state — no backdrop, always visible. Used over the Explore map to show nearby WiFi venues.",
+  "category": "overlays",
+  "description": "Persistent tray anchored to the bottom of the screen. Drags and snaps between a peeked state and an expanded state - no backdrop, always visible. Used over the Explore map to show nearby WiFi venues.",
   "platforms": ["web", "ios", "android"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUBottomTray.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUBottomTray.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PUBottomTray.kt" }
+  },
+  "states": ["peeked", "expanded", "dragging"],
   "props": [
     {
       "name": "title",
@@ -24,7 +32,7 @@
       "name": "dark",
       "type": "boolean",
       "default": false,
-      "description": "Dark surface — navy background, white text",
+      "description": "Dark surface - navy background, white text",
       "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
     },
     {
@@ -63,6 +71,9 @@
     "radius": "radius.lg (16px) on top corners only",
     "headerTypography": "Poppins Bold 16px"
   },
-  "docPage": "/overlays/bottom-tray",
-  "sourceFile": "src/components/ui/PUBottomTray.tsx"
+  "accessibility": {
+    "role": "none",
+    "notes": "Not itself an accessible control - expose the header title as a heading and let list content inside provide its own semantics. The drag handle is decorative (aria-hidden / accessibilityElementsHidden) - provide an alternative expand/collapse control (e.g. a button) for users who cannot perform a drag gesture."
+  },
+  "docPage": "/overlays/bottom-tray"
 }

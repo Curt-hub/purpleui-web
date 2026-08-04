@@ -40,7 +40,7 @@ public struct PUFloatingButton: View {
     // MARK: - Colours
 
     private var background: Color {
-        dark ? Color(hex: "#0a2048") : PUColors.background
+        dark ? PUColors.backgroundElevatedNavy : PUColors.background
     }
 
     private var foreground: Color {

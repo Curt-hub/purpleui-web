@@ -4,6 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -41,17 +42,28 @@ object FA {
  * Renders a FontAwesome 5 Free Solid icon.
  *
  * Requires `fa_solid.ttf` in `res/font/` of the consuming app module.
+ *
+ * @param decorative Set `true` when this icon sits inside a control that already has its
+ * own accessible label (e.g. a parent `contentDescription`, or a sibling `Text` with the
+ * same meaning) - a raw FontAwesome glyph is a private-use-area codepoint, so without this,
+ * TalkBack will merge a garbled/unreadable "word" into that label. Defaults to `false` so
+ * existing call sites are unaffected; only opt in where you've confirmed the icon is truly
+ * redundant with another label in the same merged semantics node - if it's the *only* signal
+ * (e.g. an icon-only button with no `contentDescription` passed), leave this `false`.
  */
 @Composable
 fun FAIcon(
     icon: String,
     modifier: Modifier = Modifier,
     size: TextUnit = 16.sp,
-    color: Color = Color.Unspecified
+    color: Color = Color.Unspecified,
+    decorative: Boolean = false
 ) {
     Text(
         text = icon,
-        modifier = modifier,
+        modifier = modifier.then(
+            if (decorative) Modifier.clearAndSetSemantics {} else Modifier
+        ),
         style = TextStyle(
             fontFamily = FASolidFamily,
             fontSize = size,

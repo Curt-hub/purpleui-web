@@ -1,4 +1,5 @@
 'use client';
+import { colors } from '@/lib/tokens';
 
 export type PUBottomNavTab = 'explore' | 'wallet' | 'activity' | 'profile';
 
@@ -72,11 +73,11 @@ export function PUBottomNav({ activeTab, onTabChange, dark }: PUBottomNavProps) 
     <div
       className="w-full h-[88px] flex items-center justify-center px-6"
       style={dark ? {
-        background: '#011638',   // backgroundNavy
+        background: colors.backgroundNavy,   // backgroundNavy
         borderTop: '1px solid rgba(255,255,255,0.08)',  // outlineSubtle dark
         boxShadow: '0px -4px 24px rgba(0,0,0,0.4)',
       } : {
-        background: '#ffffff',   // background
+        background: colors.background,   // background
         boxShadow: '0px -2px 2px 0px rgba(0,0,0,0.03)',
         borderTop: '1px solid rgba(247,247,248,0.8)',   // backgroundElevated tint
       }}
@@ -86,12 +87,12 @@ export function PUBottomNav({ activeTab, onTabChange, dark }: PUBottomNavProps) 
           const isActive = activeTab === id;
 
           const iconColor = dark
-            ? (isActive ? '#7458fd' : 'rgba(255,255,255,0.35)')  // brand : onBackgroundTertiary dark
-            : (isActive ? '#000000' : '#AAACB0');                  // onBackground : onBackgroundTertiary
+            ? (isActive ? colors.brand : 'rgba(255,255,255,0.35)')  // brand : onBackgroundTertiary dark
+            : (isActive ? colors.onBackground : colors.onBackgroundTertiary);  // onBackground : onBackgroundTertiary
 
           const labelColor = dark
-            ? (isActive ? '#7458fd' : 'rgba(255,255,255,0.35)')
-            : (isActive ? '#000000' : '#AAACB0');
+            ? (isActive ? colors.brand : 'rgba(255,255,255,0.35)')
+            : (isActive ? colors.onBackground : colors.onBackgroundTertiary);
 
           return (
             <button

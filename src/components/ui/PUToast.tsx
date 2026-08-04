@@ -67,12 +67,22 @@ const config: Record<PUToastVariant, { bg: string; textColor: string; Icon: () =
   },
 };
 
+// error/warning interrupt the user (assistive tech should announce immediately, even
+// mid-speech) so they get the more urgent role="alert" (implicit aria-live="assertive").
+// success/info/offline are non-urgent confirmations, so role="status" + aria-live="polite"
+// queues the announcement without cutting off whatever the screen reader is already saying.
+const urgentVariants: PUToastVariant[] = ['error', 'warning'];
+
 export function PUToast({ visible, message, variant = 'success', showIcon = true, onDismiss }: PUToastProps) {
   const c = config[variant];
+  const isUrgent = urgentVariants.includes(variant);
   return (
     <AnimatePresence>
       {visible && (
         <motion.div
+          role={isUrgent ? 'alert' : 'status'}
+          aria-live={isUrgent ? 'assertive' : 'polite'}
+          aria-atomic="true"
           initial={{ opacity: 0, y: -16, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -10, scale: 0.97 }}

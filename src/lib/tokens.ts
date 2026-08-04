@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// TIER 1 — PALETTE
+// TIER 1 - PALETTE
 // Raw color definitions. Do NOT import these into components.
 // Components must only reference semantic tokens below.
 // ─────────────────────────────────────────────────────────────
@@ -24,17 +24,17 @@ const palette = {
 } as const;
 
 // ─────────────────────────────────────────────────────────────
-// TIER 2 — SEMANTIC COLOR TOKENS
+// TIER 2 - SEMANTIC COLOR TOKENS
 // Role-based names. Each has a defined light value today and a
 // clear dark-mode mapping documented alongside it so dark mode
 // is a configuration change, not a rename.
 //
 // Convention:
-//   background*   — surface backgrounds
-//   on*           — text / icons that sit on top of a background
-//   outline*      — borders and dividers
-//   brand*        — Purple brand colour and tints
-//   success/error/warning/info + *Subtle — status colours
+//   background*   - surface backgrounds
+//   on*           - text / icons that sit on top of a background
+//   outline*      - borders and dividers
+//   brand*        - Purple brand colour and tints
+//   success/error/warning/info + *Subtle - status colours
 // ─────────────────────────────────────────────────────────────
 
 export const colors = {
@@ -46,8 +46,13 @@ export const colors = {
   background:         palette.white,     // dark: palette.navy
   backgroundElevated: palette.greyF,    // dark: '#0a2048'
   backgroundSunken:   '#F9F9FC',         // dark: '#09193d'
-  backgroundNavy:     palette.navy,      // dark: palette.navy    (invariant — always navy)
-  backgroundAlt:      palette.cream,     // dark: palette.cream   (invariant — always cream)
+  backgroundNavy:     palette.navy,      // dark: palette.navy    (invariant - always navy)
+  backgroundElevatedNavy: '#0A2048',     // invariant - dark-mode-only elevated surface (modals/tray/search bar/floating button
+                                         // raised above backgroundNavy). No light equivalent. New token - reconciles a
+                                         // hardcoded ad hoc value ('#0a2048') already duplicated 5+ times across web/iOS,
+                                         // and a 3rd, drifted value ('#0C2149') on Android. Existing call sites still use the
+                                         // raw hex today and will be migrated to this token in a follow-up pass.
+  backgroundAlt:      palette.cream,     // dark: palette.cream   (invariant - always cream)
 
   // Text & icon colours
   onBackground:          palette.black,    // dark: palette.white
@@ -61,7 +66,7 @@ export const colors = {
   // Misc component-specific
   loaderTrack: palette.greyD,   // invariant
 
-  // Status — action colours (invariant between light/dark)
+  // Status - action colours (invariant between light/dark)
   success:      palette.green,
   successSubtle: '#E8F5E9',     // dark: '#0d3320'
   successStrong: '#4CAF50',
@@ -75,7 +80,7 @@ export const colors = {
   info:         palette.blue,
   infoSubtle:   'rgba(4,93,236,0.12)',
 
-  // Vendor / partner brand colours (Activity feed — do not use elsewhere)
+  // Vendor / partner brand colours (Activity feed - do not use elsewhere)
   vendorBrown:  '#6B2737',
   vendorForest: '#2D5A27',
   vendorRed:    '#E4002B',
@@ -115,7 +120,7 @@ export const passThemes = {
     on:           colors.background,     // #FFFFFF
   },
 
-  // Cafe / hospitality pass — reuses the success green
+  // Cafe / hospitality pass - reuses the success green
   cafe: {
     gradientFrom: '#0F9B63',
     gradientTo:   colors.success,       // #16C172

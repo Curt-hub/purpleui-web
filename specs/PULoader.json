@@ -1,8 +1,19 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PULoader",
-  "description": "Spinning activity indicator used to signal background work. Light and Dark variants suit any surface. Not a standalone loading screen — compose with a background view.",
+  "category": "indicators",
+  "description": "Spinning activity indicator used to signal background work. Light and Dark variants suit any surface. Not a standalone loading screen - compose with a background view.",
   "platforms": ["web", "ios", "android"],
-  "variants": ["light", "dark"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PULoader.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PULoader.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PULoader.kt" }
+  },
+  "variants": {
+    "kind": "propEnum",
+    "propName": "variant",
+    "values": ["light", "dark"]
+  },
   "props": [
     {
       "name": "variant",
@@ -27,14 +38,13 @@
       }
     }
   },
-  "usage": [
+  "behaviour": [
     "Full-screen loading: center in a ZStack/Box over the page background",
-    "Inline loading: PUButton has a built-in loading prop — prefer that over composing PULoader manually"
+    "Inline loading: PUButton has a built-in loading prop - prefer that over composing PULoader manually"
   ],
   "accessibility": {
     "role": "progressbar",
     "notes": "announce 'Loading' via accessibilityLabel when displayed as a full-screen state"
   },
-  "docPage": "/indicators/loader",
-  "sourceFile": "src/components/ui/PULoader.tsx"
+  "docPage": "/indicators/loader"
 }

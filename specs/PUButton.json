@@ -1,9 +1,21 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUButton",
+  "category": "buttons",
   "description": "Branded button styles to trigger actions in the user interface. All buttons use a pill shape, Poppins Bold 14px, and the Bottom A shadow.",
   "platforms": ["web", "ios", "android"],
-  "variants": ["primary", "secondary", "secondary-dark", "destructive"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUButton.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUButton.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PUButton.kt" }
+  },
+  "variants": {
+    "kind": "propEnum",
+    "propName": "variant",
+    "values": ["primary", "secondary", "secondary-dark", "destructive"]
+  },
   "sizes": ["sm", "md", "lg", "compact"],
+  "states": ["default", "pressed", "disabled", "loading"],
   "props": [
     {
       "name": "label",
@@ -26,10 +38,10 @@
       "name": "size",
       "type": "\"sm\" | \"md\" | \"lg\" | \"compact\"",
       "default": "md",
-      "description": "sm = 40pt height | md = 48pt height | lg = 56pt height",
+      "description": "sm = 40pt height | md = 48pt height | lg = 56pt height | compact = 40pt height, narrower horizontal padding",
       "platforms": {
-        "ios": "size: PUButtonSize (.sm | .md | .lg)",
-        "android": "size: PUButtonSize (Sm | Md | Lg)"
+        "ios": "size: PUButtonSize (.sm | .md | .lg | .compact)",
+        "android": "size: PUButtonSize (Sm | Md | Lg | Compact)"
       }
     },
     {
@@ -80,7 +92,7 @@
   ],
   "tokens": {
     "typography": "Poppins Bold 14px",
-    "radius": "radius.full (9999px — pill shape)",
+    "radius": "radius.full (9999px - pill shape)",
     "shadow": "shadows.bottomA",
     "variants": {
       "primary": {
@@ -107,6 +119,5 @@
     "role": "button",
     "notes": "loading state disables tap and should announce spinner to assistive technology"
   },
-  "docPage": "/buttons/button",
-  "sourceFile": "src/components/ui/PUButton.tsx"
+  "docPage": "/buttons/button"
 }

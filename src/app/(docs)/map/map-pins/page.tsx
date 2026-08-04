@@ -4,12 +4,13 @@ import { PUMapPin } from '@/components/ui/PUMapPin';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { CodeBlock } from '@/components/docs/CodeBlock';
 import { PropsTable } from '@/components/docs/PropsTable';
+import { colors } from '@/lib/tokens';
 
 const props = [
-  { name: 'variant',  type: "'teardrop' | 'dot'", default: "'teardrop'", description: 'Pin shape — teardrop (46×62px) or dot (30×30px)' },
-  { name: 'selected', type: 'boolean',             default: 'false',      description: 'Selected state — turns pin primary purple and lifts up' },
-  { name: 'onClick',  type: '() => void',          default: '—',          description: 'Tap handler — enables pointer cursor' },
-  { name: 'dark',     type: 'boolean',             default: 'false',      description: 'Dark surface — adjusts spot shadow to white' },
+  { name: 'variant',  type: "'teardrop' | 'dot'", default: "'teardrop'", description: 'Pin shape - teardrop (46×62px) or dot (30×30px)' },
+  { name: 'selected', type: 'boolean',             default: 'false',      description: 'Selected state - turns pin primary purple and lifts up' },
+  { name: 'onClick',  type: '() => void',          default: '—',          description: 'Tap handler - enables pointer cursor' },
+  { name: 'dark',     type: 'boolean',             default: 'false',      description: 'Dark surface - adjusts spot shadow to white' },
   { name: 'color',    type: 'string',              default: "'#045DEC'",  description: 'Override fill colour (selected state always uses #7458FD)' },
 ];
 
@@ -44,7 +45,7 @@ function PhoneMapDemo({ dark }: { dark: boolean }) {
 
   const gridColor = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
   const roadColor = dark ? 'rgba(255,255,255,0.1)'  : 'rgba(0,0,0,0.09)';
-  const bg        = dark ? '#0a2048' : '#EEF0F3';
+  const bg        = dark ? colors.backgroundElevatedNavy : '#EEF0F3';
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', background: bg }}>
@@ -88,7 +89,7 @@ function InteractiveDemo() {
   return (
     <div className="rounded-xl border border-gray-200 overflow-hidden my-4">
       <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-200">
-        <span className="text-xs font-medium text-gray-500">Click to select — click again to deselect</span>
+        <span className="text-xs font-medium text-gray-500">Click to select - click again to deselect</span>
       </div>
       <div className="bg-[#EEF0F3] p-10 flex flex-col gap-10 items-center justify-center min-h-[200px]">
         <div className="flex items-end gap-12">
@@ -162,13 +163,19 @@ export default function MapPinsPage() {
         </div>
         <div>
           <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Teardrop · Dark</p>
-          <div className="flex items-end justify-center rounded-xl border border-white/10 bg-[#0a2048] px-10 py-8">
+          <div
+            className="flex items-end justify-center rounded-xl border border-white/10 px-10 py-8"
+            style={{ background: colors.backgroundElevatedNavy }}
+          >
             <PUMapPin variant="teardrop" dark />
           </div>
         </div>
         <div>
           <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Dot · Dark</p>
-          <div className="flex items-center justify-center rounded-xl border border-white/10 bg-[#0a2048] px-10 py-8">
+          <div
+            className="flex items-center justify-center rounded-xl border border-white/10 px-10 py-8"
+            style={{ background: colors.backgroundElevatedNavy }}
+          >
             <PUMapPin variant="dot" dark />
           </div>
         </div>

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://purpleui.purple.ai/schema/index.schema.json",
+  "title": "PurpleUI Specs Registry (specs/index.json)",
+  "type": "object",
+  "required": ["$schema", "version", "description", "components", "foundations", "tokens"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Must be a real URI/relative path to a schema file. (This field previously held a human-readable sentence describing the registry - that text now lives in `description`.)"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "spec", "docPage", "platforms", "category"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "spec": { "type": "string" },
+          "docPage": { "type": ["string", "null"] },
+          "platforms": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["web", "ios", "android"] }
+          },
+          "category": { "type": "string" },
+          "aliases": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "foundations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "spec", "docPage"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "spec": { "type": "string" },
+          "tokenFile": { "type": "string" },
+          "dtcgFile": { "type": "string" },
+          "assetDirectory": { "type": "string" },
+          "docPage": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "tokens": { "type": "object" },
+    "nativePackages": { "type": "object" },
+    "snapshots": { "type": "object" },
+    "examples": { "type": "object" },
+    "excludedComponents": {
+      "type": "array",
+      "description": "Web components deliberately NOT registered as PurpleUI design-system components (no spec, not cross-platform), with the reason on record instead of silent omission.",
+      "items": {
+        "type": "object",
+        "required": ["name", "sourceFile", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "sourceFile": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}

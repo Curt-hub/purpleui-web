@@ -20,11 +20,13 @@ __exportStar(require("./spacing"), exports);
 __exportStar(require("./radius"), exports);
 __exportStar(require("./typography"), exports);
 __exportStar(require("./shadows"), exports);
+__exportStar(require("./passThemes"), exports);
 const colors_1 = require("./colors");
 const spacing_1 = require("./spacing");
 const radius_1 = require("./radius");
 const typography_1 = require("./typography");
 const shadows_1 = require("./shadows");
+const passThemes_1 = require("./passThemes");
 /** Single-import theme object - colours, spacing, radii, typography, shadows. */
 exports.theme = {
     colors: colors_1.colors,
@@ -32,4 +34,5 @@ exports.theme = {
     radius: radius_1.radius,
     typography: typography_1.typography,
     shadows: shadows_1.shadows,
+    passThemes: passThemes_1.passThemes,
 };

@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://purpleui.purple.ai/schema/component.schema.json",
+  "title": "PurpleUI Component Spec",
+  "description": "Shape every specs/PU*.json component spec must conform to. Written to normalize the 15 original component specs, which had drifted into inconsistent field sets (see the mobile-parity audit). additionalProperties is false at the root deliberately - every field that legitimately varies per component (tabs, icons, mapboxStyles, ...) is enumerated below, so an unexpected top-level key is treated as a real error, not a false positive.",
+  "type": "object",
+  "required": ["$schema", "name", "category", "description", "platforms", "implementation", "accessibility", "docPage"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Relative path back to this file, e.g. \"./schema/component.schema.json\"."
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^PU[A-Za-z0-9]+$"
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "category": {
+      "type": "string",
+      "enum": ["buttons", "inputs", "overlays", "indicators", "navigation", "passes", "map", "content"]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "platforms": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["web", "ios", "android"] },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "implementation": {
+      "type": "object",
+      "description": "Machine-readable build status per platform. Keys must exactly match `platforms` - every declared platform needs an entry (no silent gaps) and every entry must be a declared platform (no orphans). Enforced by scripts/validate-specs.ts in both directions, not expressible in pure JSON Schema (would need $data cross-references). A platform absent from `platforms` entirely means the component is deliberately out of scope for that platform (e.g. PUMapPin has no `android` key at all, matching its prop-level 'N/A - see iOS only' note) - that is not the same as `status: \"planned\"`, which means in-scope but not yet built.",
+      "additionalProperties": false,
+      "properties": {
+        "web": { "$ref": "#/$defs/implementationEntry" },
+        "ios": { "$ref": "#/$defs/implementationEntry" },
+        "android": { "$ref": "#/$defs/implementationEntry" }
+      }
+    },
+    "variants": {
+      "type": "object",
+      "description": "Disambiguates two things the old flat `variants: string[]` conflated: a real enum backing an actual prop (kind=propEnum, e.g. PUButton's `variant`) vs. descriptive scenario labels derived from one or more other props that have no single corresponding enum prop (kind=derivedScenario, e.g. PUPassCard's `stacked-depth-1`, derived from the numeric `stackDepth` prop).",
+      "required": ["kind", "values"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "type": "string", "enum": ["propEnum", "derivedScenario"] },
+        "propName": { "type": "string", "description": "Required when kind=propEnum: the prop these values are the enum of." },
+        "derivedFromProps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Required when kind=derivedScenario: the prop(s) whose combination produces these scenario labels."
+        },
+        "values": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "propEnum" } } },
+          "then": {
+            "required": ["propName"],
+            "not": { "required": ["derivedFromProps"] }
+          }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "derivedScenario" } } },
+          "then": {
+            "required": ["derivedFromProps"],
+            "not": { "required": ["propName"] }
+          }
+        }
+      ]
+    },
+    "sizes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Only present when the component has a real, named `size` prop enum (e.g. PUButton, PUToggle). Dimension-only variation with no discrete size prop stays inside `tokens`."
+    },
+    "states": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Discrete interaction/lifecycle states distinct from `variants` (semantic styling) and `sizes` (dimension)."
+    },
+    "tabs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "PUBottomNav-specific: the fixed tab identifiers."
+    },
+    "icons": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "PUFloatingButton-specific: the icon identifiers it supports."
+    },
+    "props": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Canonical prop name. Must be the literal web prop name whenever web is in `platforms` - if a platform's real name differs, it MUST appear under `platforms` below (including web itself, if web's real name differs from this canonical name)."
+          },
+          "type": { "type": "string" },
+          "required": { "type": "boolean", "default": false },
+          "default": {},
+          "description": { "type": "string" },
+          "platforms": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "web": { "type": "string" },
+              "ios": { "type": "string" },
+              "android": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "tokens": {
+      "type": "object",
+      "description": "Free-form token-reference map. Deliberately not strictly schema'd - shape varies too widely across components to usefully constrain, and its contents are the disputed design values in some specs (see repo history) that must not be mechanically rewritten."
+    },
+    "anatomy": {
+      "type": "object",
+      "description": "Free-form structural/layout description of the component's parts."
+    },
+    "behaviour": {
+      "description": "Interaction/animation/usage guidance. Deliberately loosely typed (object or array of strings) - some components describe named behaviours (autoDismiss, dragSnap), others describe platform placement guidance (ios/android strings), others a list of usage notes. One field name is enforced repo-wide (see README note in specs/); internal shape is not.",
+      "anyOf": [
+        { "type": "object" },
+        { "type": "array", "items": { "type": "string" } }
+      ]
+    },
+    "accessibility": {
+      "type": "object",
+      "required": ["role", "notes"],
+      "additionalProperties": false,
+      "properties": {
+        "role": { "type": "string", "description": "Accessibility role/trait, e.g. 'button', 'alertdialog', 'searchbox', 'none' for decorative/delegated components." },
+        "notes": { "type": "string" }
+      }
+    },
+    "relatedComponents": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "docPage": {
+      "type": ["string", "null"],
+      "pattern": "^/",
+      "description": "Repo-relative doc-site route (e.g. \"/buttons/button\"), or null when no doc page exists yet - never a route that doesn't actually resolve to a page (checked on disk by scripts/validate-specs.ts, since the JSON Schema pattern alone can't know what pages exist)."
+    },
+    "mapboxStyles": { "type": "object" },
+    "defaultCamera": { "type": "object" },
+    "dependencies": { "type": "object" },
+    "notes": {
+      "type": "string",
+      "description": "Free-text disclosure for anything `implementation` status can't fully express on its own (kept for human readability alongside the machine-readable field)."
+    }
+  },
+  "$defs": {
+    "implementationEntry": {
+      "type": "object",
+      "required": ["status", "sourceFile"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "type": "string", "enum": ["implemented", "planned"] },
+        "sourceFile": {
+          "type": ["string", "null"],
+          "description": "Repo-relative path to the real implementation file. null when status=planned; also null for status=implemented in the rare case where the platform is genuinely served (e.g. PUMapbox on iOS is consumed directly via the MapboxMaps SDK) but PurpleUI owns no wrapper source file for it - see `dependencies`/`notes` for that case."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "planned" } } },
+          "then": { "properties": { "sourceFile": { "const": null } } }
+        }
+      ]
+    }
+  }
+}

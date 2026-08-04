@@ -45,7 +45,7 @@ fun PUBottomTray(
     defaultExpanded: Boolean = false,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val background  = if (dark) Color(0xFF0A2048) else PUColors.background
+    val background  = if (dark) PUColors.backgroundElevatedNavy else PUColors.background
     val handleColor = if (dark) Color.White.copy(alpha = 0.15f) else PUColors.loaderTrack
     val titleColor  = if (dark) Color.White else PUColors.onBackground
 
@@ -64,6 +64,17 @@ fun PUBottomTray(
 
     Column(
         modifier = modifier
+            // MUST stay before `.fillMaxWidth()`/`.height(displayHeight)` below, not after.
+            // `.height()` fixes an exact (min == max) constraint on everything nested inside
+            // it; `navigationBarsPadding()` can only add its inset to a size that's still free
+            // to grow. Placed after `.height()`, the inset would have nowhere to go but to
+            // steal space from `content()` (peek/expand height would silently shrink on
+            // gesture-nav devices). Placed here, before both, it sees this composable's real
+            // (loose) incoming constraints from its parent Box, so the inset adds to the
+            // tray's total footprint instead - the card underneath keeps its full
+            // `displayHeight` and the extra space is reserved below it, clear of the system
+            // nav bar. If you're tidying this modifier chain, keep this first.
+            .navigationBarsPadding()
             .fillMaxWidth()
             .height(displayHeight)
             .shadow(elevation = 8.dp, shape = topShape, clip = false)

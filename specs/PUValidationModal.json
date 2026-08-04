@@ -1,9 +1,21 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUValidationModal",
-  "description": "Centered confirmation dialog with a blurred backdrop and spring scale-in animation. Stacked pill buttons — confirm action on top, cancel below. Three semantic variants for different action severities.",
+  "category": "overlays",
+  "description": "Centered confirmation dialog with a blurred backdrop and spring scale-in animation. Stacked pill buttons - confirm action on top, cancel below. Three semantic variants for different action severities.",
   "platforms": ["web", "ios", "android"],
-  "variants": ["info", "warning", "destructive"],
   "aliases": ["PUAlertModal"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUAlertModal.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUAlertModal.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PUAlertModal.kt" }
+  },
+  "variants": {
+    "kind": "propEnum",
+    "propName": "variant",
+    "values": ["info", "warning", "destructive"]
+  },
+  "states": ["presented", "dismissed"],
   "props": [
     {
       "name": "isPresented",
@@ -55,6 +67,13 @@
       }
     },
     {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark surface variant - navy card background, lighter text/border treatment. Present on the web implementation but was missing from this spec; added while fixing the onDismiss naming gap below.",
+      "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
+    },
+    {
       "name": "onConfirm",
       "type": "() => void",
       "required": true,
@@ -67,6 +86,7 @@
       "required": true,
       "description": "Called when modal is dismissed (cancel or backdrop tap)",
       "platforms": {
+        "web": "onClose: () => void",
         "ios": "handled by isPresented binding",
         "android": "onDismiss: () -> Unit"
       }
@@ -75,7 +95,7 @@
   "behaviour": {
     "backdrop": "blurred overlay (blur(5px)), tapping dismisses modal",
     "animation": "spring scale-in from 0.85 to 1.0",
-    "buttonLayout": "stacked vertically — confirm on top, cancel below"
+    "buttonLayout": "stacked vertically - confirm on top, cancel below"
   },
   "tokens": {
     "card": {
@@ -97,6 +117,5 @@
     "role": "alertdialog",
     "notes": "focus trapped within modal while open"
   },
-  "docPage": "/overlays/validation-modal",
-  "sourceFile": "src/components/ui/PUAlertModal.tsx"
+  "docPage": "/overlays/validation-modal"
 }

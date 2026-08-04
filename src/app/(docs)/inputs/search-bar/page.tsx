@@ -5,6 +5,7 @@ import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { ComponentPreview } from '@/components/docs/ComponentPreview';
 import { PropsTable } from '@/components/docs/PropsTable';
 import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
+import { colors } from '@/lib/tokens';
 
 // ── Phone-frame mock ─────────────────────────────────────────
 
@@ -19,7 +20,7 @@ function PhoneSearchDemo({ dark }: { dark: boolean }) {
           position: 'absolute',
           inset: 0,
           background: dark
-            ? 'linear-gradient(160deg, #011638 0%, #0a2048 100%)'
+            ? `linear-gradient(160deg, #011638 0%, ${colors.backgroundElevatedNavy} 100%)`
             : 'linear-gradient(160deg, #dce8f5 0%, #e8f0f8 100%)',
         }}
       />
@@ -138,7 +139,7 @@ export default function SearchBarPage() {
       {/* ── Variants ── */}
       <h2 className="text-lg font-bold text-primary mb-5">Variants</h2>
 
-      <ComponentPreview label="Light — default">
+      <ComponentPreview label="Light - default">
         <div className="w-[340px]">
           <PUSearchBar
             value={value}
@@ -162,7 +163,7 @@ export default function SearchBarPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview label="Light — with typed value">
+      <ComponentPreview label="Light - with typed value">
         <div className="w-[340px]">
           <PUSearchBar
             value="Purple"
@@ -172,7 +173,7 @@ export default function SearchBarPage() {
         </div>
       </ComponentPreview>
 
-      <ComponentPreview label="Dark — with typed value" bg="dark">
+      <ComponentPreview label="Dark - with typed value" bg="dark">
         <div className="w-[340px]">
           <PUSearchBar
             value="Airport"

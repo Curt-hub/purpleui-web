@@ -1,11 +1,21 @@
 {
-  "$schema": "Purple UI component spec",
+  "$schema": "./schema/component.schema.json",
   "name": "PUToggle",
   "category": "inputs",
   "description": "Binary on/off control rendered as a pill-shaped track with a sliding circular thumb. Used for settings rows and preference switches. No toggle/switch exists on any PurpleUI platform today - this spec defines the contract ahead of implementation.",
   "platforms": ["web", "ios", "android"],
   "aliases": ["PUSwitch"],
-  "variants": ["light", "dark"],
+  "implementation": {
+    "web": { "status": "planned", "sourceFile": null },
+    "ios": { "status": "planned", "sourceFile": null },
+    "android": { "status": "planned", "sourceFile": null }
+  },
+  "notes": "Spec only - no PurpleUI toggle/switch implementation exists yet on any platform. Contract for a follow-up build (kept as prose here alongside the machine-readable `implementation` status above for human readability). docPage is null for the same reason - there is no src/app/(docs)/inputs/toggle page on disk; \"/inputs/toggle\" was a dead link left in the original spec before normalization.",
+  "variants": {
+    "kind": "derivedScenario",
+    "derivedFromProps": ["dark"],
+    "values": ["light", "dark"]
+  },
   "sizes": ["sm", "md"],
   "states": ["off", "on", "disabled"],
   "anatomy": {
@@ -85,6 +95,5 @@
     "role": "switch",
     "notes": "expose aria-checked (web) / accessibilityValue (native) reflecting the on/off state; disabled toggles must still announce label and state, just not accept input"
   },
-  "docPage": "/inputs/toggle",
-  "sourceFile": "src/components/ui/PUToggle.tsx"
+  "docPage": null
 }

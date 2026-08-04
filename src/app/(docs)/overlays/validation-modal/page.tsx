@@ -7,11 +7,12 @@ import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
 import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
 import type { PUAlertModalVariant } from '@/components/ui/PUAlertModal';
+import { colors } from '@/lib/tokens';
 
 const swiftCode = `// Destructive — irreversible action
 PUAlertModal(
     isPresented: $showModal,
-    title: "You haven't added all Wi-Fi passes",
+    title: "You haven't added all WiFi passes",
     message: "If you leave now, any remaining passes won't be added.",
     confirmLabel: "Leave",
     cancelLabel: "Continue adding passes",
@@ -41,7 +42,7 @@ PUAlertModal(
 const kotlinCode = `// Destructive — irreversible action
 PUAlertModal(
     isVisible = showModal,
-    title = "You haven't added all Wi-Fi passes",
+    title = "You haven't added all WiFi passes",
     message = "If you leave now, any remaining passes won't be added.",
     confirmLabel = "Leave",
     cancelLabel = "Continue adding passes",
@@ -96,7 +97,7 @@ export default function ValidationModalPage() {
       {/* ── In Context ── */}
       <div className="mb-12">
         <h2 className="text-lg font-bold text-primary mb-5">In Context</h2>
-        <PhoneFrame label="Validation modal — centered overlay" dark={isDark} onToggle={() => setIsDark(d => !d)}>
+        <PhoneFrame label="Validation modal - centered overlay" dark={isDark} onToggle={() => setIsDark(d => !d)}>
           {/* Backdrop */}
           <div
             className="absolute inset-0"
@@ -110,7 +111,7 @@ export default function ValidationModalPage() {
           <div className="absolute inset-0 flex items-center justify-center px-[20px]">
             <div style={{
               width: '100%',
-              background: isDark ? '#0a2048' : '#ffffff',
+              background: isDark ? colors.backgroundElevatedNavy : '#ffffff',
               borderRadius: 12,
               border: isDark ? '1px solid rgba(255,255,255,0.1)' : '1px solid #EFF0F0',
               boxShadow: '0px 10px 20px 0px rgba(0,0,0,0.1)',
@@ -124,7 +125,7 @@ export default function ValidationModalPage() {
                   fontFamily: 'Poppins, sans-serif', fontWeight: 700, fontSize: 15,
                   color: isDark ? '#ffffff' : '#000000', margin: 0, lineHeight: 1.3,
                 }}>
-                  You haven&apos;t added all Wi-Fi passes
+                  You haven&apos;t added all WiFi passes
                 </p>
                 <p style={{
                   fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: 12,
@@ -165,7 +166,7 @@ export default function ValidationModalPage() {
         onClose={() => setOpen(null)}
         onConfirm={() => setOpen(null)}
         title={
-          open === 'destructive' ? "You haven't added all Wi-Fi passes"
+          open === 'destructive' ? "You haven't added all WiFi passes"
           : open === 'warning'   ? 'Are you sure you want to continue?'
           :                        'Confirm this action'
         }

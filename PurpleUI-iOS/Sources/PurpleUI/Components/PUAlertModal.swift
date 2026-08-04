@@ -14,7 +14,7 @@ public enum PUAlertModalVariant {
 /// ```swift
 /// PUAlertModal(
 ///     isPresented: $showModal,
-///     title: "You haven't added all Wi-Fi passes",
+///     title: "You haven't added all WiFi passes",
 ///     message: "If you leave now, any remaining passes won't be added.",
 ///     confirmLabel: "Leave",
 ///     cancelLabel: "Continue adding passes",
@@ -66,7 +66,7 @@ public struct PUAlertModal: View {
         variant == .warning ? PUColors.onBackground : .white
     }
 
-    private var cardBackground: Color { dark ? Color(hex: "#0a2048") : PUColors.background }
+    private var cardBackground: Color { dark ? PUColors.backgroundElevatedNavy : PUColors.background }
     private var cardBorder: Color     { dark ? Color.white.opacity(0.1) : PUColors.outlineSubtle }
     private var titleColor: Color     { dark ? .white : PUColors.onBackground }
     private var messageColor: Color   { dark ? Color.white.opacity(0.7) : PUColors.onBackground }
@@ -138,5 +138,16 @@ public struct PUAlertModal: View {
             )
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.78), value: isPresented)
+        // `.isModal` alone, on a plain ZStack, gets broadcast onto each leaf
+        // element underneath (both Texts, both Buttons) rather than
+        // collapsing this subtree into one boundary node — it wouldn't
+        // actually stop VoiceOver reaching content behind the backdrop.
+        // `.accessibilityElement(children: .contain)` makes this ZStack an
+        // explicit accessibility container (title/message/buttons stay
+        // individually focusable inside it) so `.isModal` applies to the
+        // container as a whole, which is what scopes VoiceOver navigation
+        // to this subtree and away from whatever's behind it.
+        .accessibilityElement(children: .contain)
+        .accessibilityAddTraits(.isModal)
     }
 }

@@ -13,6 +13,6 @@
     "ios": "FA.arrowRight (PUButton/PUIconButton accept icon: IconDefinition via FA namespace)",
     "android": "FA.arrowRight (same naming convention)"
   },
-  "colourRule": "Icon colour always inherits from the parent component token — never hardcode icon colours",
+  "colourRule": "Icon colour always inherits from the parent component token - never hardcode icon colours",
   "docPage": "/foundation/icons"
 }

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://purpleui.purple.ai/schema/foundation.schema.json",
+  "title": "PurpleUI Foundation Spec",
+  "description": "Lightweight core-shape check for specs/foundation-*.json. Deliberately permissive on extra fields (additionalProperties: true) - foundations vary widely in their extra content (tiers, darkMode, scale, packages, variants, ...) and normalizing that wasn't in scope for this pass, only the common core fields were.",
+  "type": "object",
+  "required": ["name", "type", "description", "docPage"],
+  "additionalProperties": true,
+  "properties": {
+    "name": { "type": "string" },
+    "type": { "const": "foundation" },
+    "description": { "type": "string" },
+    "docPage": {
+      "type": ["string", "null"],
+      "pattern": "^/",
+      "description": "null when no doc page exists yet - checked against the filesystem by scripts/validate-specs.ts, never a route that doesn't actually resolve to a page."
+    }
+  }
+}

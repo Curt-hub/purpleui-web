@@ -1,8 +1,20 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUIconButton",
+  "category": "buttons",
   "description": "Circular navigation button used to go back or dismiss. Available in Light and Dark variants to suit both light and dark backgrounds. Can optionally render as a pill with an icon and text label.",
   "platforms": ["web", "ios", "android"],
-  "variants": ["light", "dark"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUIconButton.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUIconButton.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PUIconButton.kt" }
+  },
+  "variants": {
+    "kind": "propEnum",
+    "propName": "variant",
+    "values": ["light", "dark"]
+  },
+  "states": ["default", "pressed", "disabled"],
   "props": [
     {
       "name": "icon",
@@ -15,7 +27,7 @@
       "name": "variant",
       "type": "\"light\" | \"dark\"",
       "default": "light",
-      "description": "Surface variant — light for white/light backgrounds, dark for navy/dark backgrounds",
+      "description": "Surface variant - light for white/light backgrounds, dark for navy/dark backgrounds",
       "platforms": {
         "ios": "variant: PUIconButtonVariant (.light | .dark)",
         "android": "variant: PUIconButtonVariant (Light | Dark)"
@@ -25,7 +37,7 @@
       "name": "text",
       "type": "string | undefined",
       "default": "undefined",
-      "description": "Optional label — renders as a pill shape with icon + text when provided",
+      "description": "Optional label - renders as a pill shape with icon + text when provided",
       "platforms": { "ios": "text: String?", "android": "text: String?" }
     },
     {
@@ -68,6 +80,5 @@
     "role": "button",
     "notes": "provide label prop when used as a back button with no visible text"
   },
-  "docPage": "/buttons/icon-button",
-  "sourceFile": "src/components/ui/PUIconButton.tsx"
+  "docPage": "/buttons/icon-button"
 }

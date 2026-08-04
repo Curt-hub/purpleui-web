@@ -1,8 +1,14 @@
 {
-  "$schema": "Purple UI component spec",
+  "$schema": "./schema/component.schema.json",
   "name": "PUTextInput",
+  "category": "inputs",
   "description": "Single-line text input with a floating label. Supports text, email, password, tel, number, and url input types. Password variant includes a built-in show/hide toggle.",
   "platforms": ["web", "ios", "android"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUTextInput.tsx" },
+    "ios": { "status": "planned", "sourceFile": null },
+    "android": { "status": "planned", "sourceFile": null }
+  },
   "docPage": "/inputs/text-input",
   "tokens": {
     "border.default":   "colors.outline",
@@ -20,8 +26,8 @@
     "container": "56px tall, 10px border radius, 1.5px border",
     "label": "Rests inside the field when empty. Floats to top-left (top: -11px, left: 6px) when focused or filled.",
     "input": "Full-bleed inside the container, 16px horizontal padding",
-    "passwordToggle": "Eye icon button at right edge — only rendered for type=password",
-    "errorMessage": "12px text beneath the container — only rendered when error prop is set"
+    "passwordToggle": "Eye icon button at right edge - only rendered for type=password",
+    "errorMessage": "12px text beneath the container - only rendered when error prop is set"
   },
   "props": [
     { "name": "label",    "type": "string",                                              "required": true,  "description": "Floating label text" },
@@ -30,8 +36,19 @@
     { "name": "type",     "type": "text | email | password | tel | number | url",        "default": "text", "description": "HTML input type. password activates show/hide toggle." },
     { "name": "error",    "type": "string",                                              "default": "—",    "description": "Error message shown below the field. Also sets the border and label to error colour." },
     { "name": "disabled", "type": "boolean",                                             "default": "false","description": "Disables the input and reduces opacity to 40%." },
+    {
+      "name": "dark",
+      "type": "boolean",
+      "default": false,
+      "description": "Dark surface variant - present on the web implementation but was missing from this spec entirely; added during spec normalization.",
+      "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
+    },
     { "name": "labelBg",  "type": "string",                                             "default": "#ffffff","description": "Background colour of the surface this input sits on. Used to mask the border behind the floating label." },
     { "name": "id",       "type": "string",                                              "default": "auto", "description": "HTML id for the input element. Auto-generated if omitted." }
   ],
-  "states": ["default", "focused", "filled", "error", "disabled"]
+  "states": ["default", "focused", "filled", "error", "disabled"],
+  "accessibility": {
+    "role": "textbox",
+    "notes": "Label must be programmatically associated with the input (native <label htmlFor> on web; accessibilityLabel on native). When `error` is set, mark the field invalid (aria-invalid on web / accessibilityValue on native) and associate the error message so assistive tech announces it (aria-describedby on web). The password show/hide toggle needs its own accessibilityLabel ('Show password' / 'Hide password') and a minimum 44×44pt / 48×48dp hit target independent of its visual icon size - the current web implementation's hit target is smaller than that."
+  }
 }

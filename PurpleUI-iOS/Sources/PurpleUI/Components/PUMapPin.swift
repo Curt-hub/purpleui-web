@@ -19,13 +19,13 @@ public struct PUMapPin: View {
     public var variant: PUMapPinVariant = .teardrop
     public var selected: Bool = false
     public var dark: Bool = false
-    public var color: Color = Color(hex: "#045DEC")
+    public var color: Color = PUColors.info
 
     public init(
         variant: PUMapPinVariant = .teardrop,
         selected: Bool = false,
         dark: Bool = false,
-        color: Color = Color(hex: "#045DEC")
+        color: Color = PUColors.info
     ) {
         self.variant  = variant
         self.selected = selected

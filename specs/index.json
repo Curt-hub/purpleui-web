@@ -1,5 +1,7 @@
 {
-  "$schema": "Purple UI component registry — enumerate all components and foundations without reading every spec file",
+  "$schema": "./schema/index.schema.json",
+  "version": "0.2.0",
+  "description": "Purple UI component registry - enumerate all components and foundations without reading every spec file. (This field previously held this sentence in $schema itself, which is not a valid URI - the single most MCP-hostile thing in the repo per the mobile-parity audit. $schema now points at a real schema file; this text moved here.)",
   "components": [
     {
       "name": "PUButton",
@@ -63,16 +65,17 @@
       "spec": "specs/PUTextInput.json",
       "docPage": "/inputs/text-input",
       "platforms": ["web", "ios", "android"],
-      "category": "inputs"
+      "category": "inputs",
+      "notes": "iOS and Android are not yet built - see the spec's implementation block. Claimed in `platforms` as the target contract, not current reality."
     },
     {
       "name": "PUToggle",
       "spec": "specs/PUToggle.json",
-      "docPage": "/inputs/toggle",
+      "docPage": null,
       "platforms": ["web", "ios", "android"],
       "category": "inputs",
       "aliases": ["PUSwitch"],
-      "notes": "Spec only - no PurpleUI toggle/switch implementation exists yet on any platform. Contract for a follow-up build."
+      "notes": "Spec only - no PurpleUI toggle/switch implementation exists yet on any platform. Contract for a follow-up build. docPage is null (not the old dead link \"/inputs/toggle\") - no doc page exists until there's something to document."
     },
     {
       "name": "PUBottomNav",
@@ -142,6 +145,13 @@
       "docPage": "/foundation/spacing"
     },
     {
+      "name": "Radius",
+      "spec": "specs/foundation-radius.json",
+      "tokenFile": "src/lib/tokens.ts",
+      "dtcgFile": "tokens.json",
+      "docPage": null
+    },
+    {
       "name": "Shadows",
       "spec": "specs/foundation-shadows.json",
       "tokenFile": "src/lib/tokens.ts",
@@ -208,5 +218,22 @@
   "examples": {
     "ios": "examples/ios/",
     "android": "examples/android/"
-  }
+  },
+  "excludedComponents": [
+    {
+      "name": "PUInfoCard",
+      "sourceFile": "src/components/ui/PUInfoCard.tsx",
+      "reason": "Not wired into any doc page or other component in this repo - no consumer at all. Hardcodes several colours (#0d7a49, #7a6a00, #a01e28, #1e40af, and a bare `text-gray-700` Tailwind utility) that are not Purple tokens - inconsistent with tokens.json and every other registered component. Treat as an unmaintained prototype, not a design-system component, unless/until someone actively adopts and retokenizes it."
+    },
+    {
+      "name": "PUStatCard",
+      "sourceFile": "src/components/ui/PUStatCard.tsx",
+      "reason": "Not referenced by any doc page or other component in this repo - appears to be a dashboard/KPI-tile experiment that was never adopted. Has no dark-mode handling at all. Excluded from the spec registry until there is a real consumer to spec against."
+    },
+    {
+      "name": "PUListRow",
+      "sourceFile": "src/components/ui/PUListRow.tsx",
+      "reason": "Corrected after review: initially registered with specs/PUListRow.json on the claim that it 'backs a real in-use surface (PUBottomTray's doc example)'. That claim was checked and is false - src/components/ui/PUListRow.tsx is never imported or rendered anywhere. The bottom-tray doc page renders its venue list with hand-rolled divs; the only occurrences of the string \"PUListRow\" are inside that page's traySwiftCode/trayKotlinCode template-literal sample text (illustrative Swift/Kotlin, not real web output, and for platforms this component was never spec'd for - platforms was [\"web\"] only). By the same no-real-consumer test applied to PUInfoCard/PUStatCard above, PUListRow is excluded too. specs/PUListRow.json was removed. Re-register if a real consumer appears."
+    }
+  ]
 }

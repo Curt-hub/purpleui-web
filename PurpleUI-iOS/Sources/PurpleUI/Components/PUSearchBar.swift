@@ -22,7 +22,7 @@ public struct PUSearchBar: View {
 
     // MARK: - Colours
 
-    private var background: Color  { dark ? Color(hex: "#0a2048") : PUColors.background }
+    private var background: Color  { dark ? PUColors.backgroundElevatedNavy : PUColors.background }
     private var borderColor: Color { dark ? Color.white.opacity(0.1) : Color.clear }
     private var searchIconColor: Color { dark ? Color.white.opacity(0.4) : PUColors.onBackgroundTertiary }
     private var textColor: Color   { dark ? .white : PUColors.onBackground }
@@ -50,7 +50,13 @@ public struct PUSearchBar: View {
                 Button(action: onFilterTap) {
                     FAIcon(.sliders, size: 18, color: PUColors.brand)
                         .frame(width: 22, height: 22)
+                        // Visual size stays 22×22; the frame below only
+                        // enlarges the invisible tappable area to meet
+                        // Apple HIG's 44×44pt minimum hit target.
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
                 }
+                .accessibilityLabel("Filter")
             }
         }
         .padding(.horizontal, 12)

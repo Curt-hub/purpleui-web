@@ -26,9 +26,14 @@ import ai.purple.purpleui.tokens.PUTypography
 /**
  * Circular icon button with optional text pill mode.
  *
+ * `contentDescription` has no default - you must make a conscious choice for every call
+ * site. In icon-only mode (`text == null`) this is the button's *only* accessible label, so
+ * pass a real string. In pill mode, the visible `text` already labels the button, so pass
+ * `null` to let TalkBack announce the visible label instead of a redundant duplicate.
+ *
  * ```kotlin
  * PUIconButton(icon = FA.arrowLeft, contentDescription = "Back") { onBack() }
- * PUIconButton(icon = FA.xmark, text = "Clear", dark = true) { clearFilter() }
+ * PUIconButton(icon = FA.xmark, text = "Clear", contentDescription = null, dark = true) { clearFilter() }
  * ```
  */
 @Composable
@@ -38,7 +43,7 @@ fun PUIconButton(
     text: String? = null,
     dark: Boolean = false,
     enabled: Boolean = true,
-    contentDescription: String = "",
+    contentDescription: String?,
     onClick: () -> Unit
 ) {
     val background = if (dark) Color.White.copy(alpha = 0.08f) else PUColors.backgroundElevated
@@ -62,7 +67,16 @@ fun PUIconButton(
                 if (text == null) Modifier.size(38.dp)
                 else Modifier.height(38.dp)
             )
-            .semantics { this.contentDescription = contentDescription },
+            .then(
+                // Only attach an explicit contentDescription when one was actually passed.
+                // In pill mode, callers who intentionally pass `null` fall through to the
+                // merged semantics of the visible `Text` below instead of an empty label.
+                if (contentDescription != null) {
+                    Modifier.semantics { this.contentDescription = contentDescription }
+                } else {
+                    Modifier
+                }
+            ),
         enabled = enabled,
         shape = shape,
         color = background,
@@ -74,12 +88,12 @@ fun PUIconButton(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                FAIcon(icon, size = 14.sp, color = iconColor)
+                FAIcon(icon, size = 14.sp, color = iconColor, decorative = true)
                 Text(text, style = PUTypography.bodyBold, color = iconColor)
             }
         } else {
             Box(contentAlignment = Alignment.Center) {
-                FAIcon(icon, size = 16.sp, color = iconColor)
+                FAIcon(icon, size = 16.sp, color = iconColor, decorative = true)
             }
         }
     }

@@ -15,6 +15,6 @@
     "4xl":  40,
     "5xl":  48
   },
-  "usage": "padding, gap, margin — always use a named token, never a raw number",
+  "usage": "padding, gap, margin - always use a named token, never a raw number",
   "docPage": "/foundation/spacing"
 }

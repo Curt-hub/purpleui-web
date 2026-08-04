@@ -21,15 +21,27 @@ purpleui-react-native/
       radius.ts        sm..full border-radius scale
       typography.ts    Poppins font family names + size scale
       shadows.ts       shadowColor/Offset/Opacity/Radius + Android elevation
+      passThemes.ts    WiFi pass card gradient themes (purple/nhs/university/cafe/guest)
       index.ts         re-exports the above + a combined `theme` object
     components/
       PUButton.tsx
       PUIconButton.tsx
       PUToast.tsx
+      PUBottomNav.tsx
+      PUBottomTray.tsx
+      PUSearchBar.tsx
+      PUFloatingButton.tsx
+      PULoader.tsx
+      PUValidationModal.tsx
       index.ts
     internal/
-      PUSpinner.tsx        button loading spinner (bordered View, rotated)
-      PUChevronLeft.tsx    PUIconButton's default back-arrow glyph
+      PUSpinner.tsx          button loading spinner (bordered View, rotated)
+      PUChevronLeft.tsx      PUIconButton's default back-arrow glyph
+      PUSearchGlyph.tsx      PUSearchBar's magnifying-glass icon
+      PUSlidersGlyph.tsx     PUSearchBar/filter "sliders" icon
+      PUPlusGlyph.tsx        PUFloatingButton's plus icon
+      PUNavigateGlyph.tsx    PUFloatingButton's navigate icon
+      PUBottomNavIcons.tsx   PUBottomNav's 4 tab icons (explore/wallet/activity/profile)
     index.ts           package entry point
   package.json
   tsconfig.json
@@ -41,6 +53,41 @@ purpleui-react-native/
 - Poppins-Regular.ttf and Poppins-Bold.ttf linked in the consuming app, same
   requirement as PurpleUI-iOS and PurpleUI-Android. This package does not
   bundle fonts.
+- No SVG/blur/safe-area libraries are bundled or declared as dependencies -
+  see "Safe-area insets" and the `PUValidationModal` note below for what
+  that means in practice and how to wire it up yourself.
+
+## Safe-area insets (`PUBottomNav` / `PUBottomTray`)
+
+Both components sit flush against the bottom of the screen and need to clear
+the home indicator / gesture bar on notched devices. This package doesn't
+declare `react-native-safe-area-context` as a dependency (it isn't a
+peer/dev dependency here, even though it may already be installed in your
+app), so neither component reads safe-area insets itself. Instead, each
+takes a plain `bottomInset` number prop - measure the inset yourself with
+`useSafeAreaInsets()` and pass it in:
+
+```tsx
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PUBottomNav, PUBottomTray } from 'purpleui-react-native';
+
+function ExploreScreen() {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <>
+      <PUBottomTray title="34 WiFi nearby" bottomInset={insets.bottom}>
+        {/* list rows */}
+      </PUBottomTray>
+      <PUBottomNav activeTab="explore" bottomInset={insets.bottom} onTabChange={setTab} />
+    </>
+  );
+}
+```
+
+If you omit `bottomInset` it defaults to `0` - fine on devices with no home
+indicator, but the bar/tray will sit under it on newer iPhones/Android
+gesture nav unless you wire this up.
 
 ## Install (local/monorepo)
 
@@ -161,6 +208,33 @@ import { PUButton, PUIconButton, PUToast, theme, colors } from 'purpleui-react-n
   variant="success"
   onDismiss={() => setShowToast(false)}
 />
+
+<PUBottomNav activeTab={tab} onTabChange={setTab} bottomInset={insets.bottom} />
+
+<PUBottomTray title="34 WiFi nearby" bottomInset={insets.bottom}>
+  {venues.map(v => <VenueRow key={v.id} {...v} />)}
+</PUBottomTray>
+
+<PUSearchBar
+  value={query}
+  onChange={setQuery}
+  onFilterPress={openFilters}
+/>
+
+<PUFloatingButton variant="icon" icon="navigate" onPress={recenterMap} />
+<PUFloatingButton variant="pill" icon="plus" label="Add WiFi" onPress={openAddFlow} />
+
+<PULoader variant="light" />
+
+<PUValidationModal
+  visible={showConfirm}
+  title="Leave without saving?"
+  message="Any unsaved changes will be lost."
+  variant="destructive"
+  confirmLabel="Leave"
+  onConfirm={handleLeave}
+  onDismiss={() => setShowConfirm(false)}
+/>
 ```
 
 Tokens:
@@ -168,7 +242,7 @@ Tokens:
 ```tsx
 import { theme } from 'purpleui-react-native';
 // or the individual exports:
-import { colors, spacing, radius, typography, shadows } from 'purpleui-react-native';
+import { colors, spacing, radius, typography, shadows, passThemes } from 'purpleui-react-native';
 
 const styles = StyleSheet.create({
   card: {
@@ -178,6 +252,11 @@ const styles = StyleSheet.create({
     ...shadows.bottomC,
   },
 });
+
+// passThemes gives gradient stops + on-card text colour per pass skin -
+// pair gradientFrom/gradientTo with a gradient renderer of your choice
+// (e.g. expo-linear-gradient); this package only ships the colour values.
+const { gradientFrom, gradientTo, on } = passThemes.nhs;
 ```
 
 ## Component notes
@@ -222,14 +301,146 @@ inside your own top-anchored, absolutely-positioned wrapper:
 </View>
 ```
 
+### PUBottomNav
+Fixed 4-tab bar (explore/wallet/activity/profile), 65px tall (see "Safe-area
+insets" above for `bottomInset`). Ships a single icon per tab - matching
+iOS/Android - rather than web's 88px bar and its hand-rolled FontAwesome
+Regular/Solid SVG swap on selection; RN has no SVG dependency or bundled
+icon font, so each tab's icon is a dependency-free geometric placeholder
+(see `internal/PUBottomNavIcons.tsx`) pending the Icons foundation's RN
+answer. Adds `accessibilityRole="tab"` + `accessibilityState={{ selected }}`
+per tab - web/iOS/Android all currently fail to expose selected state, so
+this doesn't repeat that gap.
+
+Flagged spec-vs-implementation disagreement: specs/PUBottomNav.json's active
+tab colour is `colors.brand` regardless of light/dark, but web/iOS/Android
+all three instead use `colors.onBackground` (black) for active-on-light and
+`colors.brand` only for active-on-dark. This component follows the spec
+(brand always) - see `PUBottomNav.tsx`'s doc comment for the full detail.
+
+### PUBottomTray
+Draggable tray anchored to the bottom of the screen (map/list overlay
+pattern), snapping between `peekHeight` and `expandHeight` via
+`PanResponder` + `Animated` - no gesture-handler/reanimated dependency. Drag
+handle is 60x5 per spec (web ships 104x7, off-spec; iOS/Android both ship
+60x5 like this component). Top corners use `radius.lg` per spec, even though
+web/iOS/Android all three actually use `radius.md` there. No filter button -
+the spec's prop list doesn't have one, web's is unwired to any prop, and
+iOS/Android don't render one either.
+
+Accessibility (per specs/PUBottomTray.json's `accessibility.notes`): the
+60x5 handle pill is purely decorative (`accessibilityElementsHidden`), and
+dragging is never the *only* way to move between peeked/expanded - the
+whole handle row is also a real, always-tappable `Pressable` with
+`accessibilityRole="button"` + `accessibilityState={{ expanded }}` that
+toggles state on a plain tap, usable by any user, not just a
+screen-reader-only control. The header title gets `accessibilityRole="header"`.
+That Pressable is sized to a real >=44x44 tap target (`HANDLE_PRESSABLE_MIN_SIZE`
+in `PUBottomTray.tsx`, plus a `hitSlop` on top) rather than shrinking to fit
+its 60x5 visual child - this is why the handle row itself is 44px tall
+(`HANDLE_ROW_HEIGHT`), not the pill's own 5px/35px footprint; a visible size
+increase over an earlier draft that sized the row to the pill alone.
+
+Two more flagged disagreements: the header title is Poppins Bold **16px**
+(spec and web agree; there's no 16 rung in the shared `typography.sizes`
+scale, so this is a literal, `HEADER_TITLE_SIZE` in `PUBottomTray.tsx` - see
+that file's doc comment, which also flags the missing-16 gap in the type
+scale itself). And the drop shadow: the spec names `shadows.topC`, but
+web's and iOS's actual shadows both correspond to the stronger `shadows.topD`
+profile instead (web's literal CSS blur is 15px, not topC's 2px; iOS's
+shadow radius of 7.5 is exactly half of that same 15px, this codebase's own
+CSS-blur-to-RN-radius conversion factor). This component follows the spec's
+named `topC`.
+
+### PUSearchBar
+Pill search input with a search icon, optional purple filter button (omit
+`onFilterPress` to hide it), and a `dark` surface variant. Adds
+`accessibilityLabel="Filter"` and a `hitSlop` so the filter button's tap
+target is >=44pt even though its visible glyph is smaller - web and
+iOS/Android currently ship it unlabeled with a tiny hit area. Default
+`placeholder` follows the spec's `"Search networks…"`, not web's actual
+`"Search"` default.
+
+### PUFloatingButton
+`icon` (56x56 circle) or `pill` (icon + label) variant, `navigate` or `plus`
+icon. Always carries a real `accessibilityLabel` - if you omit `label` on
+the icon variant, it falls back to an icon-aware default ("Navigate to my
+location" / "Add"), matching iOS/Android rather than web's generic
+"Floating action" fallback. Flagged disagreement: the spec's dark
+background is `rgba(255,255,255,0.12)`, but web/iOS/Android all three
+actually use a solid `#0a2048` - this component follows the spec.
+
+### PULoader
+64px ring spinner, `light` (purple, for light surfaces) or `dark` (white,
+for dark surfaces) variant - **this mapping is under active dispute**.
+specs/PULoader.json and this component both say light=purple/dark=white,
+but web, iOS AND Android all three instead ship light=navy/dark=purple.
+Curt needs to settle which convention is correct. The two arc colours are
+declared as a single, obvious, two-line constant pair
+(`LIGHT_ARC`/`DARK_ARC`) right at the top of `PULoader.tsx` specifically so
+flipping the convention later is a two-line change, not a hunt through the
+component body.
+
+### PUValidationModal
+Centered confirm/cancel dialog (`info | warning | destructive`), stacked
+buttons (confirm on top, cancel below), spring scale-in. Uses `visible` /
+`onDismiss` rather than the spec's `isPresented` (iOS Binding-style naming)
+or web's `isOpen`/`onClose` - matching how `PUToast` already resolved the
+same spec-vs-web naming mismatch for its own visibility prop. Renders a
+plain semi-opaque scrim instead of the spec/web/iOS's blurred backdrop -
+this package has no blur dependency (`expo-blur` exists in the wifi-map-app
+consuming app but isn't a peer/dev dependency here, and is Expo-only).
+`accessibilityRole="alertdialog"` (the spec's documented role) isn't a valid
+RN `AccessibilityRole` - this component uses the closest built-in, `"alert"`,
+paired with `accessibilityViewIsModal` so screen readers can't reach content
+behind the backdrop.
+
 ## Verification
 
-Typechecked with `npx tsc --noEmit`. Runtime behaviour (press handlers,
-loading/disabled state, variant colours, PUToast's auto-dismiss timer and
-offline colour, default PUIconButton size/colour) was verified with a
-temporary `react-test-renderer` smoke test during development; it was removed
-before committing since this slice's scope is tokens + components, not test
-infra. `npm run typecheck` remains as a package script for future CI.
+Typechecked with `npx tsc --noEmit` and built with `npm run build` after
+every change in this package. Runtime behaviour was verified with a
+temporary `react-test-renderer` smoke test during development (removed
+before committing, same as the original three-component slice - this
+package's scope is tokens + components, not test infra); `npm run typecheck`
+remains as a package script for future CI.
+
+For `PUButton`/`PUIconButton`/`PUToast`: press handlers, loading/disabled
+state, variant colours, PUToast's auto-dismiss timer and offline colour,
+default `PUIconButton` size/colour.
+
+For the six components added after the first slice (`PUBottomNav`,
+`PUBottomTray`, `PUSearchBar`, `PUFloatingButton`, `PULoader`,
+`PUValidationModal`) plus `passThemes`: exact `passThemes` shape/values;
+`PUBottomNav`'s tab selection, per-tab `accessibilityState`, and light/dark
+rendering; `PUSearchBar`'s `onChange`/`onFilterPress` firing and the filter
+button's `accessibilityLabel`/`hitSlop`; `PUFloatingButton`'s icon/pill
+variants and default `accessibilityLabel` fallback; `PULoader`'s both
+variants; `PUValidationModal`'s confirm/cancel firing and visible/hidden
+mount behaviour, and the accessible expand/collapse `Pressable`'s tap
+target being a real >=44x44 (see its own note below). `PUBottomTray`
+specifically also confirms `PanResponder.create()` runs exactly once (the
+same `panHandlers` function identities survive both an interaction-driven
+re-render and an `expandHeight` prop change) - a direct runtime check of the
+lazy-ref-guard fix.
+
+What's *not* covered by a runtime test: asserting that the gesture-release
+handler resolves against the *new* `expandHeight`/`peekHeight` bounds after
+a prop change (the concrete defect the `live` ref fixes). The natural way to
+test that would be calling the exposed `panHandlers.onResponderMove`/
+`onResponderRelease` directly with a hand-built gesture object - but those
+exposed functions only take the raw touch event; `PanResponder.create()`
+computes `gestureState.dx/dy/vx/vy` itself from `event.touchHistory`
+(see `node_modules/react-native/Libraries/Interaction/PanResponder.js`'s
+`_updateGestureStateOnMove`), not from a second argument a caller can pass
+in, so there's no plain-numbers shortcut through that public surface without
+either faking a realistic `touchHistory` (genuinely native-shaped work) or
+changing this component's source to also expose its raw
+`onPanResponderMove`/`onPanResponderRelease` callbacks for testability
+(not done, and not something this fix needed). This gap is why the fix's
+correctness for that specific scenario rests on code-level reasoning
+instead: `live.current.yOffset` is reassigned at the top of every render,
+and both frozen gesture callbacks and `snapTo` dereference through
+`live.current` rather than closing over `yOffset` directly.
 
 Consumption from a real app was verified end-to-end in the `wifi-map-app`
 (React Native/Expo) repo: added as `"purpleui-react-native": "file:../purpleui-web/purpleui-react-native"`,

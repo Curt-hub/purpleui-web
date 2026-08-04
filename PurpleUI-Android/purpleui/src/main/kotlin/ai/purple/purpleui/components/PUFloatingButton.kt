@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import ai.purple.purpleui.icons.FA
 import ai.purple.purpleui.icons.FAIcon
@@ -41,7 +43,7 @@ fun PUFloatingButton(
     dark: Boolean = false,
     onClick: () -> Unit
 ) {
-    val background  = if (dark) Color(0xFF0A2048) else PUColors.background
+    val background  = if (dark) PUColors.backgroundElevatedNavy else PUColors.background
     val foreground  = if (dark) Color.White else PUColors.brand
     val borderColor = if (dark) Color.White.copy(alpha = 0.15f) else null
 
@@ -61,7 +63,9 @@ fun PUFloatingButton(
 
     Surface(
         onClick = onClick,
-        modifier = modifier.scale(scale),
+        modifier = modifier
+            .scale(scale)
+            .semantics { contentDescription = a11yLabel },
         shape = CircleShape,
         color = background,
         border = borderColor?.let { BorderStroke(1.dp, it) },
@@ -76,7 +80,7 @@ fun PUFloatingButton(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                FAIcon(iconGlyph, size = 22.sp, color = foreground)
+                FAIcon(iconGlyph, size = 22.sp, color = foreground, decorative = true)
                 Text(label, style = PUTypography.bodyBold, color = foreground)
             }
         } else {
@@ -84,7 +88,7 @@ fun PUFloatingButton(
                 modifier = Modifier.size(56.dp),
                 contentAlignment = Alignment.Center
             ) {
-                FAIcon(iconGlyph, size = 22.sp, color = foreground)
+                FAIcon(iconGlyph, size = 22.sp, color = foreground, decorative = true)
             }
         }
     }

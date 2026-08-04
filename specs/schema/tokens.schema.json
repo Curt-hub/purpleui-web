@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://purpleui.purple.ai/schema/tokens.schema.json",
+  "title": "PurpleUI Design Tokens (tokens.json)",
+  "description": "Validates tokens.json against the DTCG Format Module token/group shape (https://tr.designtokens.org/format/, first stable version Oct 2025): a token node has $value + $type (+ optional $description/$extensions); a group node has no $value of its own and instead nests further tokens or groups under non-$-prefixed keys.",
+  "type": "object",
+  "required": ["$schema", "version", "color", "spacing", "borderRadius", "shadow", "typography"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string", "format": "uri-reference" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "color": { "$ref": "#/$defs/group" },
+    "passThemes": { "$ref": "#/$defs/group" },
+    "spacing": { "$ref": "#/$defs/group" },
+    "borderRadius": { "$ref": "#/$defs/group" },
+    "shadow": { "$ref": "#/$defs/group" },
+    "typography": { "$ref": "#/$defs/group" }
+  },
+  "$defs": {
+    "token": {
+      "type": "object",
+      "required": ["$value", "$type"],
+      "additionalProperties": false,
+      "properties": {
+        "$value": {},
+        "$type": { "type": "string" },
+        "$description": { "type": "string" },
+        "$extensions": { "type": "object" }
+      }
+    },
+    "group": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[^$].*$" },
+      "additionalProperties": { "$ref": "#/$defs/groupOrToken" }
+    },
+    "groupOrToken": {
+      "anyOf": [{ "$ref": "#/$defs/token" }, { "$ref": "#/$defs/group" }]
+    }
+  }
+}

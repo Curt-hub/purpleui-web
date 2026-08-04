@@ -1,8 +1,20 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUFloatingButton",
+  "category": "buttons",
   "description": "Contextual action buttons that float above the map. Two variants: a circular icon button for single actions (e.g. navigate to location) and a pill button for labelled actions (e.g. Add WiFi).",
   "platforms": ["web", "ios", "android"],
-  "variants": ["icon", "pill"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUFloatingButton.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUFloatingButton.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PUFloatingButton.kt" }
+  },
+  "variants": {
+    "kind": "propEnum",
+    "propName": "variant",
+    "values": ["icon", "pill"]
+  },
+  "states": ["default", "pressed"],
   "icons": ["navigate", "plus"],
   "props": [
     {
@@ -36,7 +48,7 @@
       "name": "dark",
       "type": "boolean",
       "default": false,
-      "description": "Dark surface — switches to navy background with subtle border",
+      "description": "Dark surface - switches to navy background with subtle border",
       "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
     },
     {
@@ -70,6 +82,5 @@
     "role": "button",
     "notes": "icon variant requires label prop for accessibility even though label is not visually rendered"
   },
-  "docPage": "/buttons/floating-button",
-  "sourceFile": "src/components/ui/PUFloatingButton.tsx"
+  "docPage": "/buttons/floating-button"
 }

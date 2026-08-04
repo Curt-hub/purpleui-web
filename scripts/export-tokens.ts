@@ -5,7 +5,7 @@
  *   npm run export-tokens
  *
  * Output:
- *   tokens.json at the repo root — directly consumable by any tool
+ *   tokens.json at the repo root - directly consumable by any tool
  *   without a JavaScript runtime (Style Dictionary, Tokens Studio, etc.)
  *
  * DTCG spec: https://tr.designtokens.org/format/
@@ -51,7 +51,7 @@ function fontWeight(value: number): DtcgToken {
   return { $value: value, $type: 'fontWeight' };
 }
 
-// ─── palette (Tier 1) — included for reference, not for direct use ────────────
+// ─── palette (Tier 1) - included for reference, not for direct use ────────────
 
 const palette: DtcgGroup = {
   purple:   color('#7458FD', 'Raw brand purple. Use colors.brand instead.'),
@@ -81,8 +81,9 @@ const colorTokens: DtcgGroup = {
   background:         color(colors.background,         'dark: #011638 (palette.navy)'),
   backgroundElevated: color(colors.backgroundElevated, 'dark: #0a2048'),
   backgroundSunken:   color(colors.backgroundSunken,   'dark: #09193d'),
-  backgroundNavy:     color(colors.backgroundNavy,     'invariant — always navy'),
-  backgroundAlt:      color(colors.backgroundAlt,      'invariant — always cream'),
+  backgroundNavy:     color(colors.backgroundNavy,     'invariant - always navy'),
+  backgroundElevatedNavy: color(colors.backgroundElevatedNavy, "invariant - dark-mode-only elevated surface (cards/sheets/inputs raised above backgroundNavy: modals, bottom tray, search bar, floating button in dark mode). No light equivalent. Added to close a real gap found in the mobile-parity audit: this exact tone (or a near-miss of it) was already hardcoded ad hoc as '#0a2048' in at least 5 places across web and iOS, and Android had drifted to a 3rd, different hex (#0C2149) for the same concept. This token is the reconciliation point - existing call sites still reference the raw hex today and will be migrated to this token in a follow-up pass, not as part of this change."),
+  backgroundAlt:      color(colors.backgroundAlt,      'invariant - always cream'),
 
   onBackground:          color(colors.onBackground,          'dark: #FFFFFF'),
   onBackgroundSecondary: color(colors.onBackgroundSecondary, 'dark: rgba(255,255,255,0.70)'),
@@ -106,10 +107,10 @@ const colorTokens: DtcgGroup = {
   info:       color(colors.info),
   infoSubtle: color(colors.infoSubtle),
 
-  vendorBrown:  color(colors.vendorBrown,  'Activity feed only — do not use elsewhere'),
-  vendorForest: color(colors.vendorForest, 'Activity feed only — do not use elsewhere'),
-  vendorRed:    color(colors.vendorRed,    'Activity feed only — do not use elsewhere'),
-  vendorAmber:  color(colors.vendorAmber,  'Activity feed only — do not use elsewhere'),
+  vendorBrown:  color(colors.vendorBrown,  'Activity feed only - do not use elsewhere'),
+  vendorForest: color(colors.vendorForest, 'Activity feed only - do not use elsewhere'),
+  vendorRed:    color(colors.vendorRed,    'Activity feed only - do not use elsewhere'),
+  vendorAmber:  color(colors.vendorAmber,  'Activity feed only - do not use elsewhere'),
 };
 
 // ─── pass themes ──────────────────────────────────────────────────────────────
@@ -158,7 +159,26 @@ const typographyTokens: DtcgGroup = {
 
 // ─── assemble & write ─────────────────────────────────────────────────────────
 
-const dtcg: DtcgGroup = {
+// Bumped by hand alongside package.json's version until there's a real
+// automated versioning story (see CHANGELOG.md) - this is what an MCP
+// consumer (or anything else reading tokens.json without a JS runtime)
+// checks to know what token contract it built against.
+const TOKENS_VERSION = '0.2.0';
+
+interface DtcgFile {
+  $schema: string;
+  version: string;
+  color: DtcgGroup;
+  passThemes: DtcgGroup;
+  spacing: DtcgGroup;
+  borderRadius: DtcgGroup;
+  shadow: DtcgGroup;
+  typography: DtcgGroup;
+}
+
+const dtcg: DtcgFile = {
+  $schema: './specs/schema/tokens.schema.json',
+  version: TOKENS_VERSION,
   color: {
     palette,
     ...colorTokens,

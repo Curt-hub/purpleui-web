@@ -1,0 +1,17 @@
+{
+  "name": "Radius",
+  "type": "foundation",
+  "description": "Border-radius scale used for corner rounding across every component. Previously had no foundation spec file even though `borderRadius` is a first-class top-level token category in tokens.json and is referenced by name (radius.sm, radius.full, ...) throughout every component spec - added to close that gap.",
+  "tokenFile": "src/lib/tokens.ts",
+  "dtcgFile": "tokens.json (borderRadius.*)",
+  "scale": {
+    "sm": { "px": 6, "usage": "small chips, subtle rounding" },
+    "md": { "px": 12, "usage": "cards, modals, inputs" },
+    "lg": { "px": 16, "usage": "bottom sheets/trays, larger cards" },
+    "xl": { "px": 24, "usage": "large surfaces, WiFi pass cards" },
+    "full": { "px": 9999, "usage": "pill buttons, toasts, avatars, toggle tracks/thumbs" }
+  },
+  "usage": "corner radius - always use a named token, never a raw number",
+  "docPage": null,
+  "notes": "docPage is null, not \"/foundation/radius\" - no doc page exists for this foundation yet. There is no src/app/(docs)/foundation/radius directory on disk; every other foundation has a real one. Building the page is out of scope here (src/app/ is owned by another agent this round) - this field just needs to stay honest until it's built."
+}

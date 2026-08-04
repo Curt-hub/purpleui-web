@@ -13,15 +13,15 @@ type SwatchData = {
 };
 
 const brandColors: SwatchData[] = [
-  { name: 'Brand',        token: 'colors.brand',        hex: colors.brand,        role: 'Primary brand colour — buttons, active states, links', darkHex: colors.brand },
+  { name: 'Brand',        token: 'colors.brand',        hex: colors.brand,        role: 'Primary brand colour - buttons, active states, links', darkHex: colors.brand },
   { name: 'Brand Subtle', token: 'colors.brandSubtle',   hex: colors.brandSubtle,  role: 'Tinted background behind brand elements', darkHex: '#2a1f6b' },
   { name: 'Bg Navy',      token: 'colors.backgroundNavy', hex: colors.backgroundNavy, role: 'Dark-surface buttons, map overlays, loader dark variant', darkHex: colors.backgroundNavy },
-  { name: 'Bg Alt',       token: 'colors.backgroundAlt',  hex: colors.backgroundAlt,  role: 'Warm cream — used in marketing / splash contexts', darkHex: colors.backgroundAlt },
+  { name: 'Bg Alt',       token: 'colors.backgroundAlt',  hex: colors.backgroundAlt,  role: 'Warm cream - used in marketing / splash contexts', darkHex: colors.backgroundAlt },
 ];
 
 const backgroundColors: SwatchData[] = [
   { name: 'Background',          token: 'colors.background',          hex: colors.background,          role: 'Page / screen background',       darkHex: '#011638' },
-  { name: 'Background Elevated', token: 'colors.backgroundElevated',  hex: colors.backgroundElevated,  role: 'Cards, sheets, elevated surfaces', darkHex: '#0a2048' },
+  { name: 'Background Elevated', token: 'colors.backgroundElevated',  hex: colors.backgroundElevated,  role: 'Cards, sheets, elevated surfaces', darkHex: colors.backgroundElevatedNavy },
   { name: 'Background Sunken',   token: 'colors.backgroundSunken',    hex: colors.backgroundSunken,    role: 'Input fields, sunken containers',  darkHex: '#09193d' },
 ];
 
@@ -111,13 +111,13 @@ export default function ColorsPage() {
     <div className="max-w-4xl">
       <h1 className="text-3xl font-bold text-gray-900 mb-2">Colour Tokens</h1>
       <p className="text-gray-500 mb-3">
-        PurpleUI uses a <strong>two-tier token system</strong> — a palette of raw hex values and a
+        PurpleUI uses a <strong>two-tier token system</strong> - a palette of raw hex values and a
         semantic layer that gives each colour a role. Components always reference semantic tokens,
         which means dark mode is a configuration change, not a rename. Click any swatch to copy its hex.
       </p>
       <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-[#eceaff] mb-10">
         <span className="text-xs font-semibold text-[#7458FD]">Dark mode ready</span>
-        <span className="text-xs text-[#595959]">— each swatch shows its mapped dark value where it differs</span>
+        <span className="text-xs text-[#595959]">- each swatch shows its mapped dark value where it differs</span>
       </div>
 
       <Section
@@ -131,7 +131,7 @@ export default function ColorsPage() {
 
       <Section
         title="Backgrounds"
-        description="Surface layers — background stacks from base → elevated → sunken."
+        description="Surface layers - background stacks from base to elevated to sunken."
       >
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {backgroundColors.map(c => <ColorSwatch key={c.token} {...c} />)}

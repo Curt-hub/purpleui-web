@@ -11,11 +11,12 @@ public struct PUColors {
     public static let brandSubtle = Color(hex: "#eceaff")  // dark: #2a1f6b
 
     // MARK: - Backgrounds
-    public static let background         = Color(hex: "#FFFFFF")  // dark: #011638
-    public static let backgroundElevated = Color(hex: "#F7F7F8")  // dark: #0a2048
-    public static let backgroundSunken   = Color(hex: "#F9F9FC")  // dark: #09193d
-    public static let backgroundNavy     = Color(hex: "#011638")  // invariant
-    public static let backgroundAlt      = Color(hex: "#F5F1ED")  // invariant (cream)
+    public static let background             = Color(hex: "#FFFFFF")  // dark: #011638
+    public static let backgroundElevated     = Color(hex: "#F7F7F8")  // dark: #0a2048
+    public static let backgroundSunken       = Color(hex: "#F9F9FC")  // dark: #09193d
+    public static let backgroundNavy         = Color(hex: "#011638")  // invariant
+    public static let backgroundElevatedNavy = Color(hex: "#0A2048")  // invariant, dark-mode-only elevated surface (no light equivalent)
+    public static let backgroundAlt          = Color(hex: "#F5F1ED")  // invariant (cream)
 
     // MARK: - Text / Icons
     public static let onBackground          = Color(hex: "#000000")  // dark: #FFFFFF

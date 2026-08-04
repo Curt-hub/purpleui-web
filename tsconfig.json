@@ -22,5 +22,16 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    // The native packages each own their own toolchain and tsconfig, and their
+    // dependencies are not installed at this root (no npm workspaces here).
+    // Without these exclusions `next build` type-checks purpleui-react-native/
+    // against the web app's config, fails to resolve `react-native`, and breaks
+    // the docs-site deploy - even though nothing in src/ imports it.
+    // Verify React Native separately: cd purpleui-react-native && npm run build
+    "purpleui-react-native",
+    "PurpleUI-iOS",
+    "PurpleUI-Android"
+  ]
 }

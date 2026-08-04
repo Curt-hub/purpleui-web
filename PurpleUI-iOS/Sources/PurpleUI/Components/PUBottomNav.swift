@@ -39,6 +39,12 @@ public struct PUBottomNav: View {
     @Binding public var activeTab: PUBottomNavTab
     public var dark: Bool = false
 
+    /// Real bottom safe-area inset, measured on-screen (see `PUBottomSafeAreaKey`
+    /// in `_Shared.swift`). Seeded to 20pt — this component's previous fixed
+    /// approximation — so there's no visible flash before the first geometry
+    /// pass reports the device's actual inset.
+    @State private var bottomSafeArea: CGFloat = 20
+
     public init(activeTab: Binding<PUBottomNavTab>, dark: Bool = false) {
         self._activeTab = activeTab
         self.dark       = dark
@@ -73,15 +79,22 @@ public struct PUBottomNav: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                .accessibilityAddTraits(tab == activeTab ? [.isSelected] : [])
             }
         }
         .padding(.top, 12)
-        .padding(.bottom, 20)
+        .padding(.bottom, bottomSafeArea)
         .frame(maxWidth: .infinity)
         .background(background)
         .overlay(alignment: .top) {
             topBorder.frame(height: 1)
         }
         .shadow(color: dark ? .black.opacity(0.4) : .black.opacity(0.03), radius: 1, x: 0, y: -2)
+        .background(
+            GeometryReader { proxy in
+                Color.clear.preference(key: PUBottomSafeAreaKey.self, value: proxy.safeAreaInsets.bottom)
+            }
+        )
+        .onPreferenceChange(PUBottomSafeAreaKey.self) { bottomSafeArea = $0 }
     }
 }

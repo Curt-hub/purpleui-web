@@ -24,6 +24,15 @@ public struct PUBottomTray<Content: View>: View {
     @State private var isExpanded: Bool
     @GestureState private var dragOffset: CGFloat = 0
 
+    /// Real bottom safe-area inset, measured on-screen (see `PUBottomSafeAreaKey`
+    /// in `_Shared.swift`). Added *on top of* `displayHeight` (see body) rather
+    /// than padding into `content`, so `peekHeight`/`expandHeight` stay exactly
+    /// what a caller asked for as usable interior — the safe-area clearance is
+    /// extra space below that, not stolen from it. Seeded to 20pt so there's no
+    /// visible flash before the first geometry pass reports the device's actual
+    /// inset.
+    @State private var bottomSafeArea: CGFloat = 20
+
     public init(
         title: String? = nil,
         dark: Bool = false,
@@ -43,7 +52,7 @@ public struct PUBottomTray<Content: View>: View {
 
     // MARK: - Colours
 
-    private var background: Color { dark ? Color(hex: "#0a2048") : PUColors.background }
+    private var background: Color { dark ? PUColors.backgroundElevatedNavy : PUColors.background }
     private var handleColor: Color { dark ? Color.white.opacity(0.15) : PUColors.loaderTrack }
     private var titleColor:  Color { dark ? .white : PUColors.onBackground }
 
@@ -84,9 +93,22 @@ public struct PUBottomTray<Content: View>: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: displayHeight, alignment: .top)
+        // Extra safe-area clearance is added *here* — after the interior is
+        // sized to exactly `displayHeight` but before background/clip/shadow
+        // — so `content` keeps the full height a caller asked for, and the
+        // card's background/rounded-top-corners/shadow still extend
+        // seamlessly all the way to the true bottom of the screen (no
+        // transparent gap peeking through beneath the visible card).
+        .padding(.bottom, bottomSafeArea)
         .background(background)
         .clipShape(UnevenRoundedRectangle(topLeadingRadius: PURadius.md, topTrailingRadius: PURadius.md))
         .shadow(color: .black.opacity(0.1), radius: 7.5, x: 0, y: -2)
+        .background(
+            GeometryReader { proxy in
+                Color.clear.preference(key: PUBottomSafeAreaKey.self, value: proxy.safeAreaInsets.bottom)
+            }
+        )
+        .onPreferenceChange(PUBottomSafeAreaKey.self) { bottomSafeArea = $0 }
         .gesture(
             DragGesture(minimumDistance: 8)
                 .updating($dragOffset) { value, state, _ in

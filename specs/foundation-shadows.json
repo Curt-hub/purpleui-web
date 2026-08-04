@@ -1,7 +1,7 @@
 {
   "name": "Shadows",
   "type": "foundation",
-  "description": "Named shadow tokens for elevating UI elements. All are CSS box-shadow strings — convert offset/blur/spread/color to platform equivalents.",
+  "description": "Named shadow tokens for elevating UI elements. All are CSS box-shadow strings - convert offset/blur/spread/color to platform equivalents.",
   "tokenFile": "src/lib/tokens.ts",
   "dtcgFile": "tokens.json (shadow.*)",
   "shadows": {

@@ -4,6 +4,7 @@ import { PUFloatingButton } from '@/components/ui/PUFloatingButton';
 import { PhoneFrame } from '@/components/docs/PhoneFrame';
 import { PropsTable } from '@/components/docs/PropsTable';
 import { PlatformCodeBlock } from '@/components/docs/PlatformCodeBlock';
+import { colors } from '@/lib/tokens';
 
 // ── Props table ───────────────────────────────────────────────
 
@@ -11,7 +12,7 @@ const props = [
   { name: 'variant',  type: "'icon' | 'pill'",           default: '—',         description: "icon = 56×56 circle button  |  pill = icon + label" },
   { name: 'icon',     type: "'navigate' | 'plus'",        default: '—',         description: 'Icon to display inside the button' },
   { name: 'label',    type: 'string',                     default: '—',         description: 'Text label shown beside the icon (pill variant only)' },
-  { name: 'dark',     type: 'boolean',                    default: 'false',     description: 'Dark surface — switches to navy background with subtle border' },
+  { name: 'dark',     type: 'boolean',                    default: 'false',     description: 'Dark surface - switches to navy background with subtle border' },
   { name: 'onClick',  type: '() => void',                 default: '—',         description: 'Tap handler' },
 ];
 
@@ -58,7 +59,7 @@ function PhoneMapDemo({ dark }: { dark: boolean }) {
 
   const gridColor = dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
   const roadColor = dark ? 'rgba(255,255,255,0.1)'  : 'rgba(0,0,0,0.09)';
-  const bg        = dark ? '#0a2048' : '#EEF0F3';
+  const bg        = dark ? colors.backgroundElevatedNavy : '#EEF0F3';
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', background: bg }}>
@@ -146,7 +147,7 @@ function InteractiveDemo() {
       </div>
       <div
         className="p-10 flex items-end justify-between"
-        style={{ background: isDark ? '#0a2048' : '#EEF0F3', minHeight: 140 }}
+        style={{ background: isDark ? colors.backgroundElevatedNavy : '#EEF0F3', minHeight: 140 }}
       >
         <PUFloatingButton variant="icon" icon="navigate" label="Navigate" dark={isDark} />
         <PUFloatingButton variant="pill" icon="plus" label="Add WiFi" dark={isDark} />
@@ -192,7 +193,10 @@ export default function FloatingButtonPage() {
         </div>
         <div>
           <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Icon · Dark</p>
-          <div className="flex items-end justify-center rounded-xl border border-white/10 bg-[#0a2048] px-10 py-8">
+          <div
+            className="flex items-end justify-center rounded-xl border border-white/10 px-10 py-8"
+            style={{ background: colors.backgroundElevatedNavy }}
+          >
             <PUFloatingButton variant="icon" icon="navigate" dark />
           </div>
         </div>
@@ -204,7 +208,10 @@ export default function FloatingButtonPage() {
         </div>
         <div>
           <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Pill · Dark</p>
-          <div className="flex items-end justify-center rounded-xl border border-white/10 bg-[#0a2048] px-10 py-8">
+          <div
+            className="flex items-end justify-center rounded-xl border border-white/10 px-10 py-8"
+            style={{ background: colors.backgroundElevatedNavy }}
+          >
             <PUFloatingButton variant="pill" icon="plus" label="Add WiFi" dark />
           </div>
         </div>

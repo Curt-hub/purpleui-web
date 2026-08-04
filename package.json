@@ -1,13 +1,15 @@
 {
   "name": "purpleui-web",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run validate-specs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "export-tokens": "npx tsx scripts/export-tokens.ts",
+    "validate-specs": "npx tsx scripts/validate-specs.ts",
     "snapshots": "npx tsx scripts/snapshots.ts"
   },
   "dependencies": {
@@ -36,6 +38,8 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/three": "^0.184.1",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.35",
     "postcss": "^8",

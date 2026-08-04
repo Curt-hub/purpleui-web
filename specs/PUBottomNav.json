@@ -1,14 +1,22 @@
 {
+  "$schema": "./schema/component.schema.json",
   "name": "PUBottomNav",
+  "category": "navigation",
   "description": "Fixed navigation bar at the bottom of every screen. Four tabs: Explore, Wallet, Activity, Profile. Light and dark variants.",
   "platforms": ["web", "ios", "android"],
+  "implementation": {
+    "web": { "status": "implemented", "sourceFile": "src/components/ui/PUBottomNav.tsx" },
+    "ios": { "status": "implemented", "sourceFile": "PurpleUI-iOS/Sources/PurpleUI/Components/PUBottomNav.swift" },
+    "android": { "status": "implemented", "sourceFile": "PurpleUI-Android/purpleui/src/main/kotlin/ai/purple/purpleui/components/PUBottomNav.kt" }
+  },
   "tabs": ["explore", "wallet", "activity", "profile"],
+  "states": ["unselected", "selected"],
   "props": [
     {
       "name": "activeTab",
       "type": "\"explore\" | \"wallet\" | \"activity\" | \"profile\" | undefined",
       "default": "undefined",
-      "description": "Currently active tab — all tabs render unselected if undefined",
+      "description": "Currently active tab - all tabs render unselected if undefined",
       "platforms": {
         "ios": "activeTab: Binding<PUBottomNavTab> ($activeTab)",
         "android": "activeTab: PUBottomNavTab, onTabChange: (PUBottomNavTab) -> Unit"
@@ -28,7 +36,7 @@
       "name": "dark",
       "type": "boolean",
       "default": false,
-      "description": "Dark mode — navy background",
+      "description": "Dark mode - navy background",
       "platforms": { "ios": "dark: Bool", "android": "dark: Boolean" }
     }
   ],
@@ -51,14 +59,13 @@
       "label": "colors.onBackgroundTertiary (#AAACB0)"
     }
   },
-  "usage": {
+  "behaviour": {
     "ios": "Place in a ZStack(alignment: .bottom) with .ignoresSafeArea(edges: .bottom)",
     "android": "Place in Scaffold bottomBar parameter"
   },
   "accessibility": {
     "role": "tabbar",
-    "notes": "each tab item should announce its label and selected state"
+    "notes": "each tab item should announce its label and selected state (e.g. aria-selected / accessibilityAddTraits(.isSelected) / Modifier.selectable(selected=...)) - not conveyed by colour alone"
   },
-  "docPage": "/navigation/bottom-nav",
-  "sourceFile": "src/components/ui/PUBottomNav.tsx"
+  "docPage": "/navigation/bottom-nav"
 }
